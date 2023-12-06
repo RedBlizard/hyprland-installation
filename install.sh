@@ -23,20 +23,6 @@ if ! command -v yay &> /dev/null; then
     sudo pacman -Sy --noconfirm yay
 fi
 
-# ------------------------------------------------------
-# Getting in the dotfiles
-# ------------------------------------------------------
-
-echo "Cloning dotfiles repository..."
-
-DOTFILES_REPO="https://github.com/RedBlizard/Hyprland-blizz.git"
-DOTFILES_DIR="$HOME/Hyprland-blizz"
-
-# Clone the dotfiles repository
-git clone "$DOTFILES_REPO" "$DOTFILES_DIR" || { echo 'Failed to clone dotfiles repository.'; exit 1; }
-
-# Change to the Hyprland-blizz directory
-cd /home/$USER/Hyprland-blizz/
 
 # ------------------------------------------------------
 # Check for the Presence of Dotfiles Repo: Ensure Git is Installed
@@ -139,7 +125,13 @@ while true; do
             echo "Contents of Hyprland-blizz directory after changing back:"
             ls -la
 
-            # Continue with the rest of your installation script
+            # Clone the dotfiles repository and set the working directory
+             git clone "$DOTFILES_REPO" "$DOTFILES_DIR" && cd "$DOTFILES_DIR" || {
+             echo 'Failed to clone dotfiles repository or change directory.'; exit 1;
+             }
+
+            # Copy dotfiles to home directory
+            cp -r * ~/
             cp -r .icons ~/
             cp -r .Kvantum-themes ~/
             cp -r .themes ~/
@@ -149,7 +141,7 @@ while true; do
             # Copy .config folder to home directory
             cp -r .config ~/
 
-            # ... (continue with the rest of your installation script)
+
 
 
 # ------------------------------------------------------
