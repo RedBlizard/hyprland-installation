@@ -109,6 +109,36 @@ echo ""
 
 cd /home/Hyprland-blizz/
 
+
+
+# Start of the Hyprland installation
+# ------------------------------------------------------
+
+while true; do
+    read -p "DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): " yn
+    case $yn in
+        [Yy]* )
+            echo "Installation started."
+
+            # Copy dotfiles and directories to home directory
+            cp -r * ~/
+
+            # Change back to the original directory
+            cd /home/Hyprland-blizz/
+
+            # Continue with the rest of your installation script
+            cp -r .icons ~/
+            cp -r .Kvantum-themes ~/
+            cp -r .themes ~/
+            cp -r .local ~/
+            cp -r Pictures ~/
+
+            # Copy .config folder to home directory
+            cp -r .config ~/
+
+            # ... (continue with the rest of your installation script)
+
+
 # ------------------------------------------------------
 # Check filesystem type
 # ------------------------------------------------------
