@@ -14,6 +14,27 @@ if ! command -v yay &> /dev/null; then
 fi
 
 # ------------------------------------------------------
+# Getting in the dotfiles
+# ------------------------------------------------------
+
+echo "Checking if Git is installed..."
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+fi
+
+echo "Cloning dotfiles repository..."
+
+DOTFILES_REPO="https://github.com/RedBlizard/Hyprland-blizz.git"
+DOTFILES_DIR="$HOME/Hyprland-blizz"
+
+# Clone the dotfiles repository
+git clone "$DOTFILES_REPO" "$DOTFILES_DIR" || { echo 'Failed to clone dotfiles repository.'; exit 1; }
+
+# Copy dotfiles to home directory
+cp -r "$DOTFILES_DIR"/* ~/
+
+# ------------------------------------------------------
 # Check CPU vendor
 # ------------------------------------------------------
 
@@ -145,24 +166,6 @@ if [ ! -f "$sddm_conf" ]; then
         exit 1
     fi
 fi
-
-
-# -----------------------------------------------------------------------------------------------------------------------------
-# Remove unwanted fonts these fonts conflict with the waybar icons /noto-fonts-emoji will replaced by the script dont worry !!!
-# -----------------------------------------------------------------------------------------------------------------------------
-
-echo "noto-fonts-emoji will replaced by the script dont worry !!!"
-
-unwanted_fonts=("noto-fonts-emoji")
-
-for font in "${unwanted_fonts[@]}"; do
-    if yay -Rns --noconfirm "$font"; then
-        echo "$font removed."
-    else
-        echo "Failed to remove $font. Manual intervention may be required."
-        exit 1
-    fi
-done
 
 # ------------------------------------------------------
 # Start of the Hyprland installation
