@@ -4,6 +4,19 @@
 # Install script version release 001
 # ------------------------------------------------------
 
+# Ensure the script is in the correct directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; exit 1; }
+
+# ------------------------------------------------------
+# Check if yay is installed
+# ------------------------------------------------------
+
+if ! command -v yay &> /dev/null; then
+    echo "yay is not installed. Installing yay..."
+    sudo pacman -Sy --noconfirm yay
+fi
+
 # ------------------------------------------------------
 # Check if Git is installed
 # ------------------------------------------------------
@@ -15,48 +28,34 @@ if ! command -v git &> /dev/null; then
 fi
 
 # ------------------------------------------------------
-# Check if yay is installed
+# Getting in the dotfiles
 # ------------------------------------------------------
 
-if ! command -v yay &> /dev/null; then
-    echo "yay is not installed. Installing yay..."
-    sudo pacman -Sy --noconfirm yay
-fi
+echo "Cloning dotfiles repository..."
+
+# Create the Hyprland-blizz directory if not present
+mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
+
+# Change into the Hyprland-blizz directory
+cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+
+# Clone the dotfiles repository
+git clone "https://github.com/RedBlizard/Hyprland-blizz.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
+
+# Copy dotfiles and directories to home directory
+cp -r "$SCRIPT_DIR"/* ~/
+cp -r .icons ~/
+cp -r .Kvantum-themes ~/
+cp -r .themes ~/
+cp -r .local ~/
+cp -r Pictures ~/
+
+# Copy .config folder to home directory
+cp -r .config ~/
+
+# ... (rest of your installation script)
 
 
-# ------------------------------------------------------
-# Check for the Presence of Dotfiles Repo: Ensure Git is Installed
-# ------------------------------------------------------
-
-echo "Checking if Git is installed..."
-if ! command -v git &> /dev/null; then
-    echo "Git is not installed. Installing Git..."
-    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
-fi
-
-# ------------------------------------------------------
-# Check Directory Existence: Function to check and exit on failure
-# ------------------------------------------------------
-
-check_directory() {
-    if [ ! -d "$1" ]; then
-        echo "Error: $1 directory not found."
-        exit 1
-    fi
-}
-
-# ------------------------------------------------------
-# Check Directory Existence: Add checks before copying directories
-# ------------------------------------------------------
-
-check_directory "Hyprland-blizz/.icons"
-check_directory "Hyprland-blizz/.Kvantum-themes"
-check_directory "Hyprland-blizz/.themes"
-check_directory "Hyprland-blizz/.local"
-check_directory "Hyprland-blizz/Pictures"
-check_directory "Hyprland-blizz/.config"
-
-# Continue with the rest of the script...
 
 # ------------------------------------------------------
 # Check CPU vendor
