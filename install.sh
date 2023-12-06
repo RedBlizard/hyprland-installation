@@ -128,10 +128,15 @@ while true; do
             # Copy dotfiles and directories to home directory
             cp -r * ~/
 
+            # Debug: Print the contents of Hyprland-blizz directory
+            echo "Contents of Hyprland-blizz directory:"
+            ls -la Hyprland-blizz
+
             # Change back to the original directory
             cd /home/Hyprland-blizz/
 
             # Debug: List contents of the directory after changing back
+            echo "Contents of Hyprland-blizz directory after changing back:"
             ls -la
 
             # Continue with the rest of your installation script
@@ -143,6 +148,8 @@ while true; do
 
             # Copy .config folder to home directory
             cp -r .config ~/
+
+            # ... (continue with the rest of your installation script)
 
 
 # ------------------------------------------------------
