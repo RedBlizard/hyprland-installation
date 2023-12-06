@@ -251,7 +251,7 @@ while true; do
             sudo cp -r .themes /root/
 
             # Copy Noto fonts folder to root /usr/share/fonts directory    
-            sudo cp -r .local/share/fonts/Noto /usr/share/fonts/            
+            # sudo cp -r .local/share/fonts/Noto /usr/share/fonts/
 
             # Copy the following folders to the .config folder in the root directory
             sudo cp -r .config/fish /root/.config/            
@@ -329,7 +329,7 @@ done
 # Check if packages-repository.txt is present
 # ------------------------------------------------------
 
-if [ -f packages-repository.txt ]; then
+if [ -f "$HOME/hyprland-installation/packages-repository.txt" ]; then
     # Read package names from repository.txt
     packages=$(<packages-repository.txt)
 
