@@ -105,32 +105,13 @@ while true; do
         [Yy]* )
             echo "Installation started."
 
-            # Debug: Print current working directory
-            echo "Current working directory: $(pwd)"
+            # Create the Hyprland-blizz directory if not present
+            mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
 
-            # Debug: List contents of the current directory
-            ls -la
+            # Change into the Hyprland-blizz directory
+            cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
 
             # Copy dotfiles and directories to home directory
-            cp -r * ~/
-
-            # Debug: Print the contents of Hyprland-blizz directory
-            echo "Contents of Hyprland-blizz directory:"
-            ls -la Hyprland-blizz
-
-            # Change back to the original directory
-            cd /home/Hyprland-blizz/
-
-            # Debug: List contents of the directory after changing back
-            echo "Contents of Hyprland-blizz directory after changing back:"
-            ls -la
-
-            # Clone the dotfiles repository and set the working directory
-             git clone "$DOTFILES_REPO" "$DOTFILES_DIR" && cd "$DOTFILES_DIR" || {
-             echo 'Failed to clone dotfiles repository or change directory.'; exit 1;
-             }
-
-            # Copy dotfiles to home directory
             cp -r * ~/
             cp -r .icons ~/
             cp -r .Kvantum-themes ~/
@@ -141,6 +122,14 @@ while true; do
             # Copy .config folder to home directory
             cp -r .config ~/
 
+            # ... (rest of your installation script)
+            break;;
+        [Nn]* )
+            exit;
+            break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 
 
