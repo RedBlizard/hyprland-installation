@@ -232,43 +232,36 @@ while true; do
         [Yy]* )
             echo "Installation started."
 
-            # Copy dotfiles and directories to home directory
-            cp -r * ~/
-            cp -r Hyprland-blizz/.icons ~/
-            cp -r Hyprland-blizz/.Kvantum-themes ~/
-            cp -r Hyprland-blizz/.themes ~/
-            cp -r Hyprland-blizz/.local ~/
-            cp -r Hyprland-blizz/Pictures ~/
-                        
+# Copy dotfiles and directories to home directory
+cp -r ~/Hyprland-blizz/* ~/
 
-            # Copy .config folder to home directory            
-            cp -r Hyprland-blizz/.config ~/
-            
+# Copy .config folder to home directory
+cp -r ~/Hyprland-blizz/.config ~/
 
-            # Copy the following folders to home root directory
-            sudo cp -r .icons /root/
-            sudo cp -r .Kvantum-themes /root/
-            sudo cp -r .themes /root/
+# Copy the following folders to home root directory
+sudo cp -r ~/.icons /root/
+sudo cp -r ~/.Kvantum-themes /root/
+sudo cp -r ~/.themes /root/
 
-            # Copy Noto fonts folder to root /usr/share/fonts directory    
-            # sudo cp -r .local/share/fonts/Noto /usr/share/fonts/
+# Uncomment the following line if you need to copy the Noto fonts folder
+# sudo cp -r ~/.local/share/fonts/Noto /usr/share/fonts/
 
-            # Copy the following folders to the .config folder in the root directory
-            sudo cp -r .config/fish /root/.config/            
-            sudo cp -r .config/nwg-look /root/.config/            
-            sudo cp -r .config/xsettingsd /root/.config/
-            sudo cp -r .config/qt5ct /root/.config/
-            sudo cp -r .config/kvantum /root/.config/
-            sudo cp -r .config/starship /root/.config/
-            sudo cp -r .config/gtk-3.0 /root/.config/
-            
+# Copy the following folders to the .config folder in the root directory
+sudo cp -r ~/.config/fish /root/.config/
+sudo cp -r ~/.config/nwg-look /root/.config/
+sudo cp -r ~/.config/xsettingsd /root/.config/
+sudo cp -r ~/.config/qt5ct /root/.config/
+sudo cp -r ~/.config/kvantum /root/.config/
+sudo cp -r ~/.config/starship /root/.config/
+sudo cp -r ~/.config/gtk-3.0 /root/.config/
 
-            # Copy the individual files to the .config folder in the root directory
-            sudo cp .config/starship.toml /root/.config/
-            sudo cp .config/starship-endeavouros.toml /root/.config/
- 
-            # Copy sddm.conf to /root/etc/
-            sudo cp -r sddm.conf /etc/
+# Copy the individual files to the .config folder in the root directory
+sudo cp ~/.config/starship.toml /root/.config/
+sudo cp ~/.config/starship-endeavouros.toml /root/.config/
+
+# Copy sddm.conf to /etc/
+sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
+
 
             
             # Set the Qogir-dark cursor theme
