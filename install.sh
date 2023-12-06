@@ -5,6 +5,16 @@
 # ------------------------------------------------------
 
 # ------------------------------------------------------
+# Check if Git is installed
+# ------------------------------------------------------
+
+echo "Checking if Git is installed..."
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+fi
+
+# ------------------------------------------------------
 # Check if yay is installed
 # ------------------------------------------------------
 
@@ -17,12 +27,6 @@ fi
 # Getting in the dotfiles
 # ------------------------------------------------------
 
-echo "Checking if Git is installed..."
-if ! command -v git &> /dev/null; then
-    echo "Git is not installed. Installing Git..."
-    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
-fi
-
 echo "Cloning dotfiles repository..."
 
 DOTFILES_REPO="https://github.com/RedBlizard/Hyprland-blizz.git"
@@ -31,8 +35,42 @@ DOTFILES_DIR="$HOME/Hyprland-blizz"
 # Clone the dotfiles repository
 git clone "$DOTFILES_REPO" "$DOTFILES_DIR" || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
-# Copy dotfiles to home directory
-cp -r "$DOTFILES_DIR"/* ~/
+# Change to the Hyprland-blizz directory
+cd /home/$USER/Hyprland-blizz/
+
+# ------------------------------------------------------
+# Check for the Presence of Dotfiles Repo: Ensure Git is Installed
+# ------------------------------------------------------
+
+echo "Checking if Git is installed..."
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+fi
+
+# ------------------------------------------------------
+# Check Directory Existence: Function to check and exit on failure
+# ------------------------------------------------------
+
+check_directory() {
+    if [ ! -d "$1" ]; then
+        echo "Error: $1 directory not found."
+        exit 1
+    fi
+}
+
+# ------------------------------------------------------
+# Check Directory Existence: Add checks before copying directories
+# ------------------------------------------------------
+
+check_directory "Hyprland-blizz/.icons"
+check_directory "Hyprland-blizz/.Kvantum-themes"
+check_directory "Hyprland-blizz/.themes"
+check_directory "Hyprland-blizz/.local"
+check_directory "Hyprland-blizz/Pictures"
+check_directory "Hyprland-blizz/.config"
+
+# Continue with the rest of the script...
 
 # ------------------------------------------------------
 # Check CPU vendor
