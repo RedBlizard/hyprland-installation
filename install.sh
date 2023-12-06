@@ -109,8 +109,7 @@ echo ""
 
 cd /home/Hyprland-blizz/
 
-
-
+# ------------------------------------------------------
 # Start of the Hyprland installation
 # ------------------------------------------------------
 
@@ -120,11 +119,20 @@ while true; do
         [Yy]* )
             echo "Installation started."
 
+            # Debug: Print current working directory
+            echo "Current working directory: $(pwd)"
+
+            # Debug: List contents of the current directory
+            ls -la
+
             # Copy dotfiles and directories to home directory
             cp -r * ~/
 
             # Change back to the original directory
             cd /home/Hyprland-blizz/
+
+            # Debug: List contents of the directory after changing back
+            ls -la
 
             # Continue with the rest of your installation script
             cp -r .icons ~/
@@ -135,8 +143,6 @@ while true; do
 
             # Copy .config folder to home directory
             cp -r .config ~/
-
-            # ... (continue with the rest of your installation script)
 
 
 # ------------------------------------------------------
