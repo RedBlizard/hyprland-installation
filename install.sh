@@ -91,13 +91,9 @@ echo ""
 # ------------------------------------------------------
 # Change to the Hyprland-blizz directory
 # ------------------------------------------------------
+cd "$HOME/Hyprland-blizz/" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
 
-cd /home/Hyprland-blizz/
-
-# ------------------------------------------------------
 # Start of the Hyprland installation
-# ------------------------------------------------------
-
 while true; do
     read -p "DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): " yn
     case $yn in
@@ -129,8 +125,6 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
-
-
 
 # ------------------------------------------------------
 # Check filesystem type
