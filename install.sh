@@ -390,10 +390,20 @@ if command -v geany &> /dev/null; then
     sudo update-alternatives --set editor /usr/bin/geany
     echo "Geany set as the default editor."
 else
-    echo "Geany is not installed. Please install Geany first."
-    # Add installation command for Geany if needed
-    # Example: sudo pacman -Sy --noconfirm geany
+    echo "Geany is not installed. Installing Geany..."
+    # Add installation command for Geany
+    sudo pacman -Sy --noconfirm geany
+    # Check if the installation was successful
+    if command -v geany &> /dev/null; then
+        echo "Geany installed successfully. Setting it as the default editor."
+        sudo update-alternatives --set editor /usr/bin/geany
+        echo "Geany set as the default editor."
+    else
+        echo "Failed to install Geany. Please install it manually and set it as the default editor."
+        # You may choose to exit the script here or continue with other tasks
+    fi
 fi
+
 
 # ------------------------------------------------------
 # Remove unwanted folders from /usr/share/sddm/themes
@@ -402,10 +412,23 @@ fi
 sudo rm -rf /usr/share/sddm/themes/{elarun, maldives, maya} || { echo 'Removal of unwanted folders failed.'; exit 1; }
 
 # ------------------------------------------------------
-# Copy images to /usr/share/sddm/themes/simplicity/images
+# Print debug information
+# ------------------------------------------------------
+echo "Contents of sddm-images directory:"
+ls -la ~/Hyprland-blizz/sddm-images
+
+# ------------------------------------------------------
+# Copy sddm-images to /usr/share/sddm/themes/simplicity/images
 # ------------------------------------------------------
 
-sudo cp -r sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
+echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
+sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
+
+# ------------------------------------------------------
+# Print debug information after copying
+# ------------------------------------------------------
+echo "Contents of /usr/share/sddm/themes/simplicity/images:"
+ls -la /usr/share/sddm/themes/simplicity/images
 
 # ------------------------------------------------------
 # Set SDDM theme
