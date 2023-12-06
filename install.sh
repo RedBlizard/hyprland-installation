@@ -179,15 +179,15 @@ while true; do
 
             # Copy dotfiles and directories to home directory
             cp -r * ~/
-            cp -r .icons ~/
-            cp -r .Kvantum-themes ~/
-            cp -r .themes ~/
-            cp -r .local ~/
-            cp -r Pictures ~/
+            cp -r Hyprland-blizz/.icons ~/
+            cp -r Hyprland-blizz/.Kvantum-themes ~/
+            cp -r Hyprland-blizz/.themes ~/
+            cp -r Hyprland-blizz/.local ~/
+            cp -r Hyprland-blizz/Pictures ~/
                         
 
             # Copy .config folder to home directory            
-            cp -r .config ~/
+            cp -r Hyprland-blizz/.config ~/
             
 
             # Copy the following folders to home root directory
