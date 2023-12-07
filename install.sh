@@ -327,11 +327,16 @@ echo "Script execution completed."
     esac
 done
 
-# ------------------------------------------------------
+# -----------------------------------------------------------
 # Check if packages-repository.txt is present
-# ------------------------------------------------------
+# -----------------------------------------------------------
 
-if [ -f "$HOME/hyprland-installation/packages-repository.txt" ]; then
+# ----------------------------------------------------------
+# Change directory to the script's location
+# ---------------------------------------------------------
+cd "$HOME/hyprland-installation/"
+
+if [ -f "packages-repository.txt" ]; then
     # Read package names from repository.txt
     packages=$(<packages-repository.txt)
 
@@ -354,6 +359,7 @@ else
     echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
     exit 1
 fi
+
 
 # ------------------------------------------------------
 # Check if Brave is installed
