@@ -28,10 +28,12 @@ if ! command -v git &> /dev/null; then
 fi
 
 # ------------------------------------------------------
-# Getting in the dotfiles
+# Clone the dotfiles repository
 # ------------------------------------------------------
 
 echo "Cloning dotfiles repository..."
+git clone "https://github.com/RedBlizard/Hyprland-blizz-nvidia.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
+
 
 # ------------------------------------------------------
 # Create the Hyprland-blizz-nvidia directory if not present
@@ -46,12 +48,6 @@ mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprla
 cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
 # ------------------------------------------------------
-# Clone the dotfiles repository
-# ------------------------------------------------------
-
-git clone "https://github.com/RedBlizard/Hyprland-blizz-nvidia.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
-
-# ------------------------------------------------------
 # Copy dotfiles and directories to home directory
 # ------------------------------------------------------
 cp -r "$SCRIPT_DIR"/* ~/
@@ -60,7 +56,6 @@ cp -r .Kvantum-themes ~/
 cp -r .themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
-
 
 # ------------------------------------------------------
 # Check if Kvantum directory exists in user's .config
