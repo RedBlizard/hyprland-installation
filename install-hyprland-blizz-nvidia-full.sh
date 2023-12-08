@@ -34,13 +34,13 @@ fi
 echo "Cloning dotfiles repository..."
 
 # ------------------------------------------------------
-# Create the Hyprland-blizz directory if not present
+# Create the Hyprland-blizz-nvidia directory if not present
 # ------------------------------------------------------
 
-mkdir -p "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
 
 # ------------------------------------------------------
-# Change into the Hyprland-blizz directory
+# Change into the Hyprland-blizz-nvidia directory
 # ------------------------------------------------------
 
 cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
@@ -61,6 +61,7 @@ cp -r .themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
+
 # ------------------------------------------------------
 # Check if Kvantum directory exists in user's .config
 # ------------------------------------------------------
@@ -74,7 +75,8 @@ fi
 # Copy and force overwrite Kvantum directory from dotfiles to user's .config
 # --------------------------------------------------------------------------
 
-cp -rf "$HOME/Hyprland-blizz/.config/Kvantum" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+cp -rf "$HOME/Hyprland-blizz-nvidia/.config/Kvantum" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+
 
 # ------------------------------------------------------
 # Copy .config folder to home directory
@@ -140,14 +142,14 @@ echo ""
 echo "WELCOME TO THE HYPRLAND STARTER INSTALLATION SCRIPT"
 echo "------------------------------------------------------"
 echo ""
-echo "Please make sure that you run this script from /home/live/Hyprland-blizz/"
+echo "Please make sure that you run this script from /home/Hyprland-blizz-nvidia/"
 echo "Backup existing configurations in .config if needed."
 echo ""
 
 # ------------------------------------------------------
-# Change to the Hyprland-blizz directory
+# Change to the Hyprland-blizz-nvidia directory
 # ------------------------------------------------------
-cd "$HOME/Hyprland-blizz/" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+cd "$HOME/Hyprland-blizz-nvidia/" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
 
 # ----------------------------------
@@ -161,16 +163,16 @@ while true; do
             echo "Installation started."
             
             # --------------------------------------------------
-            # Create the Hyprland-blizz directory if not present
+            # Create the Hyprland-blizz-nvidia directory if not present
             # --------------------------------------------------
             
-            mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
+            mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
             
             # ----------------------------------------
-            # Change into the Hyprland-blizz directory
+            # Change into the Hyprland-blizz-nvidia directory
             # ----------------------------------------
             
-            cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+            cd "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
             # -----------------------------------------------
             # Copy dotfiles and directories to home directory
@@ -332,14 +334,14 @@ while true; do
 # -----------------------------------------------
 
 echo "Copying dotfiles and directories to home directory..."
-cp -r ~/Hyprland-blizz/* ~/
+cp -r ~/Hyprland-blizz-nvidia/* ~/
 
 # -------------------------------------
 # Copy .config folder to home directory
 # -------------------------------------
 
 echo "Copying .config folder to home directory..."
-cp -r ~/Hyprland-blizz/.config ~/
+cp -r ~/Hyprland-blizz-nvidia/.config ~/
 
 # -------------------------------------------------
 # Copy the following folders to home root directory
@@ -380,7 +382,7 @@ sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 # -----------------------
 
 echo "Copying sddm.conf to /etc/..."
-sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
+sudo cp -r ~/Hyprland-blizz-nvidia/sddm.conf /etc/
 
 echo "Script execution completed."
 
