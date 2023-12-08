@@ -5,6 +5,7 @@ arc-gtk-theme-eos
 awesome-terminal-fonts
 azote
 bash-completion
+bash-language-server
 bluez
 bluez-utils
 brave-bin
