@@ -31,7 +31,7 @@ fi
 # Create the Hyprland-blizz-nvidia directory if not present
 # ------------------------------------------------------
 
-mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+#mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
 
 
 # ------------------------------------------------------
