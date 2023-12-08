@@ -28,18 +28,19 @@ if ! command -v git &> /dev/null; then
 fi
 
 # ------------------------------------------------------
+# Create the Hyprland-blizz-nvidia directory if not present
+# ------------------------------------------------------
+
+mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+
+
+# ------------------------------------------------------
 # Clone the dotfiles repository
 # ------------------------------------------------------
 
 echo "Cloning dotfiles repository..."
 git clone "https://github.com/RedBlizard/Hyprland-blizz-nvidia.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
-
-# ------------------------------------------------------
-# Create the Hyprland-blizz-nvidia directory if not present
-# ------------------------------------------------------
-
-mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
 
 # ------------------------------------------------------
 # Change into the Hyprland-blizz-nvidia directory
@@ -58,12 +59,19 @@ cp -r .local ~/
 cp -r Pictures ~/
 
 # ------------------------------------------------------
+# Copy .config folder to home directory
+# ------------------------------------------------------
+
+cp -r .config ~/
+
+# ------------------------------------------------------
 # Check if Kvantum directory exists in user's .config
 # ------------------------------------------------------
 
 if [ ! -d "$HOME/.config/Kvantum" ]; then
     # If not, create it
-    mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }
+    mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }   
+    
 fi
 
 # --------------------------------------------------------------------------
@@ -71,12 +79,6 @@ fi
 # --------------------------------------------------------------------------
 
 cp -rf "$HOME/Hyprland-blizz-nvidia/.config/Kvantum" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
-
-
-# ------------------------------------------------------
-# Copy .config folder to home directory
-# ------------------------------------------------------
-cp -r .config ~/
 
 
 # ------------------------------------------------------
