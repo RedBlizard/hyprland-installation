@@ -595,7 +595,7 @@ CURRENT_CONFIG=$(readlink -f ~/.config/waybar/config.jsonc)
 DESKTOP_CONFIG_PATH=~/.config/waybar/conf/w1-config-desktop.jsonc
 LAPTOP_CONFIG_PATH=~/.config/waybar/conf/w2-config-laptop.jsonc
 
-----------------------------------------------------
+# --------------------------------------------------
 # Define the paths for the desktop and laptop styles
 # --------------------------------------------------
 
