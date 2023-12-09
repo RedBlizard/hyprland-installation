@@ -697,5 +697,6 @@ echo "DONE!"
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
 echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the outputs."
 echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the network device see the traffic module!!!"
+# Now you are fully ready and can reboot your system / if you encounter any problems related to the configuration get in contact with RedBlizard
 echo "Then reboot your system!"
 
