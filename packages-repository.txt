@@ -28,7 +28,6 @@ galculator
 glances
 geany
 geany-plugins
-geany-themes-git
 gparted
 git
 grsync
