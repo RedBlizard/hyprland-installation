@@ -366,13 +366,6 @@ sudo cp -r ~/Hyprland-blizz-nvidia/sddm.conf /etc/
 echo "Script execution completed."
 
 
-
-            # -------------------------------            
-            # Set the Qogir-dark cursor theme
-            # -------------------------------
-            
-            xsetroot -cursor_name left_ptr 
-
             # ----------------------------------------------------------------------------------------  
             # Install Nerd Fonts from Arch repositories
             # ----------------------------------------------------------------------------------------
@@ -691,6 +684,12 @@ papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # Change Papirus folder colors for root
 # ------------------------------------------------------
 sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
+
+# -------------------------------            
+# Set the Qogir-dark cursor theme
+# -------------------------------
+xsetroot -cursor_name left_ptr     
+ 
 
 echo ""
 echo "DONE!"
