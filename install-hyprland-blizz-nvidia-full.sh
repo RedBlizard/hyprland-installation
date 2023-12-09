@@ -166,10 +166,10 @@ while true; do
             mkdir -p "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
             
             # ----------------------------------------
-            # Change into the Hyprland-blizz directory
+            # Change into the Hyprland-blizz-nvidia directory
             # ----------------------------------------
             
-            cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+            cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
             # -----------------------------------------------
             # Copy dotfiles and directories to home directory
@@ -532,7 +532,7 @@ ls -la ~/Hyprland-blizz-nvidia/sddm-images
 # Copy sddm-images to /usr/share/sddm/themes/simplicity/images
 # ------------------------------------------------------------
 echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
-sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
+sudo cp -r ~/Hyprland-blizz-nvidia/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
 
 # -------------------------------------
 # Print debug information after copying
