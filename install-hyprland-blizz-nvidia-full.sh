@@ -501,19 +501,28 @@ else
 fi
 
 # ------------------------------------------------------
-# Remove or modify the Geany check section
+# Check if Geany is installed
 # ------------------------------------------------------
 
-# Example: Install Geany
-sudo pacman -Sy --noconfirm geany
-sudo update-alternatives --set editor /usr/bin/geany
-echo "Geany installed and set as the default editor."
-
-        # -------------------------------------------------------------------
+if command -v geany &> /dev/null; then
+    # Set Geany as the default editor
+    sudo update-alternatives --set editor /usr/bin/geany
+    echo "Geany set as the default editor."
+else
+    echo "Geany is not installed. Installing Geany..."
+    # Add installation command for Geany
+    sudo pacman -Sy --noconfirm geany
+    # Check if the installation was successful
+    if command -v geany &> /dev/null; then
+        echo "Geany installed successfully. Setting it as the default editor."
+        sudo update-alternatives --set editor /usr/bin/geany
+        echo "Geany set as the default editor."
+    else
+        echo "Failed to install Geany. Please install it manually and set it as the default editor."
         # You may choose to exit the script here or continue with other tasks
-        # -------------------------------------------------------------------
     fi
 fi
+
 
 
 # ------------------------------------------------------
