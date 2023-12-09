@@ -43,7 +43,7 @@ mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz direc
 # Change into the Hyprland-blizz directory
 # ------------------------------------------------------
 
-cd "$HOME/Hyprland-blizz-" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
 
 # ------------------------------------------------------
 # Clone the dotfiles repository
@@ -140,9 +140,9 @@ echo "Backup existing configurations in .config if needed."
 echo ""
 
 # ------------------------------------------------------
-# Change to the Hyprland-blizz directory
+# Change to the Hyprland-blizz-nvidia directory
 # ------------------------------------------------------
-cd "$HOME/Hyprland-blizz/" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+cd "$HOME/Hyprland-blizz-nvidia/" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
 
 # ----------------------------------
@@ -357,7 +357,7 @@ sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 
 # Copy sddm.conf to /etc/
 echo "Copying sddm.conf to /etc/..."
-sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
+sudo cp -r ~/Hyprland-blizz-nvidia/sddm.conf /etc/
 
 echo "Script execution completed."
 
