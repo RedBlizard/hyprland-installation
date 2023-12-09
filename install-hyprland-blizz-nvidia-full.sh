@@ -37,7 +37,7 @@ echo "Cloning dotfiles repository..."
 # Create the Hyprland-blizz-nvidia directory if not present
 # ------------------------------------------------------
 
-mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+mkdir -p "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
 
 # ------------------------------------------------------
 # Change into the Hyprland-blizz-nvidia directory
