@@ -24,14 +24,26 @@ fi
 echo "Checking if Git is installed..."
 if ! command -v git &> /dev/null; then
     echo "Git is not installed. Installing Git..."
-    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }      
 fi
+
+# ------------------------------------------------------
+# Getting in the dotfiles
+# ------------------------------------------------------
+
+echo "Cloning dotfiles repository..."
 
 # ------------------------------------------------------
 # Create the Hyprland-blizz-nvidia directory if not present
 # ------------------------------------------------------
 
-#mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+mkdir -p "$HOME/Hyprland-blizz-nvidia-nvidia" || { echo 'Failed to create Hyprland-blizz-nvidia directory.'; exit 1; }
+
+# ------------------------------------------------------
+# Change into the Hyprland-blizz-nvidia directory
+# ------------------------------------------------------
+
+cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
 
 # ------------------------------------------------------
@@ -41,12 +53,6 @@ fi
 echo "Cloning dotfiles repository..."
 git clone "https://github.com/RedBlizard/Hyprland-blizz-nvidia.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
-
-# ------------------------------------------------------
-# Change into the Hyprland-blizz-nvidia directory
-# ------------------------------------------------------
-
-cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprland-blizz-nvidia.'; exit 1; }
 
 # ------------------------------------------------------
 # Copy dotfiles and directories to home directory
