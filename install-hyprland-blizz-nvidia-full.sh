@@ -51,16 +51,6 @@ cd "$HOME/Hyprland-blizz-nvidia" || { echo 'Failed to change directory to Hyprla
 
 git clone "https://github.com/RedBlizard/Hyprland-blizz-nvidia.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
-# ------------------------------------------------------
-# Copy dotfiles and directories to home directory
-# ------------------------------------------------------
-cp -r "$SCRIPT_DIR"/* ~/
-cp -r .icons ~/
-cp -r .Kvantum-themes ~/
-cp -r .themes ~/
-cp -r .local ~/
-cp -r Pictures ~/
-
 # ---------------------------------------------------
 # Check if Kvantum directory exists in user's .config
 if [ ! -d "$HOME/.config/Kvantum" ]; then
@@ -72,9 +62,15 @@ fi
 cp -rf "$HOME/Hyprland-blizz-nvidia/.config/Kvantum" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
 
 # ------------------------------------------------------
-# Copy .config folder to home directory
+# Copy dotfiles and directories to home directory
 # ------------------------------------------------------
+cp -r "$SCRIPT_DIR"/* ~/
 cp -r .config ~/
+cp -r .icons ~/
+cp -r .Kvantum-themes ~/
+cp -r .themes ~/
+cp -r .local ~/
+cp -r Pictures ~/
 
 # ------------------------------------------------------
 # Check CPU vendor
