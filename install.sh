@@ -737,8 +737,32 @@ sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # -------------------------------            
 # Set the Qogir-dark cursor theme
 # -------------------------------
-xsetroot -cursor_name left_ptr     
- 
+xsetroot -cursor_name left_ptr
+
+# --------------------------------------------------------------------------------------------------------------------------------------------
+echo "please be patient we are doing a last check to see if grub is correctly configured for your hyprland installation with a Nvidia GPU !!!"
+# --------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------
+echo "For safety reason we are now making a backup of grub configuration see etc/default/grub.bak"
+# ------------------------------------------------------------------------------------------------
+cp /etc/default/grub /etc/default/grub.bak
+
+if ! grep -q "nvidia-drm.modeset=1" /etc/default/grub; then
+    # -------------------------------------
+    # Append the option if it's not present
+    # -------------------------------------
+    sed -i 's/GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 nvidia-drm.modeset=1"/' /etc/default/grub
+    
+    # -----------------------------
+    # Regenerate GRUB configuration
+    # -----------------------------
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+    echo "Added nvidia-drm.modeset=1 to GRUB_CMDLINE_LINUX."
+else
+    echo "GRUB_CMDLINE_LINUX already contains nvidia-drm.modeset=1. No changes needed."
+fi
+
 
 echo ""
 echo "DONE!"
