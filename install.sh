@@ -6,6 +6,16 @@
 # Install script version release 1.04
 # ------------------------------------------------------
 
+# ---------------------
+# Set the log file path
+# ---------------------
+log_file="$HOME/installation_log.txt"
+
+# --------------------------------------------------
+# Redirect stdout (1) and stderr (2) to the log file
+# --------------------------------------------------
+exec > >(tee -i "$log_file") 2>&1
+
 # Ensure the script is in the correct directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; exit 1; }
@@ -184,6 +194,7 @@ echo ""
 echo "Please make sure that you run this script from /home/Hyprland-blizz/"
 echo "Backup existing configurations in .config if needed."
 echo ""
+
 
 # ------------------------------------------------------
 # Change to the Hyprland-blizz directory
