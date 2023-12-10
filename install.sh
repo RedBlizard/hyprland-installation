@@ -1,7 +1,9 @@
 #!/bin/bash
 # ------------------------------------------------------
-# developed by RedBlizard November 2023
-# Install script version release 001
+# █▀█ █▀▀ █▀▄ █▄▄ █░░ █ ▀█ ▄▀█ █▀█ █▀▄
+# █▀▄ ██▄ █▄▀ █▄█ █▄▄ █ █▄ █▀█ █▀▄ █▄▀
+# Developed by RedBlizard date 10 December 2023
+# Install script version release 1.04
 # ------------------------------------------------------
 
 # Ensure the script is in the correct directory
@@ -164,7 +166,12 @@ fi
 
 
 echo ""
-echo "WELCOME TO THE HYPRLAND STARTER INSTALLATION SCRIPT"
+echo -e "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█   ▀█▀ █░█ █▀▀   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄ ▄▄ █▄▄ █░░ █ ▀█ ▀█
+         ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   ░█░ █▀█ ██▄   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀ ░░ █▄█ █▄▄ █ █▄ █▄
+
+         █ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░ ▄▀█ ▀█▀ █ █▀█ █▄░█   █▀ █▀▀ █▀█ █ █▀█ ▀█▀
+         █ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄ █▀█ ░█░ █ █▄█ █░▀█   ▄█ █▄▄ █▀▄ █ █▀▀ ░█░"
+
 echo "------------------------------------------------------"
 echo ""
 echo "Please make sure that you run this script from /home/Hyprland-blizz/"
