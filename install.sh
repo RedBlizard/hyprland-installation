@@ -139,7 +139,27 @@ else
     echo "No Nvidia GPU detected. Skipping installation of Nvidia-specific packages."
 fi
 
-# ... (remaining code)
+# ------------------------------------------------------
+# Check bootloader type
+# ------------------------------------------------------
+if [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
+    # ------------------------------------------------------
+    # Bootloader is systemd-boot, modify configuration
+    # ------------------------------------------------------
+    echo "Detected systemd-boot, modifying configuration..."
+
+    # Add nvidia_drm.modeset=1 to the kernel parameters
+    # This is an example, modify it based on your specific requirements
+    sed -i 's/ options / options nvidia_drm.modeset=1 /' /boot/loader/entries/*.conf
+
+    echo "Configuration modified for systemd-boot."
+else
+    # ------------------------------------------------------
+    # Bootloader is not systemd-boot, no action needed
+    # ------------------------------------------------------
+    echo "Bootloader other than systemd-boot detected. No modification needed."
+fi
+
 
 
 
