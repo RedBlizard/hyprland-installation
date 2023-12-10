@@ -524,65 +524,6 @@ else
     fi
 fi
 
-
-
-# ------------------------------------------------------
-# Remove unwanted folders from /usr/share/sddm/themes
-# ------------------------------------------------------
-
-sudo rm -rf /usr/share/sddm/themes/{elarun, maldives, maya} || { echo 'Removal of unwanted folders failed.'; exit 1; }
-
-# ------------------------------------------------------
-# Print debug information
-# ------------------------------------------------------
-echo "Contents of sddm-images directory:"
-ls -la ~/Hyprland-blizz/sddm-images
-
-# ------------------------------------------------------------
-# Copy sddm-images to /usr/share/sddm/themes/simplicity/images
-# ------------------------------------------------------------
-echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
-sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
-
-# -------------------------------------
-# Print debug information after copying
-# -------------------------------------
-echo "Contents of /usr/share/sddm/themes/simplicity/images:"
-ls -la /usr/share/sddm/themes/simplicity/images
-
-
-# ------------------------------------------------------
-# Set SDDM theme
-# ------------------------------------------------------
-sddm_theme="simplicity"
-
-# ------------------------------------------------------
-# Check if SDDM configuration file exists
-# ------------------------------------------------------
-
-sddm_conf="/etc/sddm.conf"
-if [ -f "$sddm_conf" ]; then
-
-    # -------------------------------------
-    # Update or add the theme configuration
-    # -------------------------------------
-    
-    if grep -q "^Current=" "$sddm_conf"; then
-        sudo sed -i "s/^Current=.*/Current=$sddm_theme/" "$sddm_conf"
-    else
-        echo -e "[Theme]\nCurrent=$sddm_theme" | sudo tee -a "$sddm_conf" > /dev/null
-    fi
-    
-    # --------------------------------------------------------------------------
-    # Removed the restart command, as it will be done after the script completes
-    # --------------------------------------------------------------------------
-    
-else
-    echo "Error: $sddm_conf not found. Make sure SDDM is installed."
-    exit 1
-fi
-
-
 # ------------------------------------------------------
 # Check the current Waybar configuration path
 # ------------------------------------------------------
@@ -616,42 +557,95 @@ else
 fi
 
 # ------------------------------------------------------
-# Prompt user to enable SDDM
+# Check if SDDM is installed
+# ------------------------------------------------------
+if command -v sddm &> /dev/null; then
+    # ------------------------------------------------------
+    # SDDM is already installed, copy custom sddm.conf
+    # ------------------------------------------------------
+    sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
+else
+    # ------------------------------------------------------
+    # SDDM is not installed, prompt user to install and enable
+    # ------------------------------------------------------
+
+    echo "just a friendly reminder it is (preferred) that you say yes to SDDM to be enabled keep that in mind!!!"
+
+    read -p "Do you want to enable SDDM? (yes/no): " enable_sddm
+    case $enable_sddm in
+        [Yy]* )
+
+            # -----------------------------
+            # Install and enable SDDM
+            # -----------------------------
+
+            if yay -S --noconfirm sddm; then
+                echo "SDDM installed."
+                sudo systemctl enable sddm
+                echo "SDDM enabled. Continuing with the rest of the script."
+                # Copy custom sddm.conf
+                sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
+            else
+                echo "Failed to install SDDM with yay. Exiting."
+                exit 1
+            fi
+            ;;
+        [Nn]* )
+            echo "SDDM not enabled. You can enable it later by configuring /etc/sddm.conf."
+            echo "Done!";;
+        * )
+            echo "Invalid choice. Please answer yes or no."
+            exit 1;;
+    esac
+fi
+
+# ------------------------------------------------------
+# Set SDDM theme
+# ------------------------------------------------------
+sddm_theme="simplicity"
+
+# Prompt user for confirmation before setting the theme
+read -p "Do you want to set the SDDM theme to $sddm_theme? (yes/no): " set_theme_confirmation
+case $set_theme_confirmation in
+    [Yy]* )
+        sudo kvantummanager --set "$sddm_theme"
+        echo "SDDM theme set to $sddm_theme."
+        ;;
+    [Nn]* )
+        echo "SDDM theme not changed."
+        ;;
+    * )
+        echo "Invalid choice. Please answer yes or no."
+        exit 1
+        ;;
+esac
+
+
+# ------------------------------------------------------
+# Remove unwanted folders from /usr/share/sddm/themes
 # ------------------------------------------------------
 
-echo "just a friendly reminder it is (preferred) that you say yes to SDDM to be enabled keep that in mind!!!"
+sudo rm -rf /usr/share/sddm/themes/{elarun, maldives, maya} || { echo 'Removal of unwanted folders failed.'; exit 1; }
 
-read -p "Do you want to enable SDDM? (yes/no): " enable_sddm
-case $enable_sddm in
-    [Yy]* )
-    
-        # -----------------------------
-        # Check if LightDM is installed
-        # -----------------------------
-        
-        if pacman -Qs "lightdm" &> /dev/null; then
-        
-            # ---------------
-            # Disable LightDM
-            # ---------------
-            
-            sudo systemctl disable lightdm
-            echo "LightDM disabled."
-        fi
-        
-        # -----------
-        # Enable SDDM
-        # -----------
-        
-        sudo systemctl enable sddm
-        echo "SDDM enabled. Continuing with the rest of the script.";;
-    [Nn]* )
-        echo "SDDM not enabled. You can enable it later by configuring /etc/sddm.conf."
-        echo "Done!";;
-    * ) 
-        echo "Invalid choice. Please answer yes or no."
-        exit 1;;
-esac
+# ------------------------------------------------------
+# Print debug information
+# ------------------------------------------------------
+echo "Contents of sddm-images directory:"
+ls -la ~/Hyprland-blizz/sddm-images
+
+# ------------------------------------------------------------
+# Copy sddm-images to /usr/share/sddm/themes/simplicity/images
+# ------------------------------------------------------------
+echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
+sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
+
+# -------------------------------------
+# Print debug information after copying
+# -------------------------------------
+echo "Contents of /usr/share/sddm/themes/simplicity/images:"
+ls -la /usr/share/sddm/themes/simplicity/images
+
+
 
 # ------------------------------------------------------
 # Change qt5ct settings to use Kvantum theme for the user
