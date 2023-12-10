@@ -541,7 +541,8 @@ fi
 
 if command -v geany &> /dev/null; then
     # Set Geany as the default editor
-    sudo update-alternatives --set editor /usr/bin/geany
+    echo "export VISUAL=geany" | sudo tee -a /etc/environment
+    echo "export EDITOR=geany" | sudo tee -a /etc/environment
     echo "Geany set as the default editor."
 else
     echo "Geany is not installed. Installing Geany..."
@@ -550,7 +551,8 @@ else
     # Check if the installation was successful
     if command -v geany &> /dev/null; then
         echo "Geany installed successfully. Setting it as the default editor."
-        sudo update-alternatives --set editor /usr/bin/geany
+        echo "export VISUAL=geany" | sudo tee -a /etc/environment
+        echo "export EDITOR=geany" | sudo tee -a /etc/environment
         echo "Geany set as the default editor."
     else
         echo "Failed to install Geany. Please install it manually and set it as the default editor."
