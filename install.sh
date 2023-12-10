@@ -144,10 +144,18 @@ fi
 # ------------------------------------------------------
 # Check bootloader type
 # ------------------------------------------------------
-if [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
-    # ------------------------------------------------------
+loader_entries="/efi/loader/entries"
+if [ -d "$loader_entries" ] && [ -n "$(ls -A "$loader_entries"/*.conf 2>/dev/null)" ]; then
+    # Systemd-boot detected
+    echo "Systemd-boot is in use."
+
+    # Add nvidia_drm.modeset=1 to the kernel parameters
+    # This is an example, modify it based on your specific requirements
+    sed -i 's/ options / options nvidia_drm.modeset=1 /' $loader_entries/*.conf
+
+    echo "Configuration modified for systemd-boot."
+elif [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
     # Bootloader is systemd-boot, modify configuration
-    # ------------------------------------------------------
     echo "Detected systemd-boot, modifying configuration..."
 
     # Add nvidia_drm.modeset=1 to the kernel parameters
@@ -156,11 +164,10 @@ if [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
 
     echo "Configuration modified for systemd-boot."
 else
-    # ------------------------------------------------------
-    # Bootloader is not systemd-boot, no action needed
-    # ------------------------------------------------------
-    echo "Bootloader other than systemd-boot detected. No modification needed."
+    # No systemd-boot detected, assuming GRUB or another bootloader
+    echo "GRUB or another bootloader may be in use."
 fi
+
 
 
 
