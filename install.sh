@@ -739,9 +739,9 @@ sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # -------------------------------
 xsetroot -cursor_name left_ptr
 
-# --------------------------------------------------------------------------------------------------------------------------------------------
-echo "please be patient we are doing a last check to see if grub is correctly configured for your hyprland installation with a Nvidia GPU !!!"
-# --------------------------------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------------------------------
+echo " please be patient we are doing a last check to see if grub is correctly configured for your hyprland installation with a Nvidia GPU !!!"
+# ---------------------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------
 echo "For safety reason we are now making a backup of grub configuration see etc/default/grub.bak"
 # ------------------------------------------------------------------------------------------------
@@ -758,10 +758,16 @@ if ! grep -q "nvidia-drm.modeset=1" /etc/default/grub; then
     # -----------------------------
     grub-mkconfig -o /boot/grub/grub.cfg
 
+    # -----------------------------------------------------------
+    # Force update GRUB to apply changes (for systems using GRUB)
+    # -----------------------------------------------------------
+    sudo update-grub
+
     echo "Added nvidia-drm.modeset=1 to GRUB_CMDLINE_LINUX."
 else
     echo "GRUB_CMDLINE_LINUX already contains nvidia-drm.modeset=1. No changes needed."
 fi
+
 
 
 echo ""
