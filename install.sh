@@ -738,19 +738,22 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 #Change GTK-Theme for the user
 # ----------------------------
 
-~/gsettings set org.gnome.desktop.interface gtk-theme "Catppuccin-Frappe-Standard-Blue-Dark"
+echo "Setting GTK theme..."
+/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # -----------------------------------------
 #Change the default Icon-Theme for the user
 # -----------------------------------------
 
-~/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+echo "Setting icon theme..."
+/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 
 # -------------------------------
 #Change Window-Theme for the user
 # -------------------------------
 
-~/gsettings set org.gnome.desktop.wm.preferences theme "Catppuccin-Frappe-Standard-Blue-Dark"
+echo "Setting icon theme..."
+/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
