@@ -104,16 +104,16 @@ echo "Don't worry, we need to check a few things before we can start the Hyprlan
 # ---------------------------------------------------------------------
 
 # Trim whitespaces from the CPU vendor
-cpu_vendor=$(lscpu | grep -i "vendor" | awk '{print $2}' | awk '{$1=$1};1')
+cpu_info=$(lscpu)
 
-# Debug print to check CPU vendor
-echo "CPU Vendor: $cpu_vendor"
+# Debug print to check CPU info
+echo "CPU Info: $cpu_info"
 
 if [ "$cpu_vendor" == "AuthenticAMD" ]; then
     echo "AMD CPU detected. Running AMD-specific code..."
 
     # Check if amd-ucode is installed
-    if pacman -Qi amd-ucode &> /dev/null; then
+    if echo "$cpu_info" | grep -qi "AuthenticAMD"; then
         echo "amd-ucode is installed."
         # Add your AMD-specific code here
     else
@@ -123,7 +123,6 @@ if [ "$cpu_vendor" == "AuthenticAMD" ]; then
 else
     echo "Not an AMD CPU. Skipping AMD-specific code."
 fi
-
 
 
 # -------------------------------------------------------------------
