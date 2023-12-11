@@ -97,34 +97,60 @@ cp -r .themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
-# ------------------------------------------------------
-# Check CPU vendor
-# ------------------------------------------------------
-
 echo "Don't worry, we need to check a few things before we can start the Hyprland installation..."
-cpu_vendor=$(lscpu | grep -i "vendor" | awk '{print $2}')
 
 # ---------------------------------------------------------------------
 # Check CPU vendor and execute AMD-specific code if AMD CPU is detected
 # ---------------------------------------------------------------------
 
+# Trim whitespaces from the CPU vendor
+cpu_vendor=$(lscpu | grep -i "vendor" | awk '{print $2}' | awk '{$1=$1};1')
+
+# Debug print to check CPU vendor
+echo "CPU Vendor: $cpu_vendor"
+
 if [ "$cpu_vendor" == "AuthenticAMD" ]; then
     echo "AMD CPU detected. Running AMD-specific code..."
+
+    # Check if amd-ucode is installed
+    if pacman -Qi amd-ucode &> /dev/null; then
+        echo "amd-ucode is installed."
+        # Add your AMD-specific code here
+    else
+        echo "amd-ucode is not installed. Please install it for optimal performance."
+        # Add code to install amd-ucode if desired
+    fi
 else
     echo "Not an AMD CPU. Skipping AMD-specific code."
 fi
+
+
 
 # -------------------------------------------------------------------
 # Check CPU vendor and execute INTEL-specific code if CPU is detected
 # -------------------------------------------------------------------
 
+# Trim whitespaces from the CPU vendor
+cpu_vendor=$(lscpu | grep -i "vendor" | awk '{print $2}' | awk '{$1=$1};1')
+
+# Debug print to check CPU vendor
+echo "CPU Vendor: $cpu_vendor"
+
 if [ "$cpu_vendor" == "GenuineIntel" ]; then
     echo "INTEL CPU detected. Running INTEL-specific code..."
+    
+    # Check if intel-ucode is installed
+    if pacman -Qi intel-ucode &> /dev/null; then
+        echo "intel-ucode is installed."
+        # Add your INTEL-specific code here
+    else
+        echo "intel-ucode is not installed. Please install it for optimal performance."
+        # Add code to install intel-ucode if desired
+    fi
 else
     echo "Not an INTEL CPU. Skipping INTEL-specific code."
 fi
 
-# ... (previous code)
 
 # ------------------------------------------------------
 # Check if Nvidia GPU is present
@@ -445,32 +471,38 @@ echo "Script execution completed."
                 sudo pacman -Sy --noconfirm fish || { echo 'Installation of Fish failed.'; exit 1; }
             fi
 
-            # ---------------------
-            # Find the path to Fish
-            # ---------------------
-            
-            fish_path=$(command -v fish)
+            # ------------------------------------------------------
+            # Change user shell to Fish (optional)
+            # ------------------------------------------------------
 
-            # -------------------------
-            # Change user shell to Fish
-            # -------------------------
-            
-            if sudo chsh -s "$fish_path" "$USER"; then
-                echo "Shell changed to Fish successfully for the user."
+            read -p "Do you want to switch your shell to Fish? (y/n): " switch_user_shell
+
+            if [ "$switch_user_shell" == "y" ]; then
+            if chsh -s "/usr/bin/fish"; then
+            echo "Shell changed to Fish successfully for the user."
             else
-                echo "Changing shell to Fish failed for the user." >&2
-                exit 1
+            echo "Changing shell to Fish failed for the user." >&2
+            exit 1
+            fi
+            else
+            echo "User shell remains unchanged."
             fi
 
-            # ------------------------------------------------------  
-            # Change root shell to Fish
             # ------------------------------------------------------
-            
-            if sudo chsh -s "$fish_path" root; then
-                echo "Shell changed to Fish successfully for the root user."
+            # Change root shell to Fish (optional)
+            # ------------------------------------------------------
+
+            read -p "Do you want to switch the root shell to Fish? (y/n): " switch_root_shell
+
+            if [ "$switch_root_shell" == "y" ]; then
+            if sudo chsh -s "/usr/bin/fish" root; then
+            echo "Shell changed to Fish successfully for the root user."
             else
-                echo "Changing shell to Fish failed for the root user." >&2
-                exit 1
+            echo "Changing shell to Fish failed for the root user." >&2
+            exit 1
+            fi
+            else
+            echo "Root shell remains unchanged."
             fi
 
             # ------------------------------------
