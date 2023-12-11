@@ -3,7 +3,7 @@
 # █▀█ █▀▀ █▀▄ █▄▄ █░░ █ ▀█ ▄▀█ █▀█ █▀▄
 # █▀▄ ██▄ █▄▀ █▄█ █▄▄ █ █▄ █▀█ █▀▄ █▄▀
 # ------------------------------------
-echo "Install script version release 1.04"
+echo "Install script version release 1.07"
 echo "Developed by RedBlizard date 10 December 2023"
 
 
@@ -836,23 +836,18 @@ rm $HOME/sddm.conf
 
 echo -e "${green}"
 cat <<"EOF"
-█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀
-▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄
-
-
-▀█▀ █▀█   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄
-░█░ █▄█   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀
-
+█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀  ▀█▀ █▀█   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄
+▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄  ░█░ █▄█   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀
 EOF
 echo -e "${NONE}"
 
 echo   "Your system is now configured with Hyprland."
 
+
 echo -e "${green}"
 cat <<"EOF"
 ▄▀█ █░░ █░░   █░█ █▀ █▀▀ █▀█ █▀   █▀ █▀▀ ▀█▀   █▄█ █▀█ █░█ █▀█   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄░█ █▀▀ █▀
 █▀█ █▄▄ █▄▄   █▄█ ▄█ ██▄ █▀▄ ▄█   ▄█ ██▄ ░█░   ░█░ █▄█ █▄█ █▀▄   ▄█ ██▄ ░█░ ░█░ █ █░▀█ █▄█ ▄█
-
 EOF
 echo -e "${NONE}"         
 
@@ -869,7 +864,6 @@ cat <<"EOF"
 
 echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS PAY ATTENTION BY DEFAULT THE NVIDIA ENV RULES HAVE A COMMENT IN FRONT OF EACH LINE YOU NEED TO REMOVE THE COMMENT (#)"
 echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT (#) IN FRONT OF THE FOLLOWING LINE env=WLR_NO_HARDWARE_CURSORS=1 !!!"
-
 EOF
 echo -e "${none}"
 
