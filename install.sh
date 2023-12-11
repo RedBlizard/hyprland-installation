@@ -120,11 +120,7 @@ if [ "$cpu_vendor" == "AuthenticAMD" ]; then
         echo "amd-ucode is not installed. Please install it for optimal performance."
         # Add code to install amd-ucode if desired
     fi
-else
-    # Don't display the message for non-AMD CPUs
-    echo "Not an AMD CPU. Skipping AMD-specific code."
 fi
-
 
 # -------------------------------------------------------------------
 # Check CPU vendor and execute INTEL-specific code if CPU is detected
@@ -133,7 +129,6 @@ fi
 if [ "$cpu_vendor" == "GenuineIntel" ]; then
     echo "INTEL CPU detected. Running INTEL-specific code..."
 
-    
     # Check if intel-ucode is installed
     if pacman -Qi intel-ucode &> /dev/null; then
         echo "intel-ucode is installed."
@@ -142,10 +137,8 @@ if [ "$cpu_vendor" == "GenuineIntel" ]; then
         echo "intel-ucode is not installed. Please install it for optimal performance."
         # Add code to install intel-ucode if desired
     fi
-else
-    # Don't display the message for non-INTEL CPUs
-    echo "Not an INTEL CPU. Skipping INTEL-specific code."
 fi
+
 
 
 # ------------------------------------------------------
