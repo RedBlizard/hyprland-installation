@@ -846,13 +846,35 @@ cat <<"EOF"
 EOF
 echo -e "${NONE}"
 
-echo   "Your system is now configured with Hyprland."         
+echo   "Your system is now configured with Hyprland."
+
+echo -e "${green}"
+cat <<"EOF"
+▄▀█ █░░ █░░   █░█ █▀ █▀▀ █▀█ █▀   █▀ █▀▀ ▀█▀   █▄█ █▀█ █░█ █▀█   █▀ █▀▀ ▀█▀ ▀█▀ █ █▄░█ █▀▀ █▀
+█▀█ █▄▄ █▄▄   █▄█ ▄█ ██▄ █▀▄ ▄█   ▄█ ██▄ ░█░   ░█░ █▄█ █▄█ █▀▄   ▄█ ██▄ ░█░ ░█░ █ █░▀█ █▄█ ▄█
+
+EOF
+echo -e "${NONE}"         
 
 echo ""
-echo "DONE!"
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
 echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the outputs if needed."
 echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the network device see the traffic module!!!"
+echo ""
+
+echo -e "${green}"
+cat <<"EOF"
+█▄░█ █░█ █ █▀▄ █ ▄▀█   █░█ █▀ █▀▀ █▀█ █▀
+█░▀█ ▀▄▀ █ █▄▀ █ █▀█   █▄█ ▄█ ██▄ █▀▄ ▄█
+
+echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS PAY ATTENTION BY DEFAULT THE NVIDIA ENV RULES HAVE A COMMENT IN FRONT OF EACH LINE YOU NEED TO REMOVE THE COMMENT (#)"
+echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT (#) IN FRONT OF THE FOLLOWING LINE env=WLR_NO_HARDWARE_CURSORS=1 !!!"
+
+EOF
+echo -e "${none}"
+
+echo ""
 # Now you are fully ready and can reboot your system / if you encounter any problems related to the configuration get in contact with RedBlizard
+echo "DONE!"
 echo "Then reboot your system!"
 
