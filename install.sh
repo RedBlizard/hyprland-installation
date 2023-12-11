@@ -99,19 +99,20 @@ cp -r Pictures ~/
 
 echo "Don't worry, we need to check a few things before we can start the Hyprland installation..."
 
-# ---------------------------------------------------------------------
-# Check CPU vendor and execute AMD-specific code if AMD CPU is detected
-# ---------------------------------------------------------------------
-
 # Trim whitespaces from the CPU vendor
 cpu_info=$(lscpu)
 
 # Debug print to check CPU info
 echo "CPU Info: $cpu_info"
 
+# Extract the CPU vendor
+cpu_vendor=$(echo "$cpu_info" | grep -i "vendor" | awk '{print $2}')
+
+# Debug print to check CPU vendor
+echo "CPU Vendor: $cpu_vendor"
+
 if [ "$cpu_vendor" == "AuthenticAMD" ]; then
     echo "AMD CPU detected. Running AMD-specific code..."
-
     # Check if amd-ucode is installed
     if echo "$cpu_info" | grep -qi "AuthenticAMD"; then
         echo "amd-ucode is installed."
@@ -121,8 +122,9 @@ if [ "$cpu_vendor" == "AuthenticAMD" ]; then
         # Add code to install amd-ucode if desired
     fi
 else
-    echo "Not an AMD CPU. Skipping AMD-specific code."
+    echo "AMD CPU detected. Skipping AMD-specific code."
 fi
+
 
 
 # -------------------------------------------------------------------
