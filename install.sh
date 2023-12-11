@@ -179,17 +179,10 @@ else
 fi
 
 
-
-
-
-echo ""
-echo -e "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█   ▀█▀ █░█ █▀▀   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄ ▄▄ █▄▄ █░░ █ ▀█ ▀█
-         ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   ░█░ █▀█ ██▄   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀ ░░ █▄█ █▄▄ █ █▄ █▄
-
-         █ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░ ▄▀█ ▀█▀ █ █▀█ █▄░█   █▀ █▀▀ █▀█ █ █▀█ ▀█▀
-         █ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄ █▀█ ░█░ █ █▄█ █░▀█   ▄█ █▄▄ █▀▄ █ █▀▀ ░█░"
-
-echo "------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------"
+echo -e "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄ ▄▄ █▄▄ █░░ █ ▀█ ▀█
+         ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀ ░░ █▄█ █▄▄ █ █▄ █▄"
+echo "--------------------------------------------------------------------------------------------------"
 echo ""
 echo "Please make sure that you run this script from /home/Hyprland-blizz/"
 echo "Backup existing configurations in .config if needed."
@@ -739,35 +732,35 @@ sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # -------------------------------
 xsetroot -cursor_name left_ptr
 
+
 # ---------------------------------------------------------------------------------------------------------------------------------------------
-echo " please be patient we are doing a last check to see if grub is correctly configured for your hyprland installation with a Nvidia GPU !!!"
+echo "Please be patient; we are doing a last check to see if GRUB is correctly configured for your hyprland installation with an NVIDIA GPU."
 # ---------------------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------
-echo "For safety reason we are now making a backup of grub configuration see etc/default/grub.bak"
+echo "For safety reasons, we are now making a backup of the GRUB configuration. See /etc/default/grub.bak"
 # ------------------------------------------------------------------------------------------------
-cp /etc/default/grub /etc/default/grub.bak
+sudo cp /etc/default/grub /etc/default/grub.bak
 
-if ! grep -q "nvidia-drm.modeset=1" /etc/default/grub; then
-    # -------------------------------------
-    # Append the option if it's not present
-    # -------------------------------------
-    sed -i 's/GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 nvidia-drm.modeset=1"/' /etc/default/grub
-    
-    # -----------------------------
-    # Regenerate GRUB configuration
-    # -----------------------------
-    grub-mkconfig -o /boot/grub/grub.cfg
+# Check if the system has an NVIDIA GPU before attempting any changes
+if lspci | grep -i "NVIDIA" > /dev/null; then
+    # Check if the nvidia-drm.modeset=1 option is present in GRUB_CMDLINE_LINUX
+    if ! grep -q "nvidia-drm.modeset=1" /etc/default/grub; then
+        # Append the option if it's not present
+        sudo sed -i 's/GRUB_CMDLINE_LINUX="\(.*\)"/GRUB_CMDLINE_LINUX="\1 nvidia-drm.modeset=1"/' /etc/default/grub
 
-    # -----------------------------------------------------------
-    # Force update GRUB to apply changes (for systems using GRUB)
-    # -----------------------------------------------------------
-    sudo update-grub
+        # Regenerate GRUB configuration
+        sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-    echo "Added nvidia-drm.modeset=1 to GRUB_CMDLINE_LINUX."
+        echo "Added nvidia-drm.modeset=1 to GRUB_CMDLINE_LINUX."
+
+        # Update GRUB only if changes are made
+        sudo update-grub
+    else
+        echo "GRUB_CMDLINE_LINUX already contains nvidia-drm.modeset=1. No changes needed."
+    fi
 else
-    echo "GRUB_CMDLINE_LINUX already contains nvidia-drm.modeset=1. No changes needed."
+    echo "No NVIDIA GPU detected. No changes needed for GRUB configuration."
 fi
-
 
 
 echo ""
