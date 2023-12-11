@@ -179,13 +179,25 @@ else
 fi
 
 
-echo "--------------------------------------------------------------------------------------------------"
-echo -e "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄ ▄▄ █▄▄ █░░ █ ▀█ ▀█
-         ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀ ░░ █▄█ █▄▄ █ █▄ █▄"
-echo "--------------------------------------------------------------------------------------------------"
 echo ""
-echo "Please make sure that you run this script from /home/Hyprland-blizz/"
-echo "Backup existing configurations in .config if needed."
+echo -e     "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█
+             ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█"
+echo ""
+echo ""
+echo -e                   "▀█▀ █░█ █▀▀
+                           ░█░ █▀█ ██▄"
+echo ""
+echo ""
+echo -e "█░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄ ▄▄ █▄▄ █░░ █ ▀█ ▀█
+         █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀ ░░ █▄█ █▄▄ █ █▄ █▄"
+echo ""
+echo ""
+echo -e        "█ █▄░█ █▀ ▀█▀ ▄▀█ █░░ █░░ █▀▀ █▀█
+                █ █░▀█ ▄█ ░█░ █▀█ █▄▄ █▄▄ ██▄ █▀▄"
+echo ""
+
+echo ""
+echo "   Please Backup existing configurations in if needed !!"
 echo ""
 
 
@@ -763,10 +775,33 @@ else
 fi
 
 
+# Clean up
+# -------------------------------------
+echo "Cleaning up installation files."
+# -------------------------------------
+rm -rf $HOME/hyprland-installation
+rm -rf $HOME/hyprland-blizz
+rm $HOME/README.md
+rm -rf $HOME/sddm-images
+rm $HOME/packages-repository.txt
+rm $HOME/install.sh
+rm $HOME/sddm.conf
+
+echo ""
+echo -e "█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀
+         ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄"
+echo ""
+echo ""
+echo -e "▀█▀ █▀█   █░█ █▄█ █▀█ █▀█ █░░ ▄▀█ █▄░█ █▀▄
+         ░█░ █▄█   █▀█ ░█░ █▀▀ █▀▄ █▄▄ █▀█ █░▀█ █▄▀"
+echo ""
+
+echo   "Your system is now configured with Hyprland."         
+
 echo ""
 echo "DONE!"
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
-echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the outputs."
+echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the outputs if needed."
 echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the network device see the traffic module!!!"
 # Now you are fully ready and can reboot your system / if you encounter any problems related to the configuration get in contact with RedBlizard
 echo "Then reboot your system!"
