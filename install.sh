@@ -197,7 +197,7 @@ echo -e        "█ █▄░█ █▀ ▀█▀ ▄▀█ █░░�
 echo ""
 
 echo ""
-echo "   Please Backup existing configurations in if needed !!"
+echo "   Please Backup existing configurations if needed !!"
 echo ""
 
 
