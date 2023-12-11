@@ -105,14 +105,13 @@ cpu_info=$(lscpu)
 # Debug print to check CPU info
 echo "CPU Info: $cpu_info"
 
-# Extract the CPU vendor
-cpu_vendor=$(echo "$cpu_info" | grep -i "vendor" | awk '{print $2}')
-
-# Debug print to check CPU vendor
-echo "CPU Vendor: $cpu_vendor"
+# ---------------------------------------------------------------------
+# Check CPU vendor and execute AMD-specific code if AMD CPU is detected
+# ---------------------------------------------------------------------
 
 if [ "$cpu_vendor" == "AuthenticAMD" ]; then
     echo "AMD CPU detected. Running AMD-specific code..."
+
     # Check if amd-ucode is installed
     if echo "$cpu_info" | grep -qi "AuthenticAMD"; then
         echo "amd-ucode is installed."
@@ -122,23 +121,18 @@ if [ "$cpu_vendor" == "AuthenticAMD" ]; then
         # Add code to install amd-ucode if desired
     fi
 else
-    echo "AMD CPU detected. Skipping AMD-specific code."
+    # Don't display the message for non-AMD CPUs
+    echo "Not an AMD CPU. Skipping AMD-specific code."
 fi
-
 
 
 # -------------------------------------------------------------------
 # Check CPU vendor and execute INTEL-specific code if CPU is detected
 # -------------------------------------------------------------------
 
-# Trim whitespaces from the CPU vendor
-cpu_vendor=$(lscpu | grep -i "vendor" | awk '{print $2}' | awk '{$1=$1};1')
-
-# Debug print to check CPU vendor
-echo "CPU Vendor: $cpu_vendor"
-
 if [ "$cpu_vendor" == "GenuineIntel" ]; then
     echo "INTEL CPU detected. Running INTEL-specific code..."
+
     
     # Check if intel-ucode is installed
     if pacman -Qi intel-ucode &> /dev/null; then
@@ -149,6 +143,7 @@ if [ "$cpu_vendor" == "GenuineIntel" ]; then
         # Add code to install intel-ucode if desired
     fi
 else
+    # Don't display the message for non-INTEL CPUs
     echo "Not an INTEL CPU. Skipping INTEL-specific code."
 fi
 
