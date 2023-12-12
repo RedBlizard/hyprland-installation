@@ -370,11 +370,6 @@ else
     echo "GNOME desktop environment not detected. Skipping removal and installation of sddm."
 fi
 
-
-# ------------------------------------------------------
-# Check if SDDM configuration file exists
-# ------------------------------------------------------
-
 # ---------------------------------------
 # Check if SDDM configuration file exists
 # ---------------------------------------
