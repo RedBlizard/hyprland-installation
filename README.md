@@ -9,4 +9,4 @@ https://hyprland.org/
 
 ## This repo is still work in progress, its still not official  released and under initial development.
 
-## For the moment please do not use the install script until i say so !
+## So if you run the script always remember to make a solid backup !
