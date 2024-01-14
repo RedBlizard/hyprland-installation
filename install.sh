@@ -442,8 +442,8 @@ echo "Script execution completed."
             # Install Nerd Fonts from Arch repositories
             # ----------------------------------------------------------------------------------------
             
-            echo "Please see yess to all the fonts (enter) is for all  these are needed for nvim !..."
-            sudo pacman -S nerd-fonts
+            #echo "Please see yess to all the fonts (enter) is for all  these are needed for nvim !..."
+            #sudo pacman -S nerd-fonts
                  
 
             # ------------------------------------------------------  
