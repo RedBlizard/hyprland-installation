@@ -77,7 +77,7 @@ starship
 swappy
 swaybg
 swayidle
-swaylock-effects-git
+swaylock-effects
 swww
 thunar
 thunar-archive-plugin
