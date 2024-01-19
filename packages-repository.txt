@@ -64,7 +64,6 @@ pavucontrol
 pipes.sh
 polkit-gnome
 pulsemixer
-otf-font-awesome
 qt5ct
 s-tui
 sddm
@@ -85,7 +84,6 @@ thunar-volman
 tldr
 ttf-bitstream-vera
 ttf-dejavu
-ttf-font-awesome
 ttf-liberation
 ttf-opensans
 tty-clock
