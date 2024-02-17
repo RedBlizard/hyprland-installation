@@ -597,38 +597,6 @@ else
 fi
 
 # ------------------------------------------------------
-# Check the current Waybar configuration path
-# ------------------------------------------------------
-
-CURRENT_CONFIG=$(readlink -f ~/.config/waybar/config.jsonc)
-
-# ----------------------------------------------------------
-# Define the paths for the desktop and laptop configurations
-# ----------------------------------------------------------
-
-DESKTOP_CONFIG_PATH=~/.config/waybar/conf/w1-config-desktop.jsonc
-LAPTOP_CONFIG_PATH=~/.config/waybar/conf/w2-config-laptop.jsonc
-
-# --------------------------------------------------
-# Define the paths for the desktop and laptop styles
-# --------------------------------------------------
-
-DESKTOP_STYLE_PATH=~/.config/waybar/style/w1-style.css
-LAPTOP_STYLE_PATH=~/.config/waybar/style/w2-style.css
-
-# ----------------------------------------------------------
-# Check the current configuration and switch to the opposite
-# ----------------------------------------------------------
-
-if [ "$CURRENT_CONFIG" = "$DESKTOP_CONFIG_PATH" ]; then
-    ln -sf "$LAPTOP_CONFIG_PATH" ~/.config/waybar/config.jsonc
-    ln -sf "$LAPTOP_STYLE_PATH" ~/.config/waybar/style.css
-else
-    ln -sf "$DESKTOP_CONFIG_PATH" ~/.config/waybar/config.jsonc
-    ln -sf "$DESKTOP_STYLE_PATH" ~/.config/waybar/style.css
-fi
-
-# ------------------------------------------------------
 # Check if SDDM is installed
 # ------------------------------------------------------
 if command -v sddm &> /dev/null; then
@@ -848,8 +816,6 @@ echo -e "${NONE}"
 
 echo ""
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
-echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the outputs if needed."
-echo "Open ~/.config/waybar/conf/w1-config-desktop.jsonc and ~/.config/waybar/conf/w2-config-laptop.jsonc and edit the network device see the traffic module!!!"
 echo ""
 
 echo -e "${green}"
