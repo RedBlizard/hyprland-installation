@@ -194,6 +194,18 @@ else
     echo "GRUB or another bootloader may be in use."
 fi
 
+# ------------------------------------------------------
+# Check if kvantum is already installed or not
+# ------------------------------------------------------
+
+if ! command -v kvantummanager &> /dev/null; then
+    echo "Kvantum is not installed. Proceeding with installation..."
+    # Your installation commands for Kvantum go here
+else
+    echo "Kvantum is already installed. Skipping installation..."
+fi
+
+
 echo -e "${GREEN}"
 cat <<"EOF"
 █░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█
@@ -710,13 +722,6 @@ echo "export QT_STYLE_OVERRIDE=kvantum-dark" | sudo tee -a /etc/environment || {
 
   
 echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root to!!"
-
-# ------------------------------------------------------
-# Use kvantummanager to set the theme
-# ------------------------------------------------------
-
-sudo kvantummanager --set Catppuccin-Frappe-Blue
-
 
 # ----------------------------
 #Change GTK-Theme for the user
