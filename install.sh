@@ -801,8 +801,11 @@ fi
 # -------------------------------------
 echo "Cleaning up installation files."
 # -------------------------------------
+# Forcefully remove the directory
+rm -rf "$HOME/hyprland-blizz"
+echo "hyprland-blizz directory removed."
+
 rm -rf $HOME/hyprland-installation
-rm -rf $HOME/hyprland-blizz
 rm $HOME/README.md
 rm -rf $HOME/sddm-images
 rm $HOME/packages-repository.txt
