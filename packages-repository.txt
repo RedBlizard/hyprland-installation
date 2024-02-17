@@ -1,110 +1,93 @@
-amd-ucode
-adobe-base-14-fonts
-arandr
-arc-gtk-theme-eos
-awesome-terminal-fonts
-azote
-bash-completion
-bash-language-server
-bluez
-bluez-utils
-brave-bin
-breeze-icons
-btop
-btrfs-assistant
-btrfsmaintenance
-cantarell-fonts
-dmenu
-dolphin
-dolphin-plugins
-duf
-dunst
-ffmpegthumbnailer
-file-roller
-firewalld
-fish
-fsarchiver
-galculator
-glances
-geany
-geany-plugins
-gparted
-git
-grsync
-grim
-gsettings-qt
-slurp
-grub-btrfs
-grub-hook
-htop
-hyprland
-hyprpicker
-hyprshot
-inotify-tools
-intel-ucode
-kate
-kde-servicemenus-rootactions
-kitty
-konsole
-kvantum
-lua-language-server
-meld
-mpv
-neofetch
-neovim
-networkmanager-dmenu-bluetoothfix-git
-numlockx
-nwg-displays
-nwg-look-bin
-otf-font-awesome
-pacseek
-papirus-folders-catppuccin-git
-papirus-icon-theme
-pavucontrol
-pipes.sh
-polkit-gnome
-pulsemixer
-qt5ct
-s-tui
-sddm
-sddm-config-editor-git
-simplicity-sddm-theme-git
-snap-pac
-snapper
-snapper-rollback
-starship
-swappy
-swaybg
-swayidle
-swaylock
-swww
-thunar
-thunar-archive-plugin
-thunar-volman
-tldr
-ttf-bitstream-vera
-ttf-dejavu
-ttf-liberation
-ttf-opensans
-tty-clock
-unimatrix-git
-unrar
-unzip
-update-grub
-vi
-vscode-json-languageserver
-waybar
-wireplumber
-wlogout
-wlr-randr
-wofi
-xbindkeys
-xdg-desktop-portal-hyprland
-xorg-xsetroot
-xorg-bdftopcf
-xorg-font-util
-xorg-mkfontscale
-xorg-xhost
-xterm
-yay
-
+    alacritty
+    azote
+    btop    
+    htop    
+    bash-completion
+    bash-language-server
+    brave-bin
+    breeze-icons
+    btrfs-assistant
+    btrfsmaintenance
+    cava
+    cantarell-fonts
+    dolphin
+    dolphin-plugins
+    duf
+    dunst
+    fish
+    galculator
+    glances
+    geany
+    geany-plugins
+    gparted
+    grim
+    grimblast-git
+    grub-btrfs
+    grub-hook
+    update-grub
+    tty-clock
+    unimatrix-git
+    vscode-json-languageserver
+    git
+    grsync
+    wofi
+    waybar
+    neofetch
+    neovim
+    network-manager-applet
+    networkmanager-dmenu-bluetoothfix-git
+    pacseek
+    pavucontrol
+    papirus-folders-catppuccin-git
+    papirus-icon-theme
+    pipes.sh
+    swaylock
+    swaybg   
+    nwg-look      
+    swayidle
+    hyprland
+    hyprpicker
+    hyprshot
+    inotify-tools
+    wlogout-git
+    swww
+    kde-servicemenus-rootactions
+    kitty
+    kvantum    
+    konsole
+    lua-language-server
+    qt5ct
+    thunar
+    thunar-archive-plugin
+    thunar-volman
+    tldr
+    adobe-base-14-fonts
+    ttf-noto-nerd
+    ttf-nerd-fonts-symbols-mono
+    ttf-font-awesome
+    awesome-terminal-fonts
+    ttf-bitstream-vera
+    ttf-dejavu
+    ttf-liberation
+    noto-fonts-extra
+    ttf-opensans
+    snap-pac
+    snapper
+    snapper-rollback
+    sddm
+    sddm-config-editor-git
+    simplicity-sddm-theme-git
+    eos-sddm-theme
+    xdg-desktop-portal-hyprland
+    xed
+    mpv
+    wlr-randr
+    xdg-desktop-portal
+    xdg-desktop-portal-hyprland
+    xorg-xsetroot
+    xorg-bdftopcf
+    xorg-font-util
+    xorg-mkfontscale
+    xorg-xhost
+    yay
+    
