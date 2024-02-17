@@ -660,7 +660,13 @@ sddm_theme="simplicity"
 read -p "Do you want to set the SDDM theme to $sddm_theme? (yes/no): " set_theme_confirmation
 case $set_theme_confirmation in
     [Yy]* )
-        sudo kvantummanager --set "$sddm_theme"
+        if ! command -v sddm &> /dev/null; then
+            echo "SDDM is not installed. The SDDM theme cannot be set."
+            exit 1
+        fi
+
+        # Modify the SDDM configuration file to set the theme
+        sudo sed -i "s/^Current=.*/Current=$sddm_theme/" /etc/sddm.conf
         echo "SDDM theme set to $sddm_theme."
         ;;
     [Nn]* )
@@ -671,6 +677,7 @@ case $set_theme_confirmation in
         exit 1
         ;;
 esac
+
 
 
 # ------------------------------------------------------
