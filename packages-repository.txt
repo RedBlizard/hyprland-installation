@@ -1,4 +1,5 @@
     alacritty
+    ark
     azote
     btop    
     htop    
