@@ -11,6 +11,7 @@
     btrfsmaintenance
     cava
     cantarell-fonts
+    cliphist
     dolphin
     dolphin-plugins
     duf
@@ -42,6 +43,7 @@
     papirus-folders-catppuccin-git
     papirus-icon-theme
     pipes.sh
+    polkit-gnome
     swaylock
     swaybg   
     nwg-look      
