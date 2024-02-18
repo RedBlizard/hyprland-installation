@@ -608,31 +608,23 @@ else
     fi
 fi
 
-# Check if LightDM is installed
+# Check if LightDM is installed and disable it if found
 if command -v lightdm &> /dev/null; then
-    # LightDM is installed, disable it
     echo "Disabling LightDM..."
     sudo systemctl disable lightdm
     echo "LightDM disabled."
 fi
 
 # Check if SDDM is installed
-if command -v sddm &> /dev/null; then
-    # SDDM is already installed, copy custom sddm.conf
-    sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
-else
+if ! command -v sddm &> /dev/null; then
     # SDDM is not installed, prompt user to install and enable
     echo "Just a friendly reminder: it is preferred to enable SDDM. Keep that in mind!"
     read -p "Do you want to enable SDDM? (Yy/Nn): " enable_sddm
     case $enable_sddm in
         [Yy]* )
-            # Install and enable SDDM
+            # Install SDDM
             if yay -S --noconfirm sddm; then
                 echo "SDDM installed."
-                sudo systemctl enable sddm
-                echo "SDDM enabled. Continuing with the rest of the script."
-                # Copy custom sddm.conf
-                sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
             else
                 echo "Failed to install SDDM with yay. Exiting."
                 exit 1
@@ -640,12 +632,24 @@ else
             ;;
         [Nn]* )
             echo "SDDM not enabled. You can enable it later by configuring /etc/sddm.conf."
-            echo "Done!";;
+            echo "Done!"
+            exit 0
+            ;;
         * )
             echo "Invalid choice. Please answer yes or no."
-            exit 1;;
+            exit 1
+            ;;
     esac
 fi
+
+# Enable SDDM
+echo "Enabling SDDM..."
+sudo systemctl enable sddm
+echo "SDDM enabled. Continuing with the rest of the script."
+
+# Copy custom sddm.conf
+sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
+
 
 # ------------------------------------------------------
 # Set SDDM theme
