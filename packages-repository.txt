@@ -45,7 +45,8 @@
     pipes.sh
     polkit-gnome
     swaylock
-    swaybg   
+    swaybg
+    starship
     nwg-look      
     swayidle
     hyprland
