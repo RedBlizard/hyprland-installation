@@ -730,6 +730,12 @@ echo "export QT_STYLE_OVERRIDE=kvantum-dark" | sudo tee -a /etc/environment || {
   
 echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root to!!"
 
+# ------------------------------------------------------
+# Use kvantummanager to set the theme
+# ------------------------------------------------------
+
+sudo kvantummanager --set Catppuccin-Frappe-Blue
+
 # ----------------------------
 #Change GTK-Theme for the user
 # ----------------------------
