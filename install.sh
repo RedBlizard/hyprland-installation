@@ -608,29 +608,25 @@ else
     fi
 fi
 
-# ------------------------------------------------------
+# Check if LightDM is installed
+if command -v lightdm &> /dev/null; then
+    # LightDM is installed, disable it
+    echo "Disabling LightDM..."
+    sudo systemctl disable lightdm
+    echo "LightDM disabled."
+fi
+
 # Check if SDDM is installed
-# ------------------------------------------------------
 if command -v sddm &> /dev/null; then
-    # ------------------------------------------------------
     # SDDM is already installed, copy custom sddm.conf
-    # ------------------------------------------------------
     sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
 else
-    # ------------------------------------------------------
     # SDDM is not installed, prompt user to install and enable
-    # ------------------------------------------------------
-
-    echo "just a friendly reminder it is (preferred) that you say yes to SDDM to be enabled keep that in mind!!!"
-
+    echo "Just a friendly reminder: it is preferred to enable SDDM. Keep that in mind!"
     read -p "Do you want to enable SDDM? (Yy/Nn): " enable_sddm
     case $enable_sddm in
         [Yy]* )
-
-            # -----------------------------
             # Install and enable SDDM
-            # -----------------------------
-
             if yay -S --noconfirm sddm; then
                 echo "SDDM installed."
                 sudo systemctl enable sddm
