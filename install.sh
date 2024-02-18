@@ -657,7 +657,7 @@ sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm
 sddm_theme="simplicity"
 
 # Prompt user for confirmation before setting the theme
-read -p "Do you want to set the SDDM theme to $sddm_theme? (yes/no): " set_theme_confirmation
+read -p "Do you want to set the SDDM theme to $sddm_theme? (Yy/Nn): " set_theme_confirmation
 case $set_theme_confirmation in
     [Yy]* )
         if ! command -v sddm &> /dev/null; then
