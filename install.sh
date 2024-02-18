@@ -623,7 +623,7 @@ else
 
     echo "just a friendly reminder it is (preferred) that you say yes to SDDM to be enabled keep that in mind!!!"
 
-    read -p "Do you want to enable SDDM? (yes/no): " enable_sddm
+    read -p "Do you want to enable SDDM? (Yy/Nn): " enable_sddm
     case $enable_sddm in
         [Yy]* )
 
