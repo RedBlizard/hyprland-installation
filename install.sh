@@ -465,6 +465,9 @@ sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 echo "Copying sddm.conf to /etc/..."
 sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 
+# Copy environment to /etc/
+sudo cp -r ~/Hyprland-blizz/environment /etc/
+
 echo "Script execution completed."
 
 
