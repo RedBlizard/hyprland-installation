@@ -680,9 +680,11 @@ set_default_browser() {
     esac
 
     # Set the browser in /etc/environment
-    echo "export BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
+    echo "export BROWSER=$browser" | sudo tee /etc/environment >/dev/null
+    sudo chmod 644 /etc/environment
     source /etc/environment
 }
+
 
 
 # ------------------------------------------------------
