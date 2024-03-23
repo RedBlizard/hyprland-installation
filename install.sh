@@ -6,21 +6,19 @@
 echo "Install script version release 1.07"
 echo "Developed by RedBlizard date 10 December 2023"
 
+# ---------------------
 # Set the log file path
+# ---------------------
 log_file="$HOME/installation_log.txt"
 
-# Ensure the script is in the correct directory
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )" || { echo "$(date +"%Y-%m-%d %H:%M:%S") - Failed to change directory to script directory." >> "$log_file"; exit 1; }
-cd "$SCRIPT_DIR" || { echo "$(date +"%Y-%m-%d %H:%M:%S") - Failed to change directory to script directory." >> "$log_file"; exit 1; }
-
-# Function to log messages to the file
-log_message() {
-    echo "$(date +"%Y-%m-%d %H:%M:%S") - $1" >> "$log_file"
-}
-
+# --------------------------------------------------
 # Redirect stdout (1) and stderr (2) to the log file
-exec >> "$log_file" 2>&1
+# --------------------------------------------------
+exec > >(tee -i "$log_file") 2>&1
 
+# Ensure the script is in the correct directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; exit 1; }
 
 # ------------------------------------------------------
 # Check if yay is installed
