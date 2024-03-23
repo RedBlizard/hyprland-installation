@@ -671,20 +671,9 @@ else
     exit 1
 fi
 
-# Function to set default browser in /etc/environment
-set_default_browser() {
-    # Adjust browser name if necessary
-    case $browser in
-        brave-bin) browser="brave" ;;
-        microsoft-edge-dev-bin) browser="microsoft-edge" ;;
-        # Add other cases for additional browsers here if needed
-    esac
-    
-    # Uncomment the line containing #BROWSER=brave in /etc/environment if brave is chosen
-    if [ "$browser" == "brave" ]; then
-        sudo sed -i '/^#BROWSER=brave/s/^#//' /etc/environment
-    fi
-}
+# Function to set brave as default browser in /etc/environment
+sudo sed -i '/^#BROWSER=brave/s/^#//' /etc/environment
+
 
 # ------------------------------------------------------
 # Check if Geany is installed
