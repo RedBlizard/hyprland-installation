@@ -675,12 +675,22 @@ fi
 set_default_browser() {
     # Adjust browser name if necessary
     case $browser in
-        brave-bin) browser="brave" ;;
-        microsoft-edge-dev-bin) browser="microsoft-edge" ;;
+        brave-bin) 
+            browser="brave"
+            echo "Adjusted browser name to 'brave'."
+            ;;
+        microsoft-edge-dev-bin) 
+            browser="microsoft-edge"
+            echo "Adjusted browser name to 'microsoft-edge'."
+            ;;
+        *) 
+            echo "No adjustment needed for browser name."
+            ;;
     esac
     
     # Export the browser name to /etc/environment
     echo "BROWSER=$browser" | sudo tee /etc/environment >/dev/null
+    echo "Exported browser name '$browser' to /etc/environment."
 }
 
 
