@@ -20,24 +20,28 @@ exec > >(tee -i "$log_file") 2>&1
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; exit 1; }
 
-# ------------------------------------------------------
-# Check if yay is installed
-# ------------------------------------------------------
+# Redirect CPU info checks to /dev/null to hide the output
+{
+    # ------------------------------------------------------
+    # Check if yay is installed
+    # ------------------------------------------------------
+    if ! command -v yay &> /dev/null; then
+        echo "yay is not installed. Installing yay..."
+        sudo pacman -Sy --noconfirm yay
+    fi
 
-if ! command -v yay &> /dev/null; then
-    echo "yay is not installed. Installing yay..."
-    sudo pacman -Sy --noconfirm yay
-fi
+    # ------------------------------------------------------
+    # Check if Git is installed
+    # ------------------------------------------------------
+    echo "Checking if Git is installed..."
+    if ! command -v git &> /dev/null; then
+        echo "Git is not installed. Installing Git..."
+        sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+    fi
 
-# ------------------------------------------------------
-# Check if Git is installed
-# ------------------------------------------------------
+    # Add more checks here as needed
+} &>/dev/null &  # Redirect output to /dev/null and run in background
 
-echo "Checking if Git is installed..."
-if ! command -v git &> /dev/null; then
-    echo "Git is not installed. Installing Git..."
-    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
-fi
 
 # ------------------------------------------------------
 # Getting in the dotfiles
