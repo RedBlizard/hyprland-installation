@@ -680,8 +680,9 @@ set_default_browser() {
     esac
     
     # Export the browser name to /etc/environment
-    echo "BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
+    echo "BROWSER=$browser" | sudo tee /etc/environment >/dev/null
 }
+
 
 # ------------------------------------------------------
 # Check if Geany is installed
