@@ -1,8 +1,12 @@
 #!/bin/bash
-# ------------------------------------
-# █▀█ █▀▀ █▀▄ █▄▄ █░░ █ ▀█ ▄▀█ █▀█ █▀▄
-# █▀▄ ██▄ █▄▀ █▄█ █▄▄ █ █▄ █▀█ █▀▄ █▄▀
-# ------------------------------------
+
+echo -e "${GREEN}"
+cat <<"EOF"
+█▀█ █▀▀ █▀▄ █▄▄ █░░ █ ▀█ ▄▀█ █▀█ █▀▄
+█▀▄ ██▄ █▄▀ █▄█ █▄▄ █ █▄ █▀█ █▀▄ █▄▀
+EOF
+echo -e "${NONE}"
+
 echo "Install script version release 1.07"
 echo "Developed by RedBlizard date 10 December 2023"
 
@@ -107,18 +111,6 @@ cpu_info=$(lscpu)
 
 # Debug print to check CPU info
 #echo "CPU Info: $cpu_info"
-
-# ------------------------------------------------------
-# Check if CPU information and vulnerabilities (Optional)
-# ------------------------------------------------------
-{
-    echo "Checking CPU information and vulnerabilities..."
-    # Your commands to check CPU information and vulnerabilities here
-    # Example:
-    # lscpu
-    # grep -E 'Vulnerability|Virtualization' /proc/cpuinfo
-} > /dev/null 2>&1
-
 
 # ---------------------------------------------------------------------
 # Check CPU vendor and execute AMD-specific code if AMD CPU is detected
