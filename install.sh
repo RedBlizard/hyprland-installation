@@ -988,6 +988,7 @@ rm -rf $HOME/packages-repository.txt
 rm  -rf $HOME/install.sh
 rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
+rm -rf $HOME/environment
 
 echo -e "${green}"
 cat <<"EOF"
