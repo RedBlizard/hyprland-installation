@@ -106,7 +106,7 @@ echo "Don't worry, we need to check a few things before we can start the Hyprlan
 cpu_info=$(lscpu)
 
 # Debug print to check CPU info
-echo "CPU Info: $cpu_info"
+#echo "CPU Info: $cpu_info"
 
 # ------------------------------------------------------
 # Check if CPU information and vulnerabilities (Optional)
