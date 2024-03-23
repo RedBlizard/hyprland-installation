@@ -672,8 +672,18 @@ else
 fi
 
 # Function to set brave as default browser in /etc/environment
-sudo sed -i '/^#BROWSER=brave/s/^#//' /etc/environment
+set_brave_default() {
+    # Check if Brave is installed
+    if command -v brave &>/dev/null || command -v brave-bin &>/dev/null; then
+        sudo sed -i '/^#BROWSER=brave/s/^#//' /etc/environment
+        echo "Brave is installed. Setting as default browser."
+    else
+        echo "Brave is not installed. Skipping setting as default browser."
+    fi
+}
 
+# Call the function to set brave as default browser
+set_brave_default
 
 # ------------------------------------------------------
 # Check if Geany is installed
