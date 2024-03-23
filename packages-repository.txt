@@ -5,7 +5,6 @@
     htop    
     bash-completion
     bash-language-server
-    brave-bin
     breeze-icons
     btrfs-assistant
     btrfsmaintenance
