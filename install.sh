@@ -623,7 +623,6 @@ else
     exit 1
 fi
 
-#!/bin/bash
 
 # Function to display the browser options
 display_options() {
@@ -632,6 +631,7 @@ display_options() {
     echo "2. Firefox"
     echo "3. Brave"
     echo "4. Microsoft Edge"
+    echo "5. vivaldi"
 }
 
 # Function to handle invalid choice
@@ -656,6 +656,7 @@ case $choice in
     2) browser="firefox" ;;
     3) browser="brave-bin" ;;
     4) browser="microsoft-edge-dev-bin" ;;
+    4) browser="vivaldi" ;;
     *) handle_invalid_choice ;;
 esac
 
@@ -670,9 +671,18 @@ else
     exit 1
 fi
 
-# Set the selected browser as default
-echo "Setting $browser as the default browser..."
-set_default_browser
+# Function to set default browser in /etc/environment
+set_default_browser() {
+    # Adjust browser name if necessary
+    case $browser in
+        brave-bin) browser="brave" ;;
+        microsoft-edge-dev-bin) browser="microsoft-edge" ;;
+    esac
+
+    # Set the browser in /etc/environment
+    echo "export BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
+    source /etc/environment
+}
 
 
 # ------------------------------------------------------
