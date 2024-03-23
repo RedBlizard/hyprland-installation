@@ -678,12 +678,12 @@ set_default_browser() {
         brave-bin) browser="brave" ;;
         microsoft-edge-dev-bin) browser="microsoft-edge" ;;
     esac
-
-    # Set the browser in /etc/environment
-    echo "export BROWSER=$browser" | sudo tee /etc/environment >/dev/null
-    sudo chmod 644 /etc/environment
+    
+    # Export the browser variable
+    echo "export BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
     source /etc/environment
 }
+
 
 
 
