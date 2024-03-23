@@ -458,48 +458,113 @@ echo "Script execution completed."
             #sudo pacman -S nerd-fonts
                  
 
-            # ------------------------------------------------------  
-            # Check if Fish is installed
-            # ------------------------------------------------------
-            
-            if ! command -v fish &> /dev/null; then
-                echo "Fish is not installed. Installing Fish..."
-                sudo pacman -Sy --noconfirm fish || { echo 'Installation of Fish failed.'; exit 1; }
-            fi
+# -----------------------------------------
+# Function to check if a shell is installed
+# -----------------------------------------
+check_shell_installed() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "$1 is not installed. Installing $1..."
+        sudo pacman -Sy --noconfirm "$1" || { echo "Installation of $1 failed."; exit 1; }
+    fi
+}
+# -----------------------------
+# Function to change user shell
+# -----------------------------
+change_user_shell() {
+    local user_shell="$1"
+    read -p "Do you want to switch your shell to $user_shell? (Yy/Nn): " switch_user_shell
 
-            # ------------------------------------------------------
-            # Change user shell to Fish (optional)
-            # ------------------------------------------------------
-
-            read -p "Do you want to switch your shell to Fish? (Yy/Nn): " switch_user_shell
-
-            if [ "$switch_user_shell" == "y" ]; then
-            if chsh -s "/usr/bin/fish"; then
-            echo "Shell changed to Fish successfully for the user."
-            else
-            echo "Changing shell to Fish failed for the user." >&2
+    if [[ "$switch_user_shell" == [Yy] ]]; then
+        if chsh -s "$user_shell"; then
+            echo "Shell changed to $user_shell successfully for the user."
+        else
+            echo "Changing shell to $user_shell failed for the user." >&2
             exit 1
-            fi
-            else
-            echo "User shell remains unchanged."
-            fi
+        fi
+    else
+        echo "User shell remains unchanged."
+    fi
+}
+# -----------------------------
+# Function to change root shell
+# -----------------------------
+change_root_shell() {
+    local root_shell="$1"
+    read -p "Do you want to switch the root shell to $root_shell? (Yy/Nn): " switch_root_shell
 
-            # ------------------------------------------------------
-            # Change root shell to Fish (optional)
-            # ------------------------------------------------------
-
-            read -p "Do you want to switch the root shell to Fish? (Yy/Nn): " switch_root_shell
-
-            if [ "$switch_root_shell" == "y" ]; then
-            if sudo chsh -s "/usr/bin/fish" root; then
-            echo "Shell changed to Fish successfully for the root user."
-            else
-            echo "Changing shell to Fish failed for the root user." >&2
+    if [[ "$switch_root_shell" == [Yy] ]]; then
+        if sudo chsh -s "$root_shell" root; then
+            echo "Shell changed to $root_shell successfully for the root user."
+        else
+            echo "Changing shell to $root_shell failed for the root user." >&2
             exit 1
-            fi
-            else
-            echo "Root shell remains unchanged."
-            fi
+        fi
+    else
+        echo "Root shell remains unchanged."
+    fi
+}
+# ---------------------
+# List available shells
+# ---------------------
+echo "Available shells:"
+echo "1. Bash"
+echo "2. Zsh"
+echo "3. Fish"
+read -p "Enter the number corresponding to your preferred shell: " user_choice
+
+case $user_choice in
+    1) user_shell="/bin/bash" ;;
+    2) user_shell="/bin/zsh" ;;
+    3) user_shell="/usr/bin/fish" ;;
+    *) echo "Invalid choice. Exiting." && exit 1 ;;
+esac
+# ----------------------------------------
+# Check if the selected shell is installed
+# ----------------------------------------
+check_shell_installed "$user_shell"
+# -----------------
+# Change user shell
+# -----------------
+change_user_shell "$user_shell"
+# ------------------------------------
+# Prompt user for switching root shell
+# ------------------------------------
+read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
+
+if [[ "$switch_root" == [Yy] ]]; then
+    # Check if sudo is available
+    if ! command -v sudo &> /dev/null; then
+        echo "sudo is not installed. Cannot switch root shell without sudo."
+        exit 1
+    fi
+    # ----------------------------
+    # Prompt for root shell choice
+    # ----------------------------
+    echo "Available shells for root user:"
+    echo "1. Bash"
+    echo "2. Zsh"
+    echo "3. Fish"
+    read -p "Enter the number corresponding to the desired root shell: " root_choice
+
+    case $root_choice in
+        1) root_shell="/bin/bash" ;;
+        2) root_shell="/bin/zsh" ;;
+        3) root_shell="/usr/bin/fish" ;;
+        *) echo "Invalid choice. Exiting." && exit 1 ;;
+    esac
+    # ---------------------------------------------
+    # Check if the selected root shell is installed
+    # ---------------------------------------------
+    check_shell_installed "$root_shell"
+    # -----------------
+    # Change root shell
+    # -----------------
+    change_root_shell "$root_shell"
+else
+    echo "Root shell remains unchanged."
+fi
+
+
 
             # ------------------------------------
             # Make the specified script executable
