@@ -736,36 +736,21 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root t
 
 sudo kvantummanager --set Catppuccin-Frappe-Blue
 
-# ----------------------------
-#Change GTK-Theme for the user
-# ----------------------------
-
-echo "Setting GTK theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Red-Dark'
-
-# -----------------------------------------
-#Change the default Icon-Theme for the user
-# -----------------------------------------
-
-echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-
-# -------------------------------
-#Change Window-Theme for the user
-# -------------------------------
-
-echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Red-Dark'
+# ------------------------------------------------------
+# Change Papirus folder colors for the user to red
+# ------------------------------------------------------
+papirus-folders -C cat-frappe-red --theme Papirus-Dark 
 
 # ------------------------------------------------------
-# Change Papirus folder colors for the user
-# ------------------------------------------------------
-papirus-folders -C cat-frappe-red --theme Papirus-Dark
-
-# ------------------------------------------------------
-# Change Papirus folder colors for root
+# Change Papirus folder colors for root to blue
 # ------------------------------------------------------
 sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
+
+# ------------------------------------------------------
+# Ensure the user's Papirus folder colors remain red
+# ------------------------------------------------------
+su -c 'papirus-folders -C cat-frappe-red --theme Papirus-Dark' $USER
+
 
 # -------------------------------            
 # Set the Qogir-dark cursor theme
