@@ -718,7 +718,7 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
 # ------------------------------------------------------
 # Use kvantummanager to set the theme
 # ------------------------------------------------------
-kvantummanager --set Catppuccin-Frappe-Red
+kvantummanager --set Catppuccin-Frappe-Blue
 
 # ------------------------------------------------------
 # Change qt6ct settings to use Kvantum theme for root
@@ -742,7 +742,7 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 # ----------------------------
 
 echo "Setting GTK theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Red-Dark'
+/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
@@ -756,12 +756,12 @@ echo "Setting icon theme..."
 # -------------------------------
 
 echo "Setting window theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Red-Dark'
+/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
 # ------------------------------------------------------
-papirus-folders -C cat-frappe-red --theme Papirus-Dark 
+papirus-folders -C cat-frappe-Blue --theme Papirus-Dark 
 
 # ------------------------------------------------------
 # Change Papirus folder colors for root
