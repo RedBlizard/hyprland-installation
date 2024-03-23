@@ -707,10 +707,10 @@ ls -la /usr/share/sddm/themes/simplicity/images
 
 
 # ------------------------------------------------------
-# Change qt5ct settings to use Kvantum theme for the user
+# Change qt6ct settings to use Kvantum theme for the user
 # ------------------------------------------------------
 
-echo "export QT_QPA_PLATFORMTHEME=qt5ct" >> ~/.bashrc || { echo 'Setting QT_QPA_PLATFORMTHEME for the user failed.'; exit 1; }
+echo "export QT_QPA_PLATFORMTHEME=qt6ct" >> ~/.bashrc || { echo 'Setting QT_QPA_PLATFORMTHEME for the user failed.'; exit 1; }
 echo "export QT_STYLE_OVERRIDE=kvantum-dark" >> ~/.bashrc || { echo 'Setting QT_STYLE_OVERRIDE for the user failed.'; exit 1; }
 
 echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
@@ -721,10 +721,10 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
 kvantummanager --set Catppuccin-Frappe-Blue
 
 # ------------------------------------------------------
-# Change qt5ct settings to use Kvantum theme for root
+# Change qt6ct settings to use Kvantum theme for root
 # ------------------------------------------------------
 
-echo "export QT_QPA_PLATFORMTHEME=qt5ct" | sudo tee -a /etc/environment || { echo 'Setting QT_QPA_PLATFORMTHEME for root failed.'; exit 1; }
+echo "export QT_QPA_PLATFORMTHEME=qt6ct" | sudo tee -a /etc/environment || { echo 'Setting QT_QPA_PLATFORMTHEME for root failed.'; exit 1; }
 echo "export QT_STYLE_OVERRIDE=kvantum-dark" | sudo tee -a /etc/environment || { echo 'Setting QT_STYLE_OVERRIDE for root failed.'; exit 1; }
 
   
@@ -734,14 +734,14 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root t
 # Use kvantummanager to set the theme
 # ------------------------------------------------------
 
-sudo kvantummanager --set Catppuccin-Frappe-Blue
+sudo kvantummanager --set Catppuccin-Frappe-Red
 
 # ----------------------------
 #Change GTK-Theme for the user
 # ----------------------------
 
 echo "Setting GTK theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Red-Dark'
 
 # -----------------------------------------
 #Change the default Icon-Theme for the user
@@ -755,12 +755,12 @@ echo "Setting icon theme..."
 # -------------------------------
 
 echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Red-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
 # ------------------------------------------------------
-papirus-folders -C cat-frappe-blue --theme Papirus-Dark
+papirus-folders -C cat-frappe-red --theme Papirus-Dark
 
 # ------------------------------------------------------
 # Change Papirus folder colors for root
@@ -812,7 +812,7 @@ rm -rf "$HOME/hyprland-blizz"
 echo "hyprland-blizz directory removed."
 
 rm -rf $HOME/hyprland-installation
-rm $HOME/README.md
+rm -rf $HOME/README.md
 rm -rf $HOME/sddm-images
 rm $HOME/packages-repository.txt
 rm $HOME/install.sh
