@@ -842,7 +842,7 @@ echo "Setting window theme..."
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
 # ------------------------------------------------------
-papirus-folders -C cat-frappe-Blue --theme Papirus-Dark 
+papirus-folders -C cat-frappe-blue --theme Papirus-Dark 
 
 # ------------------------------------------------------
 # Change Papirus folder colors for root
