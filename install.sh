@@ -662,7 +662,7 @@ case $choice in
     1) browser="chromium" ;;
     2) browser="firefox" ;;
     3) browser="brave-bin" ;;
-    4) browser="microsoft-edge-dev-bin" ;;
+    4) browser="microsoft-edge-stable-bin" ;;
     4) browser="vivaldi" ;;
     *) handle_invalid_choice ;;
 esac
@@ -679,6 +679,34 @@ else
 fi
 
 # Function to set brave as default browser in /etc/environment
+set_chromium_default() {
+    # Check if Brave is installed
+    if command -v chromium &>/dev/null || command -v chromium &>/dev/null; then
+        sudo sed -i '/^#BROWSER=chromium/s/^#//' /etc/environment
+        echo "chromium is installed. Setting as default browser."
+    else
+        echo "chromium is not installed. Skipping setting as default browser."
+    fi
+}
+
+# Call the function to set brave as default browser
+set_chromium_default
+
+# Function to set brave as default browser in /etc/environment
+set_firefox_default() {
+    # Check if Brave is installed
+    if command -v firefox &>/dev/null || command -v firefox &>/dev/null; then
+        sudo sed -i '/^#BROWSER=firefox/s/^#//' /etc/environment
+        echo "firefox is installed. Setting as default browser."
+    else
+        echo "firefox is not installed. Skipping setting as default browser."
+    fi
+}
+
+# Call the function to set brave as default browser
+set_firefox_default
+
+# Function to set brave as default browser in /etc/environment
 set_brave_default() {
     # Check if Brave is installed
     if command -v brave &>/dev/null || command -v brave-bin &>/dev/null; then
@@ -691,6 +719,34 @@ set_brave_default() {
 
 # Call the function to set brave as default browser
 set_brave_default
+
+# Function to set brave as default browser in /etc/environment
+set_edge_default() {
+    # Check if Brave is installed
+    if command -v edge &>/dev/null || command -v microsoft-edge-stable-bin &>/dev/null; then
+        sudo sed -i '/^#BROWSER=microsoft-edge-stable/s/^#//' /etc/environment
+        echo "Edge is installed. Setting as default browser."
+    else
+        echo "Edge is not installed. Skipping setting as default browser."
+    fi
+}
+
+# Call the function to set brave as default browser
+set_edge_default
+
+# Function to set brave as default browser in /etc/environment
+set_vivaldi_default() {
+    # Check if Brave is installed
+    if command -v vivaldi &>/dev/null || command -v vivaldi &>/dev/null; then
+        sudo sed -i '/^#BROWSER=vivaldi/s/^#//' /etc/environment
+        echo "vivaldi is installed. Setting as default browser."
+    else
+        echo "vivaldi is not installed. Skipping setting as default browser."
+    fi
+}
+
+# Call the function to set brave as default browser
+set_vivaldi_default
 
 # ------------------------------------------------------
 # Check if Geany is installed
