@@ -93,7 +93,7 @@ cp -r "$SCRIPT_DIR"/* ~/
 cp -r .config ~/
 cp -r .icons ~/
 cp -r .Kvantum-themes ~/
-cp -r .themes ~/
+#cp -r .themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
@@ -266,7 +266,7 @@ while true; do
             cp -r * ~/
             cp -r .icons ~/
             cp -r .Kvantum-themes ~/
-            cp -r .themes ~/
+            # cp -r .themes ~/
             cp -r .local ~/
             cp -r Pictures ~/
 
@@ -433,7 +433,7 @@ echo "Copying folders to /root/.config/..."
 sudo cp -r ~/.config/fish /root/.config/            
 sudo cp -r ~/.config/nwg-look /root/.config/            
 sudo cp -r ~/.config/xsettingsd /root/.config/
-sudo cp -r ~/.config/qt5ct /root/.config/
+sudo cp -r ~/.config/qt6ct /root/.config/
 sudo cp -r ~/.config/kvantum /root/.config/
 sudo cp -r ~/.config/starship /root/.config/
 sudo cp -r ~/.config/gtk-3.0 /root/.config/
@@ -814,9 +814,9 @@ echo "hyprland-blizz directory removed."
 rm -rf $HOME/hyprland-installation
 rm -rf $HOME/README.md
 rm -rf $HOME/sddm-images
-rm $HOME/packages-repository.txt
-rm $HOME/install.sh
-rm $HOME/sddm.conf
+rm -rf $HOME/packages-repository.txt
+rm  -rf $HOME/install.sh
+rm -rf $HOME/sddm.conf
 
 echo -e "${green}"
 cat <<"EOF"
