@@ -672,8 +672,18 @@ else
 fi
 
 # Set the selected browser as default
-echo "Setting $browser as the default browser..."
-set_default_browser
+# Function to set default browser in /etc/environment
+set_default_browser() {
+    # Adjust browser name if necessary
+    case $browser in
+        brave-bin) browser="brave" ;;
+        microsoft-edge-dev-bin) browser="microsoft-edge" ;;
+    esac
+    
+    # Modify the BROWSER line in /etc/environment to remove -bin
+    sudo sed -i 's/BROWSER=.*/BROWSER='$browser'/' /etc/environment
+}
+
 
 
 # ------------------------------------------------------
