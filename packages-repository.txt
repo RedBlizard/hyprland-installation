@@ -10,6 +10,7 @@
     btrfs-assistant
     btrfsmaintenance
     cava
+    catppuccin-gtk-theme-frappe
     cantarell-fonts
     cliphist
     dolphin
@@ -34,6 +35,7 @@
     grsync
     wofi
     waybar
+    kio-admin
     neofetch
     neovim
     network-manager-applet
@@ -54,13 +56,12 @@
     hyprshot
     inotify-tools
     wlogout-git
-    swww
-    kde-servicemenus-rootactions
+    swww    
     kitty
     kvantum    
     konsole
     lua-language-server
-    qt5ct
+    qt6ct
     thunar
     thunar-archive-plugin
     thunar-volman
