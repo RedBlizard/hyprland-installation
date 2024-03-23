@@ -682,7 +682,7 @@ set_default_browser() {
     
     # Uncomment the line containing #BROWSER=brave in /etc/environment if brave is chosen
     if [ "$browser" == "brave" ]; then
-        sudo sed -i '/#BROWSER=brave/s/^#//' /etc/environment
+        sudo sed -i '/^#BROWSER=/s/^#//' /etc/environment
     fi
 }
 
