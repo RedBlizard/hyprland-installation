@@ -471,7 +471,7 @@ echo "Script execution completed."
             # Change user shell to Fish (optional)
             # ------------------------------------------------------
 
-            read -p "Do you want to switch your shell to Fish? (y/n): " switch_user_shell
+            read -p "Do you want to switch your shell to Fish? (Yy/Nn): " switch_user_shell
 
             if [ "$switch_user_shell" == "y" ]; then
             if chsh -s "/usr/bin/fish"; then
@@ -488,7 +488,7 @@ echo "Script execution completed."
             # Change root shell to Fish (optional)
             # ------------------------------------------------------
 
-            read -p "Do you want to switch the root shell to Fish? (y/n): " switch_root_shell
+            read -p "Do you want to switch the root shell to Fish? (Yy/Nn): " switch_root_shell
 
             if [ "$switch_root_shell" == "y" ]; then
             if sudo chsh -s "/usr/bin/fish" root; then
@@ -547,41 +547,57 @@ else
     exit 1
 fi
 
-# ------------------------------------------------------
-# Check if Brave is installed
-# ------------------------------------------------------
+#!/bin/bash
 
-if command -v brave &> /dev/null; then
+# Function to display the browser options
+display_options() {
+    echo "Select a browser to install:"
+    echo "1. Chromium"
+    echo "2. Firefox"
+    echo "3. Brave"
+    echo "4. Microsoft Edge"
+}
 
-    # --------------------------------
-    # Set Brave as the default browser
-    # --------------------------------
-    
-    xdg-settings set default-web-browser brave.desktop
-    echo "Brave set as the default browser."
+# Function to handle invalid choice
+handle_invalid_choice() {
+    echo "Invalid choice. Exiting."
+    exit 1
+}
+
+# Function to set default browser in /etc/environment
+set_default_browser() {
+    echo "export BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
+    source /etc/environment
+}
+
+# Prompt user for choice
+display_options
+read -p "Enter the number corresponding to your choice: " choice
+
+# Install the selected browser based on user's choice
+case $choice in
+    1) browser="chromium" ;;
+    2) browser="firefox" ;;
+    3) browser="brave-bin" ;;
+    4) browser="microsoft-edge-dev-bin" ;;
+    *) handle_invalid_choice ;;
+esac
+
+# Install the selected browser
+echo "Installing $browser..."
+if command -v yay &>/dev/null; then
+    yay -S --noconfirm $browser
+elif command -v pacman &>/dev/null; then
+    sudo pacman -S --noconfirm $browser
 else
-    echo "Brave is not installed. Please install Brave first."
-    
-    # ---------------------------------------------
-    # Add installation command for Brave if needed
-    # Example: sudo pacman -Sy --noconfirm brave
-    # ---------------------------------------------
+    echo "Error: Package manager (yay or pacman) not found. Exiting."
+    exit 1
 fi
 
-# ------------------------------------------------------
-# Check if Firefox is installed
-# ------------------------------------------------------
+# Set the selected browser as default
+echo "Setting $browser as the default browser..."
+set_default_browser
 
-if command -v firefox &> /dev/null; then
-    # -------------------------------------
-    # Remove Firefox as the default browser
-    # -------------------------------------
-    
-    xdg-settings set default-web-browser firefox.desktop
-    echo "Firefox set as the secondary browser."
-else
-    echo "Firefox is not installed."
-fi
 
 # ------------------------------------------------------
 # Check if Geany is installed
