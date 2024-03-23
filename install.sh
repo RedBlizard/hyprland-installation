@@ -673,11 +673,15 @@ fi
 
 # Function to set default browser in /etc/environment
 set_default_browser() {
-    # Export the browser variable
-    echo "BROWSER=brave" | sudo tee /etc/environment >/dev/null
-    source /etc/environment
+    # Adjust browser name if necessary
+    case $browser in
+        brave-bin) browser="brave" ;;
+        microsoft-edge-dev-bin) browser="microsoft-edge" ;;
+    esac
+    
+    # Export the browser name to /etc/environment
+    echo "BROWSER=$browser" | sudo tee -a /etc/environment >/dev/null
 }
-
 
 # ------------------------------------------------------
 # Check if Geany is installed
