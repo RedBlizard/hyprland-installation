@@ -718,7 +718,7 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
 # ------------------------------------------------------
 # Use kvantummanager to set the theme
 # ------------------------------------------------------
-kvantummanager --set Catppuccin-Frappe-Blue
+kvantummanager --set Catppuccin-Frappe-Red
 
 # ------------------------------------------------------
 # Change qt6ct settings to use Kvantum theme for root
@@ -734,7 +734,7 @@ echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root t
 # Use kvantummanager to set the theme
 # ------------------------------------------------------
 
-sudo kvantummanager --set Catppuccin-Frappe-Red
+sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 # ----------------------------
 #Change GTK-Theme for the user
