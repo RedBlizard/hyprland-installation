@@ -40,7 +40,7 @@
     network-manager-applet
     networkmanager-dmenu-bluetoothfix-git
     pacseek
-    pavucontrol
+    pavucontrol-qt
     papirus-folders-catppuccin-git
     papirus-icon-theme
     pipes.sh
