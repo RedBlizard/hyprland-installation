@@ -79,7 +79,7 @@
     snapper
     snapper-rollback
     sddm
-    sddm-config-editor-git
+    sddm-conf-git
     simplicity-sddm-theme-git
     eos-sddm-theme
     xdg-desktop-portal-hyprland
