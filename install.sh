@@ -487,7 +487,8 @@ change_shell() {
     read -p "Do you want to switch the $user shell to $shell? (Yy/Nn): " switch_shell
 
     if [[ "$switch_shell" == [Yy] ]]; then
-        if echo "$password" | sudo -S chsh -s "$shell" "$user"; then
+        echo "$password" | sudo -S chsh -s "$shell" "$user"
+        if [ $? -eq 0 ]; then
             echo "Shell changed to $shell successfully for the $user user."
         else
             echo "Changing shell to $shell failed for the $user user." >&2
@@ -497,6 +498,7 @@ change_shell() {
         echo "$user shell remains unchanged."
     fi
 }
+
 
 install_shell() {
     local shell="$1"
