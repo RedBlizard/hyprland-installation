@@ -2,7 +2,8 @@
     ark
     azote
     btop    
-    htop    
+    htop
+    bash    
     bash-completion
     bash-language-server
     breeze-icons
@@ -15,7 +16,8 @@
     dolphin
     dolphin-plugins
     duf
-    dunst    
+    dunst
+    fish    
     galculator
     glances
     geany
@@ -93,4 +95,5 @@
     xorg-mkfontscale
     xorg-xhost
     yay
+    zsh
     
