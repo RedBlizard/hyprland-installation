@@ -15,8 +15,7 @@
     dolphin
     dolphin-plugins
     duf
-    dunst
-    fish
+    dunst    
     galculator
     glances
     geany
