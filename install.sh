@@ -485,7 +485,10 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 check_shell_installed() {
     if ! command -v "$1" &> /dev/null; then
         echo "$1 is not installed. Installing $1..."
-        sudo pacman -Sy --noconfirm "$1" || { echo "Installation of $1 failed."; exit 1; }
+        if ! yay -S --noconfirm "$1"; then
+            echo "Installation of $1 failed."
+            exit 1
+        fi
     fi
 }
 # -----------------------------
