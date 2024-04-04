@@ -482,10 +482,12 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 change_shell() {
     local shell="$1"
     local user="$2"
+    local password="$3"
+
     read -p "Do you want to switch the $user shell to $shell? (Yy/Nn): " switch_shell
 
     if [[ "$switch_shell" == [Yy] ]]; then
-        if sudo chsh -s "$shell" "$user"; then
+        if echo "$password" | sudo -S chsh -s "$shell" "$user"; then
             echo "Shell changed to $shell successfully for the $user user."
         else
             echo "Changing shell to $shell failed for the $user user." >&2
@@ -504,7 +506,7 @@ install_shell() {
     case "$shell" in
         "/bin/bash") package_name="bash" ;;
         "/bin/zsh") package_name="zsh" ;;
-        "/usr/bin/fish") package_name="fish" ;;
+        "/bin/fish") package_name="fish" ;;
         *) echo "Invalid shell specified: $shell" >&2 && exit 1 ;;
     esac
 
@@ -528,12 +530,16 @@ read -p "Enter the number corresponding to your preferred shell: " user_choice
 case $user_choice in
     1) shell="/bin/bash" ;;
     2) shell="/bin/zsh" ;;
-    3) shell="/usr/bin/fish" ;;
+    3) shell="/bin/fish" ;;
     *) echo "Invalid choice. Exiting." && exit 1 ;;
 esac
 
 install_shell "$shell"
-change_shell "$shell" "$USER"
+
+read -s -p "Enter password for $USER: " password
+echo
+
+change_shell "$shell" "$USER" "$password"
 
 if sudo -v &> /dev/null; then
     read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
@@ -547,17 +553,12 @@ if sudo -v &> /dev/null; then
         case $root_choice in
             1) root_shell="/bin/bash" ;;
             2) root_shell="/bin/zsh" ;;
-            3) root_shell="/usr/bin/fish" ;;
+            3) root_shell="/bin/fish" ;;
             *) echo "Invalid choice. Exiting." && exit 1 ;;
         esac
 
         install_shell "$root_shell"
-        if sudo chsh -s "$root_shell" root; then
-            echo "Shell changed to $root_shell successfully for the root user."
-        else
-            echo "Changing shell to $root_shell failed for the root user." >&2
-            exit 1
-        fi
+        change_shell "$root_shell" "root" "$password"
     else
         echo "Root shell remains unchanged."
     fi
