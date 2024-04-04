@@ -506,7 +506,7 @@ install_shell() {
     case "$shell" in
         "/bin/bash") package_name="bash" ;;
         "/bin/zsh") package_name="zsh" ;;
-        "/bin/fish") package_name="fish" ;;
+        "/usr/bin/fish") package_name="fish" ;;
         *) echo "Invalid shell specified: $shell" >&2 && exit 1 ;;
     esac
 
@@ -530,7 +530,7 @@ read -p "Enter the number corresponding to your preferred shell: " user_choice
 case $user_choice in
     1) shell="/bin/bash" ;;
     2) shell="/bin/zsh" ;;
-    3) shell="/bin/fish" ;;
+    3) shell="/usr/bin/fish" ;;
     *) echo "Invalid choice. Exiting." && exit 1 ;;
 esac
 
@@ -553,7 +553,7 @@ if sudo -v &> /dev/null; then
         case $root_choice in
             1) root_shell="/bin/bash" ;;
             2) root_shell="/bin/zsh" ;;
-            3) root_shell="/bin/fish" ;;
+            3) root_shell="/usr/bin/fish" ;;
             *) echo "Invalid choice. Exiting." && exit 1 ;;
         esac
 
