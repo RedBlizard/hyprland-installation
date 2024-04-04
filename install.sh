@@ -506,31 +506,27 @@ change_user_shell() {
         echo "User shell remains unchanged."
     fi
 }
+# -----------------------------
+# Function to change root shell
+# -----------------------------
+change_root_shell() {
+    local root_shell="$1"
+    read -p "Do you want to switch the root shell to $root_shell? (Yy/Nn): " switch_root_shell
 
-
-install_shell() {
-    local shell="$1"
-    local package_name
-
-    # Determine the package name based on the shell
-    case "$shell" in
-        "/bin/bash") package_name="bash" ;;
-        "/bin/zsh") package_name="zsh" ;;
-        "/usr/bin/fish") package_name="fish" ;;
-        *) echo "Invalid shell specified: $shell" >&2 && exit 1 ;;
-    esac
-
-    if ! command -v "$shell" &> /dev/null; then
-        echo "$shell is not installed. Installing $package_name..."
-        if ! yay -S --noconfirm "$package_name"; then
-            echo "Installation of $shell failed."
+    if [[ "$switch_root_shell" == [Yy] ]]; then
+        if sudo chsh -s "$root_shell" root; then
+            echo "Shell changed to $root_shell successfully for the root user."
+        else
+            echo "Changing shell to $root_shell failed for the root user." >&2
             exit 1
         fi
     else
-        echo "$shell is already installed. Proceeding..."
+        echo "Root shell remains unchanged."
     fi
 }
-
+# ---------------------
+# List available shells
+# ---------------------
 echo "Available shells:"
 echo "1. Bash"
 echo "2. Zsh"
@@ -538,42 +534,55 @@ echo "3. Fish"
 read -p "Enter the number corresponding to your preferred shell: " user_choice
 
 case $user_choice in
-    1) shell="/bin/bash" ;;
-    2) shell="/bin/zsh" ;;
-    3) shell="/usr/bin/fish" ;;
+    1) user_shell="/bin/bash" ;;
+    2) user_shell="/bin/zsh" ;;
+    3) user_shell="/usr/bin/fish" ;;
     *) echo "Invalid choice. Exiting." && exit 1 ;;
 esac
+# ----------------------------------------
+# Check if the selected shell is installed
+# ----------------------------------------
+check_shell_installed "$user_shell"
+# -----------------
+# Change user shell
+# -----------------
+change_user_shell "$user_shell"
+# ------------------------------------
+# Prompt user for switching root shell
+# ------------------------------------
+read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
 
-install_shell "$shell"
-
-read -s -p "Enter password for $USER: " password
-echo
-
-change_shell "$shell" "$USER" "$password"
-
-if sudo -v &> /dev/null; then
-    read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
-    if [[ "$switch_root" == [Yy] ]]; then
-        echo "Available shells for root user:"
-        echo "1. Bash"
-        echo "2. Zsh"
-        echo "3. Fish"
-        read -p "Enter the number corresponding to the desired root shell: " root_choice
-
-        case $root_choice in
-            1) root_shell="/bin/bash" ;;
-            2) root_shell="/bin/zsh" ;;
-            3) root_shell="/usr/bin/fish" ;;
-            *) echo "Invalid choice. Exiting." && exit 1 ;;
-        esac
-
-        install_shell "$root_shell"
-        change_shell "$root_shell" "root" "$password"
-    else
-        echo "Root shell remains unchanged."
+if [[ "$switch_root" == [Yy] ]]; then
+    # Check if sudo is available
+    if ! command -v sudo &> /dev/null; then
+        echo "sudo is not installed. Cannot switch root shell without sudo."
+        exit 1
     fi
+    # ----------------------------
+    # Prompt for root shell choice
+    # ----------------------------
+    echo "Available shells for root user:"
+    echo "1. Bash"
+    echo "2. Zsh"
+    echo "3. Fish"
+    read -p "Enter the number corresponding to the desired root shell: " root_choice
+
+    case $root_choice in
+        1) root_shell="/bin/bash" ;;
+        2) root_shell="/bin/zsh" ;;
+        3) root_shell="/usr/bin/fish" ;;
+        *) echo "Invalid choice. Exiting." && exit 1 ;;
+    esac
+    # ---------------------------------------------
+    # Check if the selected root shell is installed
+    # ---------------------------------------------
+    check_shell_installed "$root_shell"
+    # -----------------
+    # Change root shell
+    # -----------------
+    change_root_shell "$root_shell"
 else
-    echo "sudo is not installed. Cannot switch root shell without sudo."
+    echo "Root shell remains unchanged."
 fi
 
 
