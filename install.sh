@@ -479,21 +479,31 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             #sudo pacman -S nerd-fonts
                  
 
-# -----------------------------------------
-# Function to check if a shell is installed
-# -----------------------------------------
 check_shell_installed() {
-    if ! command -v "$1" &> /dev/null; then
-        echo "$1 is not installed. Installing $1..."
-        if ! yay -S --noconfirm "$1"; then
-            echo "Installation of $1 failed."
-            exit 1
+    local shell="$1"
+    if ! command -v "$shell" &> /dev/null; then
+        echo "$shell is not installed. Installing $shell..."
+        if [[ "$shell" == "/bin/bash" ]]; then
+            if ! yay -S --noconfirm "bash"; then
+                echo "Installation of $shell failed."
+                exit 1
+            fi
+        elif [[ "$shell" == "/bin/zsh" ]]; then
+            if ! yay -S --noconfirm "zsh"; then
+                echo "Installation of $shell failed."
+                exit 1
+            fi
+        elif [[ "$shell" == "/usr/bin/fish" ]]; then
+            if ! yay -S --noconfirm "fish"; then
+                echo "Installation of $shell failed."
+                exit 1
+            fi
+        else
+            echo "$shell doesn't need to be installed. Proceeding..."
         fi
     fi
 }
-# -----------------------------
-# Function to change user shell
-# -----------------------------
+
 change_user_shell() {
     local user_shell="$1"
     read -p "Do you want to switch your shell to $user_shell? (Yy/Nn): " switch_user_shell
@@ -509,9 +519,7 @@ change_user_shell() {
         echo "User shell remains unchanged."
     fi
 }
-# -----------------------------
-# Function to change root shell
-# -----------------------------
+
 change_root_shell() {
     local root_shell="$1"
     read -p "Do you want to switch the root shell to $root_shell? (Yy/Nn): " switch_root_shell
@@ -527,9 +535,7 @@ change_root_shell() {
         echo "Root shell remains unchanged."
     fi
 }
-# ---------------------
-# List available shells
-# ---------------------
+
 echo "Available shells:"
 echo "1. Bash"
 echo "2. Zsh"
@@ -542,28 +548,26 @@ case $user_choice in
     3) user_shell="/usr/bin/fish" ;;
     *) echo "Invalid choice. Exiting." && exit 1 ;;
 esac
-# ----------------------------------------
-# Check if the selected shell is installed
-# ----------------------------------------
+
 check_shell_installed "$user_shell"
-# -----------------
-# Change user shell
-# -----------------
 change_user_shell "$user_shell"
-# ------------------------------------
-# Prompt user for switching root shell
-# ------------------------------------
+
+if [[ "$user_shell" == "/usr/bin/fish" ]]; then
+    echo "Fish shell selected."
+    root_shell="/usr/bin/fish"
+    check_shell_installed "$root_shell"
+    change_root_shell "$root_shell"
+    exit 0
+fi
+
 read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
 
 if [[ "$switch_root" == [Yy] ]]; then
-    # Check if sudo is available
     if ! command -v sudo &> /dev/null; then
         echo "sudo is not installed. Cannot switch root shell without sudo."
         exit 1
     fi
-    # ----------------------------
-    # Prompt for root shell choice
-    # ----------------------------
+
     echo "Available shells for root user:"
     echo "1. Bash"
     echo "2. Zsh"
@@ -576,17 +580,13 @@ if [[ "$switch_root" == [Yy] ]]; then
         3) root_shell="/usr/bin/fish" ;;
         *) echo "Invalid choice. Exiting." && exit 1 ;;
     esac
-    # ---------------------------------------------
-    # Check if the selected root shell is installed
-    # ---------------------------------------------
+
     check_shell_installed "$root_shell"
-    # -----------------
-    # Change root shell
-    # -----------------
     change_root_shell "$root_shell"
 else
     echo "Root shell remains unchanged."
 fi
+
 
 
 
