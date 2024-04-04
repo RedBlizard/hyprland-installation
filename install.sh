@@ -509,6 +509,7 @@ install_shell() {
     fi
 }
 
+
 echo "Available shells:"
 echo "1. Bash"
 echo "2. Zsh"
