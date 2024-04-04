@@ -478,43 +478,63 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             #echo "Please see yess to all the fonts (enter) is for all  these are needed for nvim !..."
             #sudo pacman -S nerd-fonts
                  
-
 # ------------------------------------------------------
-# Change user shell to Fish (optional)
+# Change user shell
 # ------------------------------------------------------
 
-read -p "Do you want to switch your shell to Fish? (y/n): " switch_user_shell
+read -p "Do you want to switch your shell? Choose between Bash, Zsh, or Fish (b/z/f): " switch_user_shell
 
-if [ "$switch_user_shell" == "y" ]; then
-    if chsh -s "/usr/bin/fish"; then
-        echo "Shell changed to Fish successfully for the user."
-    else
-        echo "Changing shell to Fish failed for the user." >&2
+case "$switch_user_shell" in
+    b)
+        new_shell="/bin/bash"
+        ;;
+    z)
+        new_shell="/bin/zsh"
+        ;;
+    f)
+        new_shell="/usr/bin/fish"
+        ;;
+    *)
+        echo "Invalid option. User shell remains unchanged."
         exit 1
-    fi
+        ;;
+esac
+
+if chsh -s "$new_shell"; then
+    echo "Shell changed successfully for the user."
 else
-    echo "User shell remains unchanged."
+    echo "Changing shell failed for the user." >&2
+    exit 1
 fi
 
 # ------------------------------------------------------
-# Change root shell to Fish (optional)
+# Change root shell
 # ------------------------------------------------------
 
-read -p "Do you want to switch the root shell to Fish? (y/n): " switch_root_shell
+read -p "Do you want to switch the root shell? Choose between Bash, Zsh, or Fish (b/z/f): " switch_root_shell
 
-if [ "$switch_root_shell" == "y" ]; then
-    if sudo chsh -s "/usr/bin/fish" root; then
-        echo "Shell changed to Fish successfully for the root user."
-    else
-        echo "Changing shell to Fish failed for the root user." >&2
+case "$switch_root_shell" in
+    b)
+        new_shell="/bin/bash"
+        ;;
+    z)
+        new_shell="/bin/zsh"
+        ;;
+    f)
+        new_shell="/usr/bin/fish"
+        ;;
+    *)
+        echo "Invalid option. Root shell remains unchanged."
         exit 1
-    fi
+        ;;
+esac
+
+if sudo chsh -s "$new_shell" root; then
+    echo "Shell changed successfully for the root user."
 else
-    echo "Root shell remains unchanged."
+    echo "Changing shell failed for the root user." >&2
+    exit 1
 fi
-
-
-
 
             # ------------------------------------
             # Make the specified script executable
