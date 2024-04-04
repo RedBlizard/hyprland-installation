@@ -479,60 +479,35 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             #sudo pacman -S nerd-fonts
                  
 
-check_shell_installed() {
+#!/bin/bash
+
+change_shell() {
+    local shell="$1"
+    local user="$2"
+    read -p "Do you want to switch the $user shell to $shell? (Yy/Nn): " switch_shell
+
+    if [[ "$switch_shell" == [Yy] ]]; then
+        if chsh -s "$shell" "$user"; then
+            echo "Shell changed to $shell successfully for the $user user."
+        else
+            echo "Changing shell to $shell failed for the $user user." >&2
+            exit 1
+        fi
+    else
+        echo "$user shell remains unchanged."
+    fi
+}
+
+install_shell() {
     local shell="$1"
     if ! command -v "$shell" &> /dev/null; then
         echo "$shell is not installed. Installing $shell..."
-        if [[ "$shell" == "/bin/bash" ]]; then
-            if ! yay -S --noconfirm "bash"; then
-                echo "Installation of $shell failed."
-                exit 1
-            fi
-        elif [[ "$shell" == "/bin/zsh" ]]; then
-            if ! yay -S --noconfirm "zsh"; then
-                echo "Installation of $shell failed."
-                exit 1
-            fi
-        elif [[ "$shell" == "/usr/bin/fish" ]]; then
-            if ! yay -S --noconfirm "fish"; then
-                echo "Installation of $shell failed."
-                exit 1
-            fi
-        else
-            echo "$shell doesn't need to be installed. Proceeding..."
-        fi
-    fi
-}
-
-change_user_shell() {
-    local user_shell="$1"
-    read -p "Do you want to switch your shell to $user_shell? (Yy/Nn): " switch_user_shell
-
-    if [[ "$switch_user_shell" == [Yy] ]]; then
-        if chsh -s "$user_shell"; then
-            echo "Shell changed to $user_shell successfully for the user."
-        else
-            echo "Changing shell to $user_shell failed for the user." >&2
+        if ! yay -S --noconfirm "$shell"; then
+            echo "Installation of $shell failed."
             exit 1
         fi
     else
-        echo "User shell remains unchanged."
-    fi
-}
-
-change_root_shell() {
-    local root_shell="$1"
-    read -p "Do you want to switch the root shell to $root_shell? (Yy/Nn): " switch_root_shell
-
-    if [[ "$switch_root_shell" == [Yy] ]]; then
-        if sudo chsh -s "$root_shell" root; then
-            echo "Shell changed to $root_shell successfully for the root user."
-        else
-            echo "Changing shell to $root_shell failed for the root user." >&2
-            exit 1
-        fi
-    else
-        echo "Root shell remains unchanged."
+        echo "$shell is already installed. Proceeding..."
     fi
 }
 
@@ -543,50 +518,39 @@ echo "3. Fish"
 read -p "Enter the number corresponding to your preferred shell: " user_choice
 
 case $user_choice in
-    1) user_shell="/bin/bash" ;;
-    2) user_shell="/bin/zsh" ;;
-    3) user_shell="/usr/bin/fish" ;;
+    1) shell="/bin/bash" ;;
+    2) shell="/bin/zsh" ;;
+    3) shell="/usr/bin/fish" ;;
     *) echo "Invalid choice. Exiting." && exit 1 ;;
 esac
 
-check_shell_installed "$user_shell"
-change_user_shell "$user_shell"
+install_shell "$shell"
+change_shell "$shell" "user"
 
-if [[ "$user_shell" == "/usr/bin/fish" ]]; then
-    echo "Fish shell selected."
-    root_shell="/usr/bin/fish"
-    check_shell_installed "$root_shell"
-    change_root_shell "$root_shell"
-    exit 0
-fi
+if command -v sudo &> /dev/null; then
+    read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
+    if [[ "$switch_root" == [Yy] ]]; then
+        echo "Available shells for root user:"
+        echo "1. Bash"
+        echo "2. Zsh"
+        echo "3. Fish"
+        read -p "Enter the number corresponding to the desired root shell: " root_choice
 
-read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
+        case $root_choice in
+            1) root_shell="/bin/bash" ;;
+            2) root_shell="/bin/zsh" ;;
+            3) root_shell="/usr/bin/fish" ;;
+            *) echo "Invalid choice. Exiting." && exit 1 ;;
+        esac
 
-if [[ "$switch_root" == [Yy] ]]; then
-    if ! command -v sudo &> /dev/null; then
-        echo "sudo is not installed. Cannot switch root shell without sudo."
-        exit 1
+        install_shell "$root_shell"
+        change_shell "$root_shell" "root"
+    else
+        echo "Root shell remains unchanged."
     fi
-
-    echo "Available shells for root user:"
-    echo "1. Bash"
-    echo "2. Zsh"
-    echo "3. Fish"
-    read -p "Enter the number corresponding to the desired root shell: " root_choice
-
-    case $root_choice in
-        1) root_shell="/bin/bash" ;;
-        2) root_shell="/bin/zsh" ;;
-        3) root_shell="/usr/bin/fish" ;;
-        *) echo "Invalid choice. Exiting." && exit 1 ;;
-    esac
-
-    check_shell_installed "$root_shell"
-    change_root_shell "$root_shell"
 else
-    echo "Root shell remains unchanged."
+    echo "sudo is not installed. Cannot switch root shell without sudo."
 fi
-
 
 
 
@@ -601,7 +565,7 @@ fi
         [Nn]* ) 
             exit;
             break;;
-        * ) echo "Please answer yes or no.";;
+        * ) echo "Please answer Yy or Nn.";;
     esac
 done
 
