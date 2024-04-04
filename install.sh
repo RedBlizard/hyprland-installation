@@ -479,15 +479,13 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             #sudo pacman -S nerd-fonts
                  
 
-#!/bin/bash
-
 change_shell() {
     local shell="$1"
     local user="$2"
     read -p "Do you want to switch the $user shell to $shell? (Yy/Nn): " switch_shell
 
     if [[ "$switch_shell" == [Yy] ]]; then
-        if chsh -s "$shell" "$user"; then
+        if sudo chsh -s "$shell" "$user"; then
             echo "Shell changed to $shell successfully for the $user user."
         else
             echo "Changing shell to $shell failed for the $user user." >&2
@@ -525,9 +523,9 @@ case $user_choice in
 esac
 
 install_shell "$shell"
-change_shell "$shell" "user"
+change_shell "$shell" "$USER"
 
-if command -v sudo &> /dev/null; then
+if sudo -v &> /dev/null; then
     read -p "Do you want to switch the root shell? (Yy/Nn): " switch_root
     if [[ "$switch_root" == [Yy] ]]; then
         echo "Available shells for root user:"
@@ -544,13 +542,19 @@ if command -v sudo &> /dev/null; then
         esac
 
         install_shell "$root_shell"
-        change_shell "$root_shell" "root"
+        if sudo chsh -s "$root_shell" root; then
+            echo "Shell changed to $root_shell successfully for the root user."
+        else
+            echo "Changing shell to $root_shell failed for the root user." >&2
+            exit 1
+        fi
     else
         echo "Root shell remains unchanged."
     fi
 else
     echo "sudo is not installed. Cannot switch root shell without sudo."
 fi
+
 
 
 
