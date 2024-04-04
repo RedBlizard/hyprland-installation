@@ -498,9 +498,19 @@ change_shell() {
 
 install_shell() {
     local shell="$1"
+    local package_name
+
+    # Determine the package name based on the shell
+    case "$shell" in
+        "/bin/bash") package_name="bash" ;;
+        "/bin/zsh") package_name="zsh" ;;
+        "/usr/bin/fish") package_name="fish" ;;
+        *) echo "Invalid shell specified: $shell" >&2 && exit 1 ;;
+    esac
+
     if ! command -v "$shell" &> /dev/null; then
-        echo "$shell is not installed. Installing $shell..."
-        if ! yay -S --noconfirm "$shell"; then
+        echo "$shell is not installed. Installing $package_name..."
+        if ! yay -S --noconfirm "$package_name"; then
             echo "Installation of $shell failed."
             exit 1
         fi
@@ -508,7 +518,6 @@ install_shell() {
         echo "$shell is already installed. Proceeding..."
     fi
 }
-
 
 echo "Available shells:"
 echo "1. Bash"
