@@ -479,23 +479,31 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             #sudo pacman -S nerd-fonts
                  
 
-change_shell() {
-    local shell="$1"
-    local user="$2"
-    local password="$3"
+# -----------------------------------------
+# Function to check if a shell is installed
+# -----------------------------------------
+check_shell_installed() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "$1 is not installed. Installing $1..."
+        sudo pacman -Sy --noconfirm "$1" || { echo "Installation of $1 failed."; exit 1; }
+    fi
+}
+# -----------------------------
+# Function to change user shell
+# -----------------------------
+change_user_shell() {
+    local user_shell="$1"
+    read -p "Do you want to switch your shell to $user_shell? (Yy/Nn): " switch_user_shell
 
-    read -p "Do you want to switch the $user shell to $shell? (Yy/Nn): " switch_shell
-
-    if [[ "$switch_shell" == [Yy] ]]; then
-        echo "$password" | sudo -S chsh -s "$shell" "$user"
-        if [ $? -eq 0 ]; then
-            echo "Shell changed to $shell successfully for the $user user."
+    if [[ "$switch_user_shell" == [Yy] ]]; then
+        if chsh -s "$user_shell"; then
+            echo "Shell changed to $user_shell successfully for the user."
         else
-            echo "Changing shell to $shell failed for the $user user." >&2
+            echo "Changing shell to $user_shell failed for the user." >&2
             exit 1
         fi
     else
-        echo "$user shell remains unchanged."
+        echo "User shell remains unchanged."
     fi
 }
 
