@@ -36,6 +36,8 @@
     wofi
     waybar
     kio-admin
+    kservice5
+    kf6-servicemenus-rootactions
     neofetch
     neovim
     network-manager-applet
@@ -81,9 +83,7 @@
     snapper-rollback
     sddm
     sddm-conf-git
-    simplicity-sddm-theme-git
-    eos-sddm-theme
-    xdg-desktop-portal-hyprland
+    simplicity-sddm-theme-git    
     xed
     mpv
     wlr-randr
