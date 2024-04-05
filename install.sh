@@ -52,6 +52,13 @@ cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; ex
 
 
 # ------------------------------------------------------
+# Install Bash, Zsh, and Fish shells
+# ------------------------------------------------------
+echo "Installing Bash, Zsh, and Fish shells..."
+sudo pacman -Sy --noconfirm bash zsh fish || { echo 'Installation of shells failed.'; exit 1; }
+
+
+# ------------------------------------------------------
 # Getting in the dotfiles
 # ------------------------------------------------------
 
