@@ -3,7 +3,6 @@
     azote
     btop    
     htop
-    bash    
     bash-completion
     bash-language-server
     breeze-icons
@@ -16,8 +15,7 @@
     dolphin
     dolphin-plugins
     duf
-    dunst
-    fish    
+    dunst 
     galculator
     glances
     geany
@@ -95,5 +93,5 @@
     xorg-mkfontscale
     xorg-xhost
     yay
-    zsh
+
     
