@@ -482,16 +482,20 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 # Change user shell
 # ------------------------------------------------------
 
-read -p "Do you want to switch your shell? Choose between Bash, Zsh, or Fish (b/z/f): " switch_user_shell
+read -p "Do you want to switch your shell? Choose between: 
+1. Bash
+2. Zsh
+3. Fish
+Enter the corresponding number (1/2/3): " switch_user_shell
 
 case "$switch_user_shell" in
-    b)
+    1)
         new_shell="/bin/bash"
         ;;
-    z)
+    2)
         new_shell="/bin/zsh"
         ;;
-    f)
+    3)
         new_shell="/usr/bin/fish"
         ;;
     *)
@@ -511,16 +515,20 @@ fi
 # Change root shell
 # ------------------------------------------------------
 
-read -p "Do you want to switch the root shell? Choose between Bash, Zsh, or Fish (b/z/f): " switch_root_shell
+read -p "Do you want to switch the root shell? Choose between: 
+1. Bash
+2. Zsh
+3. Fish
+Enter the corresponding number (1/2/3): " switch_root_shell
 
 case "$switch_root_shell" in
-    b)
+    1)
         new_shell="/bin/bash"
         ;;
-    z)
+    2)
         new_shell="/bin/zsh"
         ;;
-    f)
+    3)
         new_shell="/usr/bin/fish"
         ;;
     *)
@@ -535,6 +543,7 @@ else
     echo "Changing shell failed for the root user." >&2
     exit 1
 fi
+
 
             # ------------------------------------
             # Make the specified script executable
