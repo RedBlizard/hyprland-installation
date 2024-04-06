@@ -58,7 +58,8 @@
     wlogout-git
     swww    
     kitty
-    kvantum    
+    kvantum
+    kvantum-qt5    
     konsole
     lua-language-server
     qt6ct
