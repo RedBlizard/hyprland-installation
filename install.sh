@@ -525,7 +525,7 @@ sudo cp -r ~/.config/fish /root/.config/
 sudo cp -r ~/.config/nwg-look /root/.config/            
 sudo cp -r ~/.config/xsettingsd /root/.config/
 sudo cp -r ~/.config/qt6ct /root/.config/
-sudo cp -r ~/.config/kvantum /root/.config/
+#sudo cp -r ~/.config/kvantum /root/.config/
 sudo cp -r ~/.config/starship /root/.config/
 sudo cp -r ~/.config/gtk-3.0 /root/.config/
 
