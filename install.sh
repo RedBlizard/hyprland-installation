@@ -540,11 +540,12 @@ cd "$HOME/hyprland-installation/"
 
 if [ -f "$HOME/hyprland-installation/packages-repository.txt" ]; then
     # Read package names from repository.txt
-    packages=$(<packages-repository.txt)
+    readarray -t packages < "packages-repository.txt"
 
     # Filter out already installed packages
     packages_to_install=()
-    for package in $packages; do
+    for package in "${packages[@]}"; do
+        package=$(echo "$package" | tr -d '\r\n') # Remove carriage return and newline characters
         if ! pacman -Qi "$package" &> /dev/null && ! yay -Qi "$package" &> /dev/null; then
             packages_to_install+=("$package")
         fi
@@ -563,6 +564,7 @@ else
     echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
     exit 1
 fi
+
 
 # Function to display the browser options
 display_options() {
