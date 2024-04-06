@@ -524,11 +524,12 @@ sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 echo -e "${YELLOW}Copying sddm.conf to /etc/...${NC}"
 sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 
+echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
+
 # chmod all scripts needed         
 chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
-echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
-
+echo -e "${YELLOW}Now we will continue with the installation. We are halfway there.${RESET}"
 
 # -------------------------------------------
 # Check if packages-repository.txt is present
