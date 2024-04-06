@@ -524,26 +524,10 @@ sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 echo -e "${YELLOW}Copying sddm.conf to /etc/...${NC}"
 sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 
-# Copy environment to /etc/
-#sudo cp -r ~/Hyprland-blizz/environment /etc/
+# chmod all scripts needed         
+chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
-#echo "Script execution completed."
-
-
-            # ----------------------------------------------------------------------------------------  
-            # Install Nerd Fonts from Arch repositories
-            # ----------------------------------------------------------------------------------------
-            
-            #echo "Please see yess to all the fonts (enter) is for all  these are needed for nvim !..."
-            #sudo pacman -S nerd-fonts
-   
-            # ------------------------------------
-            # Make the specified script executable
-            # ------------------------------------
-            
-            chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
-
-            echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
+            echo "Configuration files successfully copied to ~/ and ~/.config/"
             break;;
         [Nn]* ) 
             exit;
