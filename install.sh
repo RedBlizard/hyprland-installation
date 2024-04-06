@@ -527,14 +527,16 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 # chmod all scripts needed         
 chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
-            echo "Configuration files successfully copied to ~/ and ~/.config/"
-            break;;
-        [Nn]* ) 
-            exit;
-            break;;
-        * ) echo "Please answer Yy or Nn.";;
-    esac
-done
+echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
+
+;;
+[Nn]* ) 
+    exit
+    ;;
+* ) echo "Please answer Yy or Nn."
+    ;;
+esac
+
 
 # -------------------------------------------
 # Check if packages-repository.txt is present
