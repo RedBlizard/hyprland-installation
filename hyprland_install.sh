@@ -194,7 +194,7 @@ fi
 echo "Using AUR helper: $aur_helper"
 
 
-# Function to switch shell
+# Function to switch shell for the current user
 switch_shell() {
     read -p "Choose your new shell:
     1. Bash
@@ -217,20 +217,6 @@ switch_shell() {
         fi
     fi
 }
-
-# Prompt user to switch shell
-echo -e "${YELLOW}Now we are checking which shell is used on the system.${NC}"
-current_shell=$(basename "$SHELL")
-echo "Current shell: $current_shell"
-
-# Always prompt for shell switch for the current user
-switch_shell
-
-# Prompt for changing the root shell
-read -p "Do you want to switch the root shell? (y/n): " switch_root_shell
-if [ "$switch_root_shell" == "y" ]; then
-    switch_shell_as_root
-fi
 
 # Function to switch root shell
 switch_shell_as_root() {
@@ -255,6 +241,19 @@ switch_shell_as_root() {
         fi
     fi
 }
+
+# Prompt user to switch shell for the current user
+echo -e "${YELLOW}Now we are checking which shell is used on the system.${NC}"
+current_shell=$(basename "$SHELL")
+echo "Current shell: $current_shell"
+switch_shell
+
+# Prompt for changing the root shell
+read -p "Do you want to switch the root shell? (y/n): " switch_root_shell
+if [ "$switch_root_shell" == "y" ]; then
+    switch_shell_as_root
+fi
+
 
 # -----------------------
 # Getting in the dotfiles
