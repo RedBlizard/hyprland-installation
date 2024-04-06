@@ -212,8 +212,6 @@ echo "Dont worry we are checking a few things in the background and install a fe
     else
         echo "Kvantum is already installed. Skipping installation..."
     fi
-} &>/dev/null &
-
 
 
 echo -e "${GREEN}"
