@@ -287,7 +287,6 @@ cp -r "$SCRIPT_DIR"/* ~/
 cp -r .config ~/
 cp -r .icons ~/
 cp -r .Kvantum-themes ~/
-#cp -r .themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
@@ -314,7 +313,6 @@ cat <<"EOF"
 ░╚═══██╗░░░██║░░░██╔══██║██╔══██╗░░░██║░░░██║██║╚████║██║░░╚██╗░░░░░░░░░
 ██████╔╝░░░██║░░░██║░░██║██║░░██║░░░██║░░░██║██║░╚███║╚██████╔╝██╗██╗██╗
 ╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝╚═╝░░╚══╝░╚═════╝░╚═╝╚═╝╚═╝
-
 EOF
 echo -e "${NONE}"
 
@@ -356,8 +354,7 @@ while true; do
             # -----------------------------------------------
             cp -r * ~/
             cp -r .icons ~/
-            cp -r .Kvantum-themes ~/
-            # cp -r .themes ~/
+            cp -r .Kvantum-themes ~/           
             cp -r .local ~/
             cp -r Pictures ~/
 
@@ -525,7 +522,6 @@ sudo cp -r ~/.config/fish /root/.config/
 sudo cp -r ~/.config/nwg-look /root/.config/            
 sudo cp -r ~/.config/xsettingsd /root/.config/
 sudo cp -r ~/.config/qt6ct /root/.config/
-#sudo cp -r ~/.config/kvantum /root/.config/
 sudo cp -r ~/.config/starship /root/.config/
 sudo cp -r ~/.config/gtk-3.0 /root/.config/
 
