@@ -1,3 +1,4 @@
+# Pacman (Arch Repository Packages):
 alacritty
 ark
 bash-completion
@@ -75,6 +76,8 @@ xorg-xhost
 xorg-xsetroot
 yay
 xed
+
+# AUR (Arch User Repository Packages):
 adobe-base-14-fonts
 azote
 catppuccin-gtk-theme-frappe
