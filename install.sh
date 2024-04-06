@@ -529,14 +529,6 @@ chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script execut
 
 echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
 
-;;
-[Nn]* ) 
-    exit
-    ;;
-* ) echo "Please answer Yy or Nn."
-    ;;
-esac
-
 
 # -------------------------------------------
 # Check if packages-repository.txt is present
