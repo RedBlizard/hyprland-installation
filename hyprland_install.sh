@@ -194,73 +194,67 @@ fi
 echo "Using AUR helper: $aur_helper"
 
 
-# Check which shell is used on the system
-echo -e "${YELLOW}Now we are checking which shell is used on the system${NC}"
-current_shell=$(basename "$SHELL")
-echo "Current shell: $current_shell"
-
-# Check if the current shell is bash and prompt the user to switch to zsh or fish
-if [ "$current_shell" == "bash" ]; then
-    read -p "Do you want to switch your shell? Choose between:
+# Function to switch shell
+switch_shell() {
+    read -p "Choose your new shell:
     1. Bash
     2. Zsh
     3. Fish
-    Enter the corresponding number (1/2/3): " switch_user_shell
+    Enter the corresponding number (1/2/3): " new_shell_choice
 
-    case "$switch_user_shell" in
-        1)
-            new_shell="/bin/bash"
-            ;;
-        2)
-            new_shell="/bin/zsh"
-            ;;
-        3)
-            new_shell="/usr/bin/fish"
-            ;;
-        *)
-            echo "Invalid option. User shell remains unchanged."
-            ;;
+    case "$new_shell_choice" in
+        1) new_shell="/bin/bash" ;;
+        2) new_shell="/bin/zsh" ;;
+        3) new_shell="/usr/bin/fish" ;;
+        *) echo "Invalid option. Shell remains unchanged." ;;
     esac
 
-    if chsh -s "$new_shell"; then
-        echo "User shell changed successfully."
-    else
-        echo "Changing user shell failed." >&2
+    if [[ -n "$new_shell" ]]; then
+        if chsh -s "$new_shell"; then
+            echo "Shell changed successfully."
+        else
+            echo "Changing shell failed." >&2
+        fi
     fi
+}
 
-    # Prompt for changing the root shell
-    read -p "Do you want to switch the root shell? (y/n): " switch_root_shell
-    if [ "$switch_root_shell" == "y" ]; then
-        read -p "Choose the root shell:
-        1. Bash
-        2. Zsh
-        3. Fish
-        Enter the corresponding number (1/2/3): " switch_root_shell_number
+# Prompt user to switch shell
+echo -e "${YELLOW}Now we are checking which shell is used on the system.${NC}"
+current_shell=$(basename "$SHELL")
+echo "Current shell: $current_shell"
 
-        case "$switch_root_shell_number" in
-            1)
-                new_root_shell="/bin/bash"
-                ;;
-            2)
-                new_root_shell="/bin/zsh"
-                ;;
-            3)
-                new_root_shell="/usr/bin/fish"
-                ;;
-            *)
-                echo "Invalid option. Root shell remains unchanged."
-                ;;
-        esac
+# Always prompt for shell switch for the current user
+switch_shell
 
+# Prompt for changing the root shell
+read -p "Do you want to switch the root shell? (y/n): " switch_root_shell
+if [ "$switch_root_shell" == "y" ]; then
+    switch_shell_as_root
+fi
+
+# Function to switch root shell
+switch_shell_as_root() {
+    read -p "Choose the root shell:
+    1. Bash
+    2. Zsh
+    3. Fish
+    Enter the corresponding number (1/2/3): " new_root_shell_choice
+
+    case "$new_root_shell_choice" in
+        1) new_root_shell="/bin/bash" ;;
+        2) new_root_shell="/bin/zsh" ;;
+        3) new_root_shell="/usr/bin/fish" ;;
+        *) echo "Invalid option. Root shell remains unchanged." ;;
+    esac
+
+    if [[ -n "$new_root_shell" ]]; then
         if sudo chsh -s "$new_root_shell" root; then
             echo "Root shell changed successfully."
         else
             echo "Changing root shell failed." >&2
         fi
     fi
-else
-    echo "Current shell is not bash. Skipping shell switching."
-fi
+}
 
 # -----------------------
 # Getting in the dotfiles
