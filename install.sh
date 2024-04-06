@@ -291,36 +291,33 @@ cp -r .Kvantum-themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
-# ------------------------------------------------------
-# Check if kvantum is already installed or not
-# ------------------------------------------------------
-
-if ! command -v kvantummanager &> /dev/null; then
-    echo "Kvantum is not installed. Proceeding with installation..."
-    # Your installation commands for Kvantum go here
-else
-    echo "Kvantum is already installed. Skipping installation..."
-fi
-
-# ---------------------------------------------
-# Check if Kvantum directory exists in dotfiles
-# ---------------------------------------------
-kvantum_source="$HOME/Hyprland-blizz/.config/Kvantum"
-if [ -d "$kvantum_source" ]; then
-    # If it exists, proceed with copying
-    # Check if Kvantum directory exists in user's .config
-    if [ ! -d "$HOME/.config/Kvantum" ]; then
-        # If not, create it
-        mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }
-    fi
+# Check if kvantum is installed before attempting to copy the directory
+if command -v kvantummanager &> /dev/null; then
+    echo "Kvantum is installed. Proceeding with copying configuration..."
     
-    # --------------------------------------------------------------------------
-    # Copy and force overwrite Kvantum directory from dotfiles to user's .config
-    # --------------------------------------------------------------------------
-    cp -rf "$kvantum_source" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+    # ---------------------------------------------
+    # Check if Kvantum directory exists in dotfiles
+    # ---------------------------------------------
+    kvantum_source="$HOME/Hyprland-blizz/.config/Kvantum"
+    if [ -d "$kvantum_source" ]; then
+        # If it exists, proceed with copying
+        # Check if Kvantum directory exists in user's .config
+        if [ ! -d "$HOME/.config/Kvantum" ]; then
+            # If not, create it
+            mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }
+        fi
+        
+        # --------------------------------------------------------------------------
+        # Copy and force overwrite Kvantum directory from dotfiles to user's .config
+        # --------------------------------------------------------------------------
+        cp -rf "$kvantum_source" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+    else
+        echo 'Warning: Kvantum directory not found in dotfiles. Skipping Kvantum configuration.'
+    fi
 else
-    echo 'Warning: Kvantum directory not found in dotfiles. Skipping Kvantum configuration.'
+    echo "Kvantum is not installed. Skipping Kvantum configuration."
 fi
+
 
 echo -e "${GREEN}"
 cat <<"EOF"
