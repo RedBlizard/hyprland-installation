@@ -30,27 +30,33 @@ cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; ex
 
 # Redirect CPU info checks to /dev/null to hide the output
 {
-# ------------------------------------------------------
-# Check if yay is installed
-# ------------------------------------------------------
+    # ------------------------------------------------------
+    # Check if yay is installed
+    # ------------------------------------------------------
+    if ! command -v yay &> /dev/null; then
+        echo "yay is not installed. Installing yay..."
+        sudo pacman -Sy --noconfirm yay
+    fi
 
-if ! command -v yay &> /dev/null; then
-    echo "yay is not installed. Installing yay..."
-    sudo pacman -Sy --noconfirm yay
-fi
+    # ------------------------------------------------------
+    # Check if Git is installed
+    # ------------------------------------------------------
+    echo "Checking if Git is installed..."
+    if ! command -v git &> /dev/null; then
+        echo "Git is not installed. Installing Git..."
+        sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+    fi
+
+    # Add more checks here as needed
+} &>/dev/null &  # Redirect output to /dev/null and run in background
+
 
 # ------------------------------------------------------
-# Check if Git is installed
+# Install Bash, Zsh, and Fish shells
 # ------------------------------------------------------
+echo "Installing Bash, Zsh, and Fish shells..."
+sudo pacman -Sy --noconfirm bash zsh fish || { echo 'Installation of shells failed.'; exit 1; }
 
-echo "Checking if Git is installed..."
-if ! command -v git &> /dev/null; then
-    echo "Git is not installed. Installing Git..."
-    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
-fi
-
-    # Install Bash, Zsh, and Fish shells
-    sudo pacman -Sy --noconfirm bash zsh fish || { echo 'Installation of shells failed.'; exit 1; }
 
 # ------------------------------------------------------
 # Getting in the dotfiles
@@ -115,7 +121,7 @@ echo "Don't worry, we need to check a few things before we can start the Hyprlan
 cpu_info=$(lscpu)
 
 # Debug print to check CPU info
-echo "CPU Info: $cpu_info"
+#echo "CPU Info: $cpu_info"
 
 # ---------------------------------------------------------------------
 # Check CPU vendor and execute AMD-specific code if AMD CPU is detected
