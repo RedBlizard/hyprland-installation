@@ -332,7 +332,7 @@ cd "$HOME/Hyprland-blizz/" || { echo 'Failed to change directory to Hyprland-bli
 # ----------------------------------
 
 while true; do
-    read -p "DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): " yn
+    read -p "$(tput setaf 4)DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): $(tput sgr0)" yn
     case $yn in
         [Yy]* )
             echo "Installation started."
@@ -454,8 +454,8 @@ if pacman -Qs gnome &> /dev/null; then
         # ---------------------
         
         if ! yay -Qi sddm &> /dev/null; then
-            if yay -S --noconfirm sddm; then
-                echo "sddm installed."
+            if yay -S --noconfirm sddm; then                
+        echo -e "${BLUE}SDDM installed.${NC}"
             else
                 echo "Failed to install sddm. Exiting."
                 exit 1
@@ -488,26 +488,16 @@ if [ ! -f "$sddm_conf" ]; then
     fi
 fi
 
-# ------------------------------------------------------
-# Start of the Hyprland installation
-# ------------------------------------------------------
-
-while true; do
-    read -p "DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): " yn
-    case $yn in
-        [Yy]* )
-            echo "Installation started."
-
 # Copy dotfiles and directories to home directory
-echo "Copying dotfiles and directories to home directory..."
+echo -e "${BLUE}Copying dotfiles and directories to home directory...${NC}"
 cp -r ~/Hyprland-blizz/* ~/
 
 # Copy .config folder to home directory            
-echo "Copying .config folder to home directory..."
+echo -e "${BLUE}Copying .config folder to home directory...${NC}"
 cp -r ~/Hyprland-blizz/.config ~/
 
 # Copy the following folders to home root directory
-echo "Copying folders to home root directory..."
+echo -e "${PINK}Copying folders to home root directory...${NC}"
 sudo cp -r ~/.icons /root/
 sudo cp -r ~/.Kvantum-themes /root/
 sudo cp -r ~/.themes /root/
@@ -517,7 +507,7 @@ sudo cp -r ~/.themes /root/
 # sudo cp -r ~/.local/share/fonts/Noto /usr/share/fonts/
 
 # Copy the following folders to the .config folder in the root directory
-echo "Copying folders to /root/.config/..."
+echo -e "${PINK}Copying folders to /root/.config/...${NC}"
 sudo cp -r ~/.config/fish /root/.config/            
 sudo cp -r ~/.config/nwg-look /root/.config/            
 sudo cp -r ~/.config/xsettingsd /root/.config/
@@ -526,12 +516,12 @@ sudo cp -r ~/.config/starship /root/.config/
 sudo cp -r ~/.config/gtk-3.0 /root/.config/
 
 # Copy the individual files to the .config folder in the root directory
-echo "Copying individual files to /root/.config/..."
+echo -e "${PINK}Copying individual files to /root/.config/...${NC}"
 sudo cp ~/.config/starship.toml /root/.config/
 sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 
 # Copy sddm.conf to /etc/
-echo "Copying sddm.conf to /etc/..."
+echo -e "${YELLOW}Copying sddm.conf to /etc/...${NC}"
 sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
 
 # Copy environment to /etc/
@@ -553,7 +543,7 @@ sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
             
             chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
-            echo "Configuration files successfully copied to ~/ and ~/.config/"
+            echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
             break;;
         [Nn]* ) 
             exit;
@@ -593,13 +583,6 @@ else
     exit 1
 fi
 
-
-#!/bin/bash
-
-# ANSI color codes
-GREEN='\033[0;92m'
-BLUE='\033[0;94m'
-NC='\033[0m' # No Color
 
 # Function to display the browser options
 display_options() {
