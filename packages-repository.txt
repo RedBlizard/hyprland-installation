@@ -1,98 +1,95 @@
-    alacritty
-    ark
-    azote
-    btop    
-    htop
-    bash-completion
-    bash-language-server
-    breeze-icons
-    btrfs-assistant
-    btrfsmaintenance
-    cava
-    catppuccin-gtk-theme-frappe
-    cantarell-fonts
-    cliphist
-    dolphin
-    dolphin-plugins
-    duf
-    dunst 
-    galculator
-    glances
-    geany
-    geany-plugins
-    gparted
-    grim
-    grimblast-git
-    grub-btrfs
-    grub-hook
-    update-grub
-    tty-clock
-    unimatrix-git
-    vscode-json-languageserver
-    git
-    grsync
-    wofi
-    waybar
-    kio-admin
-    kservice5
-    kf6-servicemenus-rootactions
-    neofetch
-    neovim
-    network-manager-applet
-    networkmanager-dmenu-bluetoothfix-git
-    pacseek
-    pavucontrol-qt
-    papirus-folders-catppuccin-git
-    papirus-icon-theme
-    pipes.sh
-    polkit-gnome
-    swaylock
-    swaybg
-    starship
-    nwg-look      
-    swayidle
-    hyprland
-    hyprpicker
-    hyprshot
-    inotify-tools
-    wlogout-git
-    swww    
-    kitty
-    kvantum
-    kvantum-qt5    
-    konsole
-    lua-language-server
-    qt6ct
-    thunar
-    thunar-archive-plugin
-    thunar-volman
-    tldr
-    adobe-base-14-fonts
-    ttf-noto-nerd
-    ttf-nerd-fonts-symbols-mono
-    ttf-font-awesome
-    awesome-terminal-fonts
-    ttf-bitstream-vera
-    ttf-dejavu
-    ttf-liberation
-    noto-fonts-extra
-    ttf-opensans
-    snap-pac
-    snapper
-    snapper-rollback
-    sddm
-    sddm-conf-git
-    simplicity-sddm-theme-git    
-    xed
-    mpv
-    wlr-randr
-    xdg-desktop-portal
-    xdg-desktop-portal-hyprland
-    xorg-xsetroot
-    xorg-bdftopcf
-    xorg-font-util
-    xorg-mkfontscale
-    xorg-xhost
-    yay
+# Pacman (Arch Repository Packages):
+alacritty
+ark
+bash-completion
+btrfs-assistant
+btrfsmaintenance
+breeze-icons
+btop
+cantarell-fonts
+cava
+cliphist
+dolphin
+dolphin-plugins
+duf
+dunst
+galculator
+geany
+geany-plugins
+git
+glances
+grsync
+grub-btrfs
+grub-hook
+htop
+inotify-tools
+kio-admin
+kitty
+konsole
+lua-language-server
+mpv
+neofetch
+neovim
+network-manager-applet
+noto-fonts-extra
+pacseek
+papirus-icon-theme
+pavucontrol-qt
+pipes.sh
+polkit-gnome
+qt6ct
+sddm
+sddm-conf-git
+snap-pac
+snapper
+snapper-rollback
+starship
+swaybg
+swayidle
+swaylock
+thunar
+thunar-archive-plugin
+thunar-volman
+tldr
+tty-clock
+ttf-bitstream-vera
+ttf-dejavu
+ttf-liberation
+ttf-nerd-fonts-symbols-mono
+ttf-noto-nerd
+ttf-opensans
+ttf-font-awesome
+update-grub
+vscode-json-languageserver
+wlr-randr
+wofi
+xdg-desktop-portal
+xorg-bdftopcf
+xorg-font-util
+xorg-mkfontscale
+xorg-xhost
+xorg-xsetroot
+yay
 
-    
+# AUR (Arch User Repository Packages):
+adobe-base-14-fonts
+azote
+bash-language-server
+catppuccin-gtk-theme-frappe
+grim
+grimblast-git
+hyprland
+hyprpicker
+hyprshot
+katrain
+kvantum
+kvantum-qt5
+networkmanager-dmenu-bluetoothfix-git
+nwg-look
+papirus-folders-catppuccin-git
+simplicity-sddm-theme-git
+starship
+swww
+unimatrix-git
+wlogout-git
+xed
