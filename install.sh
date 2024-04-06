@@ -31,188 +31,191 @@ cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; ex
 # Redirect CPU info checks to /dev/null to hide the output
 {
 # ------------------------------------------------------
-# Check and install dependencies in the background
+# Check if yay is installed
 # ------------------------------------------------------
 
-echo "Dont worry we are checking a few things in the background and install a few things for the hyprland installation"
+if ! command -v yay &> /dev/null; then
+    echo "yay is not installed. Installing yay..."
+    sudo pacman -Sy --noconfirm yay
+fi
 
-{
-    # Check if yay is installed
-    if ! command -v yay &> /dev/null; then
-        sudo pacman -Sy --noconfirm yay
-    fi
+# ------------------------------------------------------
+# Check if Git is installed
+# ------------------------------------------------------
 
-    # Check if Git is installed
-    if ! command -v git &> /dev/null; then
-        sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
-    fi
+echo "Checking if Git is installed..."
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Installing Git..."
+    sudo pacman -Sy --noconfirm git || { echo 'Installation of Git failed.'; exit 1; }
+fi
 
     # Install Bash, Zsh, and Fish shells
     sudo pacman -Sy --noconfirm bash zsh fish || { echo 'Installation of shells failed.'; exit 1; }
 
-    # ------------------------------------------------------
-    # Getting in the dotfiles
-    # ------------------------------------------------------
+# ------------------------------------------------------
+# Getting in the dotfiles
+# ------------------------------------------------------
 
-    echo "Cloning dotfiles repository..."
+echo "Cloning dotfiles repository..."
 
-    # ------------------------------------------------------
-    # Create the Hyprland-blizz directory if not present
-    # ------------------------------------------------------
+# ------------------------------------------------------
+# Create the Hyprland-blizz directory if not present
+# ------------------------------------------------------
 
-    mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
+mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
 
-    # ------------------------------------------------------
-    # Change into the Hyprland-blizz directory
-    # ------------------------------------------------------
+# ------------------------------------------------------
+# Change into the Hyprland-blizz directory
+# ------------------------------------------------------
 
-    cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
 
-    # ------------------------------------------------------
-    # Clone the dotfiles repository
-    # ------------------------------------------------------
+# ------------------------------------------------------
+# Clone the dotfiles repository
+# ------------------------------------------------------
 
-    git clone "https://github.com/RedBlizard/Hyprland-blizz.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
+git clone "https://github.com/RedBlizard/Hyprland-blizz.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
 
-    # ---------------------------------------------
-    # Check if Kvantum directory exists in dotfiles
-    # ---------------------------------------------
-    kvantum_source="$HOME/Hyprland-blizz/.config/Kvantum"
-    if [ -d "$kvantum_source" ]; then
-        # If it exists, proceed with copying
-        # Check if Kvantum directory exists in user's .config
-        if [ ! -d "$HOME/.config/Kvantum" ]; then
-            # If not, create it
-            mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }
-        fi
-        
-        # --------------------------------------------------------------------------
-        # Copy and force overwrite Kvantum directory from dotfiles to user's .config
-        # --------------------------------------------------------------------------
-        cp -rf "$kvantum_source" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+# ---------------------------------------------
+# Check if Kvantum directory exists in dotfiles
+# ---------------------------------------------
+kvantum_source="$HOME/Hyprland-blizz/.config/Kvantum"
+if [ -d "$kvantum_source" ]; then
+    # If it exists, proceed with copying
+    # Check if Kvantum directory exists in user's .config
+    if [ ! -d "$HOME/.config/Kvantum" ]; then
+        # If not, create it
+        mkdir -p "$HOME/.config/Kvantum" || { echo 'Error creating Kvantum directory.'; exit 1; }
+    fi
+    
+    # --------------------------------------------------------------------------
+    # Copy and force overwrite Kvantum directory from dotfiles to user's .config
+    # --------------------------------------------------------------------------
+    cp -rf "$kvantum_source" "$HOME/.config/" || { echo 'Error copying Kvantum directory.'; exit 1; }
+else
+    echo 'Warning: Kvantum directory not found in dotfiles. Skipping Kvantum configuration.'
+fi
+
+
+# ------------------------------------------------------
+# Copy dotfiles and directories to home directory
+# ------------------------------------------------------
+cp -r "$SCRIPT_DIR"/* ~/
+cp -r .config ~/
+cp -r .icons ~/
+cp -r .Kvantum-themes ~/
+#cp -r .themes ~/
+cp -r .local ~/
+cp -r Pictures ~/
+
+echo "Don't worry, we need to check a few things before we can start the Hyprland installation..."
+
+# Trim whitespaces from the CPU vendor
+cpu_info=$(lscpu)
+
+# Debug print to check CPU info
+echo "CPU Info: $cpu_info"
+
+# ---------------------------------------------------------------------
+# Check CPU vendor and execute AMD-specific code if AMD CPU is detected
+# ---------------------------------------------------------------------
+
+if [ "$cpu_vendor" == "AuthenticAMD" ]; then
+    echo "AMD CPU detected. Running AMD-specific code..."
+
+    # Check if amd-ucode is installed
+    if echo "$cpu_info" | grep -qi "AuthenticAMD"; then
+        echo "amd-ucode is installed."
+        # Add your AMD-specific code here
     else
-        echo 'Warning: Kvantum directory not found in dotfiles. Skipping Kvantum configuration.'
+        echo "amd-ucode is not installed. Please install it for optimal performance."
+        # Add code to install amd-ucode if desired
     fi
+fi
+
+# -------------------------------------------------------------------
+# Check CPU vendor and execute INTEL-specific code if CPU is detected
+# -------------------------------------------------------------------
+
+if [ "$cpu_vendor" == "GenuineIntel" ]; then
+    echo "INTEL CPU detected. Running INTEL-specific code..."
+
+    # Check if intel-ucode is installed
+    if pacman -Qi intel-ucode &> /dev/null; then
+        echo "intel-ucode is installed."
+        # Add your INTEL-specific code here
+    else
+        echo "intel-ucode is not installed. Please install it for optimal performance."
+        # Add code to install intel-ucode if desired
+    fi
+fi
 
 
-    # ------------------------------------------------------
-    # Copy dotfiles and directories to home directory
-    # ------------------------------------------------------
-    cp -r "$SCRIPT_DIR"/* ~/
-    cp -r .config ~/
-    cp -r .icons ~/
-    cp -r .Kvantum-themes ~/
-    #cp -r .themes ~/
-    cp -r .local ~/
-    cp -r Pictures ~/
 
-    echo "Don't worry, we need to check a few things before we can start the Hyprland installation..."
+# ------------------------------------------------------
+# Check if Nvidia GPU is present
+# ------------------------------------------------------
+if lspci | grep -i "NVIDIA" &> /dev/null; then
+    echo "Nvidia GPU detected. Installing Nvidia packages..."
 
-    # Trim whitespaces from the CPU vendor
-    cpu_info=$(lscpu)
+    # Install Nvidia-specific packages
+    nvidia_packages=("libva" "libva-nvidia-driver-git")
 
-    # Debug print to check CPU info
-    #echo "CPU Info: $cpu_info"
-
-    # ---------------------------------------------------------------------
-    # Check CPU vendor and execute AMD-specific code if AMD CPU is detected
-    # ---------------------------------------------------------------------
-
-    if [ "$cpu_vendor" == "AuthenticAMD" ]; then
-        echo "AMD CPU detected. Running AMD-specific code..."
-
-        # Check if amd-ucode is installed
-        if echo "$cpu_info" | grep -qi "AuthenticAMD"; then
-            echo "amd-ucode is installed."
-            # Add your AMD-specific code here
+    for package in "${nvidia_packages[@]}"; do
+        if pacman -Qi "$package" &> /dev/null; then
+            echo "$package is already installed. Skipping."
         else
-            echo "amd-ucode is not installed. Please install it for optimal performance."
-            # Add code to install amd-ucode if desired
-        fi
-    fi
-
-    # -------------------------------------------------------------------
-    # Check CPU vendor and execute INTEL-specific code if CPU is detected
-    # -------------------------------------------------------------------
-
-    if [ "$cpu_vendor" == "GenuineIntel" ]; then
-        echo "INTEL CPU detected. Running INTEL-specific code..."
-
-        # Check if intel-ucode is installed
-        if pacman -Qi intel-ucode &> /dev/null; then
-            echo "intel-ucode is installed."
-            # Add your INTEL-specific code here
-        else
-            echo "intel-ucode is not installed. Please install it for optimal performance."
-            # Add code to install intel-ucode if desired
-        fi
-    fi
-
-
-
-    # ------------------------------------------------------
-    # Check if Nvidia GPU is present
-    # ------------------------------------------------------
-    if lspci | grep -i "NVIDIA" &> /dev/null; then
-        echo "Nvidia GPU detected. Installing Nvidia packages..."
-
-        # Install Nvidia-specific packages
-        nvidia_packages=("libva" "libva-nvidia-driver-git")
-
-        for package in "${nvidia_packages[@]}"; do
-            if pacman -Qi "$package" &> /dev/null; then
-                echo "$package is already installed. Skipping."
+            # Install the package
+            if yay -S --noconfirm "$package"; then
+                echo "$package installed."
             else
-                # Install the package
-                if yay -S --noconfirm "$package"; then
-                    echo "$package installed."
-                else
-                    echo "Failed to install $package. Manual intervention may be required."
-                    exit 1
-                fi
+                echo "Failed to install $package. Manual intervention may be required."
+                exit 1
             fi
-        done
-    else
-        echo "No Nvidia GPU detected. Skipping installation of Nvidia-specific packages."
-    fi
+        fi
+    done
+else
+    echo "No Nvidia GPU detected. Skipping installation of Nvidia-specific packages."
+fi
 
-    # ------------------------------------------------------
-    # Check bootloader type
-    # ------------------------------------------------------
-    loader_entries="/efi/loader/entries"
-    if [ -d "$loader_entries" ] && [ -n "$(ls -A "$loader_entries"/*.conf 2>/dev/null)" ]; then
-        # Systemd-boot detected
-        echo "Systemd-boot is in use."
+# ------------------------------------------------------
+# Check bootloader type
+# ------------------------------------------------------
+loader_entries="/efi/loader/entries"
+if [ -d "$loader_entries" ] && [ -n "$(ls -A "$loader_entries"/*.conf 2>/dev/null)" ]; then
+    # Systemd-boot detected
+    echo "Systemd-boot is in use."
 
-        # Add nvidia_drm.modeset=1 to the kernel parameters
-        # This is an example, modify it based on your specific requirements
-        sed -i 's/ options / options nvidia_drm.modeset=1 /' $loader_entries/*.conf
+    # Add nvidia_drm.modeset=1 to the kernel parameters
+    # This is an example, modify it based on your specific requirements
+    sed -i 's/ options / options nvidia_drm.modeset=1 /' $loader_entries/*.conf
 
-        echo "Configuration modified for systemd-boot."
-    elif [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
-        # Bootloader is systemd-boot, modify configuration
-        echo "Detected systemd-boot, modifying configuration..."
+    echo "Configuration modified for systemd-boot."
+elif [ -f "/etc/kernel/install.d/90-loaderentry.install" ]; then
+    # Bootloader is systemd-boot, modify configuration
+    echo "Detected systemd-boot, modifying configuration..."
 
-        # Add nvidia_drm.modeset=1 to the kernel parameters
-        # This is an example, modify it based on your specific requirements
-        sed -i 's/ options / options nvidia_drm.modeset=1 /' /boot/loader/entries/*.conf
+    # Add nvidia_drm.modeset=1 to the kernel parameters
+    # This is an example, modify it based on your specific requirements
+    sed -i 's/ options / options nvidia_drm.modeset=1 /' /boot/loader/entries/*.conf
 
-        echo "Configuration modified for systemd-boot."
-    else
-        # No systemd-boot detected, assuming GRUB or another bootloader
-        echo "GRUB or another bootloader may be in use."
-    fi
+    echo "Configuration modified for systemd-boot."
+else
+    # No systemd-boot detected, assuming GRUB or another bootloader
+    echo "GRUB or another bootloader may be in use."
+fi
 
+# ------------------------------------------------------
 # Check if kvantum is already installed or not
-{
-    if ! command -v kvantummanager &> /dev/null; then
-        echo "Kvantum is not installed. Proceeding with installation..."
-        # Your installation commands for Kvantum go here
-    else
-        echo "Kvantum is already installed. Skipping installation..."
-    fi
+# ------------------------------------------------------
 
+if ! command -v kvantummanager &> /dev/null; then
+    echo "Kvantum is not installed. Proceeding with installation..."
+    # Your installation commands for Kvantum go here
+else
+    echo "Kvantum is already installed. Skipping installation..."
+fi
 
 echo -e "${GREEN}"
 cat <<"EOF"
