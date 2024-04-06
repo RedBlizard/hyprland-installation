@@ -536,16 +536,16 @@ echo -e "${YELLOW}Now we will continue with the installation. We are halfway the
 # -------------------------------------------
 #
 # Change directory to the script's location
-    cd "$HOME/hyprland-installation/"
+cd "$HOME/hyprland-installation/"
 
-    if [ -f "$HOME/hyprland-installation/packages-repository.txt" ]; then
+if [ -f "$HOME/hyprland-installation/packages-repository.txt" ]; then
     # Read package names from repository.txt
     packages=$(<packages-repository.txt)
 
     # Filter out already installed packages
     packages_to_install=()
     for package in $packages; do
-        if ! pacman -Qi "$package" &> /dev/null; then
+        if ! pacman -Qi "$package" &> /dev/null && ! yay -Qi "$package" &> /dev/null; then
             packages_to_install+=("$package")
         fi
     done
@@ -553,15 +553,16 @@ echo -e "${YELLOW}Now we will continue with the installation. We are halfway the
     if [ ${#packages_to_install[@]} -eq 0 ]; then
         echo "All packages are already installed. Nothing to do."
     else
-        # Use yay to install packages listed in repository.txt
+        # Use yay to install AUR packages listed in repository.txt
         yay -S --noconfirm "${packages_to_install[@]}" || { echo 'Installation of AUR packages failed.'; exit 1; }
+        # Use pacman to install Arch repository packages
+        sudo pacman -Syu --needed --noconfirm "${packages_to_install[@]}" || { echo 'Installation of Arch packages failed.'; exit 1; }
         echo "Packages from packages-repository.txt installed."
     fi
 else
     echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
     exit 1
 fi
-
 
 # Function to display the browser options
 display_options() {
