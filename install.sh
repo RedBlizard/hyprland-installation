@@ -28,6 +28,18 @@ exec > >(tee -i "$log_file") 2>&1
 backup_dir="/home/$username/.config/backup"
 mkdir -p "$backup_dir"
 
+# Function to backup a directory
+backup() {
+    local source_dir="$1"
+    local dest_dir="$2"
+    
+    # Create the destination directory if it doesn't exist
+    mkdir -p "$dest_dir"
+    
+    # Copy the contents of the source directory to the destination directory
+    cp -r "$source_dir" "$dest_dir"
+}
+
 # Backup and copy .config folder
 folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "neofetch" "networkmanager-dmenu" "qt5ct" "qt6ct" "sddm-config-editor" "swaylock" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-3.0")
 
