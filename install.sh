@@ -24,6 +24,12 @@ log_file="$HOME/installation_log.txt"
 # --------------------------------------------------
 exec > >(tee -i "$log_file") 2>&1
 
+# ------------------------------------------------------
+# Making a backup of main configs in .config
+# ------------------------------------------------------
+
+# Backup and copy .config folder
+
 # Get the current username
 username=$(whoami)
 
