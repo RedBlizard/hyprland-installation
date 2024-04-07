@@ -24,6 +24,22 @@ log_file="$HOME/installation_log.txt"
 # --------------------------------------------------
 exec > >(tee -i "$log_file") 2>&1
 
+# Create a backup directory if it doesn't exist
+backup_dir="/home/$username/.config/backup"
+mkdir -p "$backup_dir"
+
+# Backup and copy .config folder
+folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "neofetch" "networkmanager-dmenu" "qt5ct" "qt6ct" "sddm-config-editor" "swaylock" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-3.0")
+
+for folder in "${folders[@]}"; do
+    folder_path="/home/$username/.config/$folder"
+    backup_path="$backup_dir/$folder"
+    
+    # Backup the folder
+    backup "$folder_path" "$backup_path"
+done
+
+
 # Ensure the script is in the correct directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; exit 1; }
