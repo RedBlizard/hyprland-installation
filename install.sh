@@ -24,6 +24,9 @@ log_file="$HOME/installation_log.txt"
 # --------------------------------------------------
 exec > >(tee -i "$log_file") 2>&1
 
+# Get the current username
+username=$(whoami)
+
 # Create a backup directory if it doesn't exist
 backup_dir="/home/$username/.config/backup"
 mkdir -p "$backup_dir"
