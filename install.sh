@@ -531,15 +531,30 @@ chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script execut
 
 echo -e "${YELLOW}Now we will continue with the installation. We are halfway there.${RESET}"
 
-# -------------------------------------------
-# Install packages needed
-# -------------------------------------------
-#
-# Packages Arch repos
-sudo pacman -S --noconfirm alacritty ark bash-completion bash-language-server btrfs-assistant btrfsmaintenance breeze-icons btop cantarell-fonts cava cliphist dolphin dolphin-plugins duf dunst galculator geany geany-plugins git glances grsync grub-btrfs grub-hook htop hyprland inotify-tools kio-admin kf6-servicemenus-rootactions kitty konsole kvantum kvantum-qt5 lua-language-server mpv neofetch neovim network-manager-applet noto-fonts-extra pacseek papirus-icon-theme pavucontrol-qt pipes.sh polkit-gnome qt6ct sddm sddm-conf-git snap-pac snapper snapper-rollback starship swaybg swayidle swaylock thunar thunar-archive-plugin thunar-volman tldr tty-clock ttf-bitstream-vera ttf-dejavu ttf-liberation ttf-nerd-fonts-symbols-mono ttf-noto-nerd ttf-opensans ttf-font-awesome update-grub vscode-json-languageserver wofi xdg-desktop-portal xdg-desktop-portal-hyprland xorg-bdftopcf xorg-font-util xorg-mkfontscale xorg-xhost xorg-xsetroot yay xed
 
-# packages AUR
-yay -S --noconfirm  adobe-base-14-fonts azote catppuccin-gtk-theme-frappe grim grimblast-git hyprpicker hyprshot networkmanager-dmenu-bluetoothfix-git nwg-look papirus-folders-catppuccin-git simplicity-sddm-theme-git swww unimatrix-git wlogout wlr-randr
+# Change directory to the script's location
+cd "$HOME/hyprland-installation/"
+
+# Check if packages-repository.txt is present
+if [ -f "packages-repository.txt" ]; then
+    # Read package names from packages-repository.txt
+    while IFS= read -r package; do
+        # Skip empty lines and lines starting with #
+        if [[ -n $package && $package != \#* ]]; then
+            # Check if the package is available in the Arch repositories
+            if pacman -Si "$package" &> /dev/null; then
+                sudo pacman -S --noconfirm "$package"
+            # If not available in the Arch repositories, assume it's an AUR package
+            else
+                yay -S --noconfirm "$package"
+            fi
+        fi
+    done < "packages-repository.txt"
+    echo "Packages from packages-repository.txt installed."
+else
+    echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
+    exit 1
+fi
 
 
 # Function to display the browser options
