@@ -496,6 +496,10 @@ echo -e "${YELLOW}Now we will continue with the installation. We are halfway the
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
+
+# Change directory to the script's location
+cd "$HOME/hyprland-installation/"
+
 # Check if an AUR helper is present
 echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
 
@@ -547,10 +551,17 @@ if [ -f "packages-repository.txt" ]; then
         # Skip empty lines and lines starting with #
         if [[ -n $package && $package != \#* ]]; then
             # Check if the package is available in the Arch repositories
-            if pacman -Si "$package" &> /dev/null; then
-                sudo pacman -S --noconfirm "$package"
-            # If not available in the Arch repositories, assume it's an AUR package
+            if pacman -Qi "$package" &> /dev/null; then
+                echo -e "${BLUE}Packages are already installed.${NC}"
             else
+                echo -e "${GREEN}Installing Arch repo packages...${NC}"
+                sudo pacman -S --noconfirm "$package"
+            fi
+            # Check if the package is available in AUR
+            if $aur_helper -Qi "$package" &> /dev/null; then
+                echo -e "${BLUE}Packages are already installed.${NC}"
+            else
+                echo -e "${ORANGE}Installing AUR packages...${NC}"
                 $aur_helper -S --noconfirm "$package"
             fi
         fi
