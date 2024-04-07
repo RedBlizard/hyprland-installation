@@ -202,7 +202,12 @@ switch_shell_as_root() {
 echo -e "${YELLOW}Now we are checking which shell is used on the system.${NC}"
 current_shell=$(basename "$SHELL")
 echo "Current shell: $current_shell"
-switch_shell
+
+# Prompt user to switch shell for the current user
+read -p "Do you want to switch your shell? (y/n): " switch_user_shell
+if [ "$switch_user_shell" == "y" ]; then
+    switch_shell
+fi
 
 # Prompt for changing the root shell
 read -p "Do you want to switch the root shell? (y/n): " switch_root_shell
