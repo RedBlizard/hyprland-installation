@@ -50,7 +50,7 @@ backup() {
 }
 
 # Backup and copy .config folder
-folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "neofetch" "networkmanager-dmenu" "qt5ct" "qt6ct" "sddm-config-editor" "swaylock" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-3.0")
+folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "Kvantum" "neofetch" "networkmanager-dmenu" "nwg-look" "pacseek" "pipewire" "qt6ct" "ranger" "sddm-config-editor" "swaylock" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-2.0" "gtk-3.0" "gtk-4.0" "swaylock" "starship")
 
 for folder in "${folders[@]}"; do
     folder_path="/home/$username/.config/$folder"
