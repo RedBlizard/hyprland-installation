@@ -149,50 +149,6 @@ else
     echo "Git is already installed."
 fi
 
-# Check if an AUR helper is present
-echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
-
-# List of AUR helpers to check
-aur_helpers=("yay" "aurman" "trizen" "paru" "pacaur" "aura" "apacman" "bauerbill" "pikaur")
-
-# Flag to indicate if any AUR helper is found
-found=false
-aur_helper=""
-
-# Iterate through each AUR helper and check if it's present
-for helper in "${aur_helpers[@]}"; do
-    if command -v "$helper" &> /dev/null; then
-        echo "AUR helper ($helper) is present."
-        found=true
-        aur_helper="$helper"
-        break
-    fi
-done
-
-# If no AUR helper is found
-if ! $found; then
-    echo "No AUR helper is present."
-else
-    # Ask user if they want to switch to another AUR helper
-    read -p "Do you want to switch to another AUR helper? (y/n): " choice
-    if [ "$choice" == "y" ]; then
-        echo -e "${PINK}Please select an AUR helper to switch to:${NC}"
-        select new_helper in "${aur_helpers[@]}"; do
-            if [ -n "$new_helper" ]; then
-                aur_helper="$new_helper"
-                echo "Switching to $aur_helper..."
-                break
-            else
-                echo "Invalid option. Please try again."
-            fi
-        done
-    else
-        echo "Keeping current AUR helper ($aur_helper)."
-    fi
-fi
-
-echo "Using AUR helper: $aur_helper"
-
 
 # Function to switch shell for the current user
 switch_shell() {
@@ -535,6 +491,50 @@ echo -e "${YELLOW}Now we will continue with the installation. We are halfway the
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
+# Check if an AUR helper is present
+echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
+
+# List of AUR helpers to check
+aur_helpers=("yay" "aurman" "trizen" "paru" "pacaur" "aura" "apacman" "bauerbill" "pikaur")
+
+# Flag to indicate if any AUR helper is found
+found=false
+aur_helper=""
+
+# Iterate through each AUR helper and check if it's present
+for helper in "${aur_helpers[@]}"; do
+    if command -v "$helper" &> /dev/null; then
+        echo "AUR helper ($helper) is present."
+        found=true
+        aur_helper="$helper"
+        break
+    fi
+done
+
+# If no AUR helper is found
+if ! $found; then
+    echo "No AUR helper is present."
+else
+    # Ask user if they want to switch to another AUR helper
+    read -p "Do you want to switch to another AUR helper? (y/n): " choice
+    if [ "$choice" == "y" ]; then
+        echo -e "${PINK}Please select an AUR helper to switch to:${NC}"
+        select new_helper in "${aur_helpers[@]}"; do
+            if [ -n "$new_helper" ]; then
+                aur_helper="$new_helper"
+                echo "Switching to $aur_helper..."
+                break
+            else
+                echo "Invalid option. Please try again."
+            fi
+        done
+    else
+        echo "Keeping current AUR helper ($aur_helper)."
+    fi
+fi
+
+echo "Using AUR helper: $aur_helper"
+
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
     # Read package names from packages-repository.txt
@@ -546,7 +546,7 @@ if [ -f "packages-repository.txt" ]; then
                 sudo pacman -S --noconfirm "$package"
             # If not available in the Arch repositories, assume it's an AUR package
             else
-                yay -S --noconfirm "$package"
+                $aur_helper -S --noconfirm "$package"
             fi
         fi
     done < "packages-repository.txt"
