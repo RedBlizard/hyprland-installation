@@ -676,6 +676,33 @@ check_default_browser
 # Prompt user for browser switch
 prompt_browser_switch
 
+# Define colors
+orange='\033[0;33m'
+NC='\033[0m' # No Color
+
+# Check if firewalld is installed
+if ! command -v firewalld &> /dev/null; then
+    echo -e "${orange}We detected no firewall installed.${NC}"
+
+    # Prompt user for input
+    echo -n "Do you want to install firewalld? (Yy/Nn): "
+    read choice
+    case "$choice" in
+        [yY]|[yY][eE][sS]) 
+            # Install firewalld
+            sudo pacman -S --noconfirm firewalld
+            # Enable firewalld at boot and start it
+            sudo systemctl enable --now firewalld
+            sudo systemctl start firewalld.service
+            echo "Firewalld installed, enabled, and started."
+            ;;
+        *)
+            echo "Firewalld not installed."
+            ;;
+    esac
+else
+    echo "Firewalld is already installed."
+fi
 
 # ------------------------------------------------------
 # Check if Geany is installed
@@ -899,30 +926,6 @@ if lspci | grep -i "NVIDIA" > /dev/null; then
 else
     echo "No NVIDIA GPU detected. No changes needed for GRUB configuration."
 fi
-
-# Check if firewalld is installed
-if ! command -v firewalld &> /dev/null; then
-    echo -e "${orange}"We detected no firewall installed.${NC}"
-
-    # Ask the user if they want to install firewalld
-    read -p "Do you want to install firewalld? (Yy/Nn): " choice
-    case "$choice" in
-        [yY]|[yY][eE][sS]) 
-            # Install firewalld
-            sudo pacman -S --noconfirm firewalld
-            # Enable firewalld at boot and start it
-            sudo systemctl enable --now firewalld
-            sudo systemctl start firewalld.service
-            echo "Firewalld installed, enabled, and started."
-            ;;
-        *)
-            echo "Firewalld not installed."
-            ;;
-    esac
-else
-    echo "Firewalld is already installed."
-fi
-
 
 # Clean up
 # -------------------------------------
