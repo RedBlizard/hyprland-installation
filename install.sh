@@ -630,8 +630,11 @@ handle_invalid_choice() {
 check_default_browser() {
     echo -e "${BLUE}Now we are checking which browser is installed as default...${NC}"
     default_browser=$(xdg-settings get default-web-browser)
+    # Extract just the browser name from the .desktop file
+    default_browser=$(basename "$default_browser" .desktop)
     echo "Default browser: $default_browser"
 }
+
 
 # Function to prompt user for browser switch
 prompt_browser_switch() {
