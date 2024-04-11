@@ -709,25 +709,36 @@ fi
 # ------------------------------------------------------
 
 if command -v geany &> /dev/null; then
-    # Set Geany as the default editor
-    echo "export VISUAL=geany" | sudo tee -a /etc/environment
-    echo "export EDITOR=geany" | sudo tee -a /etc/environment
-    echo "Geany set as the default editor."
+    # Set Geany as the default editor for the current session
+    export VISUAL=geany
+    export EDITOR=geany
+    echo "Geany set as the default editor for the current session."
+
+    # Optionally, you can set Geany as the default editor permanently
+    #echo "export VISUAL=geany" | sudo tee -a /etc/environment
+    #echo "export EDITOR=geany" | sudo tee -a /etc/environment
+    #echo "Geany set as the default editor."
 else
     echo "Geany is not installed. Installing Geany..."
     # Add installation command for Geany
     sudo pacman -Sy --noconfirm geany
     # Check if the installation was successful
     if command -v geany &> /dev/null; then
-        echo "Geany installed successfully. Setting it as the default editor."
-        echo "export VISUAL=geany" | sudo tee -a /etc/environment
-        echo "export EDITOR=geany" | sudo tee -a /etc/environment
-        echo "Geany set as the default editor."
+        echo "Geany installed successfully. Setting it as the default editor for the current session."
+        export VISUAL=geany
+        export EDITOR=geany
+        echo "Geany set as the default editor for the current session."
+
+        # Optionally, you can set Geany as the default editor permanently
+        #echo "export VISUAL=geany" | sudo tee -a /etc/environment
+        #echo "export EDITOR=geany" | sudo tee -a /etc/environment
+        #echo "Geany set as the default editor."
     else
         echo "Failed to install Geany. Please install it manually and set it as the default editor."
         # You may choose to exit the script here or continue with other tasks
     fi
 fi
+
 
 # Check if LightDM is installed and disable it if found
 if command -v lightdm &> /dev/null; then
