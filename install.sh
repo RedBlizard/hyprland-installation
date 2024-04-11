@@ -406,13 +406,13 @@ fi
 # ------------------------------------------------------
 
 if pacman -Qs "plasma-desktop" &> /dev/null; then
-    echo "Plasma desktop is installed. Skipping installation of breeze-icons and breeze-default-cursor-theme."
+    echo "Plasma desktop is installed. Skipping installation of breeze-icons."
 else
     # ----------------------------------------------------
     # Install breeze-icons and breeze-default-cursor-theme
     # ----------------------------------------------------
     
-    breeze_packages=("breeze-icons" "breeze-default-cursor-theme")
+    breeze_packages=("breeze-icons")
 
     for package in "${breeze_packages[@]}"; do
         if pacman -Qi "$package" &> /dev/null; then
@@ -900,6 +900,29 @@ else
     echo "No NVIDIA GPU detected. No changes needed for GRUB configuration."
 fi
 
+# Check if firewalld is installed
+if ! command -v firewalld &> /dev/null; then
+    echo -e "${orange}"We detected no firewall installed.${NC}"
+
+    # Ask the user if they want to install firewalld
+    read -p "Do you want to install firewalld? (Yy/Nn): " choice
+    case "$choice" in
+        [yY]|[yY][eE][sS]) 
+            # Install firewalld
+            sudo pacman -S --noconfirm firewalld
+            # Enable firewalld at boot and start it
+            sudo systemctl enable --now firewalld
+            sudo systemctl start firewalld.service
+            echo "Firewalld installed, enabled, and started."
+            ;;
+        *)
+            echo "Firewalld not installed."
+            ;;
+    esac
+else
+    echo "Firewalld is already installed."
+fi
+
 
 # Clean up
 # -------------------------------------
@@ -913,7 +936,7 @@ rm -rf $HOME/hyprland-installation
 rm -rf $HOME/README.md
 rm -rf $HOME/sddm-images
 rm -rf $HOME/packages-repository.txt
-rm  -rf $HOME/install.sh
+rm -rf $HOME/install.sh
 rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
 rm -rf $HOME/environment
