@@ -633,13 +633,15 @@ check_default_browser() {
     default_browser=$(basename "$default_browser_full" .desktop)
     echo "Default browser: $default_browser"
 
-    # If default browser is 'brave', set it as 'brave' in the environment file
-    if [ "$default_browser" = "brave" ]; then
-        sudo sed -i "/^BROWSER=/s/.*/BROWSER=brave/" /etc/environment
+    # If default browser is 'brave', set it as 'brave.desktop' in the environment file
+    if [ "$default_browser" = "brave.desktop" ]; then
+        sudo sed -i "/^BROWSER=/s/.*/BROWSER=brave.desktop/" /etc/environment
+        if [ $? -eq 0 ]; then
+            # If setting to brave.desktop was successful, change it to just 'brave'
+            sudo sed -i "/^BROWSER=/s/brave\.desktop/brave/" /etc/environment
+        fi
     fi
 }
-
-
 
 # Function to prompt user for browser switch
 prompt_browser_switch() {
