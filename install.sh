@@ -629,11 +629,16 @@ handle_invalid_choice() {
 # Function to check default browser
 check_default_browser() {
     echo -e "${BLUE}Now we are checking which browser is installed as default...${NC}"
-    default_browser=$(xdg-settings get default-web-browser)
-    # Extract just the browser name from the .desktop file
-    default_browser=$(basename "$default_browser" .desktop)
+    default_browser_full=$(xdg-settings get default-web-browser)
+    default_browser=$(basename "$default_browser_full" .desktop)
     echo "Default browser: $default_browser"
+
+    # If default browser is 'brave', set it as 'brave' in the environment file
+    if [ "$default_browser" = "brave" ]; then
+        sudo sed -i "/^BROWSER=/s/.*/BROWSER=brave/" /etc/environment
+    fi
 }
+
 
 
 # Function to prompt user for browser switch
