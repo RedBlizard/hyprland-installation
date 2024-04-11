@@ -39,6 +39,7 @@ network-manager-applet
 noto-fonts-extra
 pacseek
 papirus-icon-theme
+partitionmanager
 pavucontrol-qt
 pipes.sh
 polkit-gnome
