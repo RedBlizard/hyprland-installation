@@ -563,8 +563,14 @@ cd "$HOME/hyprland-installation/"
 # Check if an AUR helper is present
 echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
 
+#!/bin/bash
+
+# Define colors
+PINK='\033[1;35m'
+NC='\033[0m' # No Color
+
 # List of AUR helpers to check
-aur_helpers=("yay" "aurman" "trizen" "paru" "pacaur" "aura" "apacman" "bauerbill" "pikaur")
+aur_helpers=("yay" "trizen" "paru" "aura")
 
 # Flag to indicate if any AUR helper is found
 found=false
@@ -580,16 +586,25 @@ for helper in "${aur_helpers[@]}"; do
     fi
 done
 
-# If no AUR helper is found
+# If no AUR helper is found, install yay
 if ! $found; then
-    echo "No AUR helper is present."
-else
-    # Ask user if they want to switch to another AUR helper
+    echo "No AUR helper is present. Installing yay..."
+    sudo pacman -Sy --noconfirm yay
+    aur_helper="yay"
+fi
+
+# Ask user if they want to switch to another AUR helper
+if [ "$aur_helper" != "yay" ]; then
     read -p "Do you want to switch to another AUR helper? (y/n): " choice
     if [ "$choice" == "y" ]; then
         echo -e "${PINK}Please select an AUR helper to switch to:${NC}"
         select new_helper in "${aur_helpers[@]}"; do
             if [ -n "$new_helper" ]; then
+                if ! command -v "$new_helper" &> /dev/null; then
+                    echo "$new_helper is not installed. Installing $new_helper..."
+                    # Add installation command for the selected AUR helper
+                    yay -Sy --noconfirm "$new_helper"
+                fi
                 aur_helper="$new_helper"
                 echo "Switching to $aur_helper..."
                 break
@@ -603,6 +618,7 @@ else
 fi
 
 echo "Using AUR helper: $aur_helper"
+
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
@@ -741,11 +757,10 @@ if ! command -v firewalld &> /dev/null; then
             ;;
     esac
 else
-    echo "Firewalld is already installed."
     echo -e "${ORANGE}Firewalld is already installed.${NC}"
 fi
 
-#!/bin/bash
+
 
 ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
