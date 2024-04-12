@@ -632,6 +632,9 @@ else
     exit 1
 fi
 
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
 
 # Function to display the browser options
 display_options() {
@@ -663,6 +666,10 @@ fi
 
 }
 
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # Function to prompt user for browser switch
 prompt_browser_switch() {
     read -p "Do you want to switch to a different browser? (y/n): " switch_choice
@@ -689,11 +696,13 @@ prompt_browser_switch() {
             exit 1
         fi
 
-        echo "Setting $new_browser as default browser..."
+        echo -e "${YELLOW}Setting $new_browser as default browser...${NC}"
         xdg-settings set default-web-browser $new_browser
         echo "$new_browser is now the default browser."
+        echo -e "${YELLOW}$new_browser is now the default browser.${NC}"
     else
         echo "Keeping the current default browser ($default_browser)."
+        echo -e "${GREEN}Keeping the current default browser ($default_browser).${NC}"
     fi
 }
 
@@ -708,6 +717,7 @@ prompt_browser_switch
 
 # Define colors
 orange='\033[0;33m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Check if firewalld is installed
@@ -732,6 +742,7 @@ if ! command -v firewalld &> /dev/null; then
     esac
 else
     echo "Firewalld is already installed."
+    echo -e "${ORANGE}Firewalld is already installed.${NC}"
 fi
 
 #!/bin/bash
