@@ -560,6 +560,8 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
+#!/bin/bash
+
 # Define colors
 PINK='\033[1;35m'
 NC='\033[0m' # No Color
@@ -571,9 +573,17 @@ aur_helpers=("yay" "trizen" "paru" "aura")
 found=false
 aur_helper=""
 
-# Ask user if they want to switch to another AUR helper
+# Ask user to select an AUR helper
 echo -e "${PINK}Please select an AUR helper:${NC}"
-select aur_helper in "${aur_helpers[@]}"; do
+select aur_helper_option in "${aur_helpers[@]}"; do
+    case $REPLY in
+        1) aur_helper="yay" ;;
+        2) aur_helper="trizen" ;;
+        3) aur_helper="paru" ;;
+        4) aur_helper="aura" ;;
+        *) echo "Invalid option. Please try again." ;;
+    esac
+
     if [ -n "$aur_helper" ]; then
         if ! command -v "$aur_helper" &> /dev/null; then
             echo "$aur_helper is not installed. Installing $aur_helper..."
@@ -582,8 +592,6 @@ select aur_helper in "${aur_helpers[@]}"; do
         fi
         echo "Using AUR helper: $aur_helper"
         break
-    else
-        echo "Invalid option. Please try again."
     fi
 done
 
