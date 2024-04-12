@@ -560,8 +560,6 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
-#!/bin/bash
-
 # Define colors
 PINK='\033[1;35m'
 NC='\033[0m' # No Color
@@ -588,7 +586,11 @@ select aur_helper_option in "${aur_helpers[@]}"; do
         if ! command -v "$aur_helper" &> /dev/null; then
             echo "$aur_helper is not installed. Installing $aur_helper..."
             # Add installation command for the selected AUR helper
-            yay -Sy --noconfirm "$aur_helper"
+            if [ "$aur_helper" == "paru" ]; then
+                yay -Sy --noconfirm aur/paru
+            else
+                yay -Sy --noconfirm "$aur_helper"
+            fi
         fi
         echo "Using AUR helper: $aur_helper"
         break
