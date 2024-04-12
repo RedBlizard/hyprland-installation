@@ -562,65 +562,58 @@ cd "$HOME/hyprland-installation/"
 
 # Define colors
 YELLOW='\033[1;33m'
-BLUE='\033[1;34m'
-ORANGE='\033[1;33m'
 RED='\033[1;31m'
-PINK='\033[1;35m'
+ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
 
+# Flag to indicate if any AUR helper is found
+found=false
+aur_helper=""
+
 # Check if any AUR helper is installed
-installed_helper=""
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
-        installed_helper="$helper"
+        aur_helper="$helper"
+        found=true
         break
     fi
 done
 
-# Highlight the installed AUR helper, if any
-if [ -n "$installed_helper" ]; then
-    echo -e "${YELLOW}Installed AUR helper: $installed_helper${NC}"
+# Print yellow echo line if a default AUR helper is found
+if $found; then
+    echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
+else
+    echo "No default AUR helper found."
 fi
 
 # Ask user to select an AUR helper
-echo -e "${BLUE}Please select an AUR helper:${NC}"
+echo "Select an AUR helper:"
 select aur_helper_option in "${aur_helpers[@]}"; do
     case $REPLY in
-        1) aur_helper="yay" ;;
-        2) aur_helper="trizen" ;;
-        3) aur_helper="paru" ;;
-        *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
+        1)
+            aur_helper="yay"
+            echo -e "${RED}Installing yay...${NC}"
+            ;;
+        2)
+            aur_helper="trizen"
+            echo -e "${RED}Installing trizen...${NC}"
+            ;;
+        3)
+            aur_helper="paru"
+            echo -e "${RED}Installing paru...${NC}"
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
     esac
-
-    if [ -n "$aur_helper" ]; then
-        if [ "$aur_helper" == "$installed_helper" ]; then
-            echo -e "${ORANGE}Selected AUR helper: $aur_helper${NC}"
-        else
-            echo -e "${YELLOW}Selected AUR helper: $aur_helper${NC}"
-            if [ -n "$installed_helper" ]; then
-                echo -e "${RED}Do you want to remove the installed AUR helper ($installed_helper)? Yy/Nn${NC}"
-                read -r -n 1 -p "" remove_response
-                if [[ "$remove_response" =~ ^[Yy]$ ]]; then
-                    echo -e "${RED}Removing $installed_helper...${NC}"
-                    echo -n "Enter your password: "
-                    sudo pacman -Rs --noconfirm "$installed_helper"
-                else
-                    echo -e "${YELLOW}Skipping removal of $installed_helper.${NC}"
-                fi
-            fi
-        fi
-        break
-    fi
+    break
 done
 
-# Check if the selected AUR helper becomes the default
-if command -v "$aur_helper" &> /dev/null; then
-    echo -e "${PINK}$aur_helper is now the default AUR helper.${NC}"
-fi
-
+# Print orange echo line with the new installed AUR helper
+echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
