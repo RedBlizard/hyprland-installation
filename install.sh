@@ -717,7 +717,6 @@ prompt_browser_switch() {
         echo "$new_browser is now the default browser."
         echo -e "${YELLOW}$new_browser is now the default browser.${NC}"
     else
-        echo "Keeping the current default browser ($default_browser)."
         echo -e "${GREEN}Keeping the current default browser ($default_browser).${NC}"
     fi
 }
