@@ -560,155 +560,61 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
-#!/bin/bash
-
-# Define colors
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-ORANGE='\033[1;33m'
-ARCH_BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-# Function to check if the given distribution is Arch-based
-check_arch_based() {
-    local distro="$1"
-    for arch_distro in "${arch_based[@]}"; do
-        if [ "$distro" == "$arch_distro" ]; then
-            echo "$distro is based on Arch Linux."
-            return 0
-        fi
-    done
-    echo "$distro is not based on Arch Linux."
-    return 1
-}
-
-# Main function
-main() {
-    local distro="$1"
-    check_arch_based "$distro"
-}
-
-# Check if argument is provided
-if [ -n "$1" ]; then
-    main "$1"
-else
-    echo -e "${ARCH_BLUE}Please provide the name of the distribution as an argument.${NC}"
-fi
-
-#!/bin/bash
-
 # Define colors
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
 ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Function to check if the given distribution is Arch-based
-check_arch_based() {
-    local distro="$1"
-    for arch_distro in "${arch_based[@]}"; do
-        if [ "$distro" == "$arch_distro" ]; then
-            echo "$distro is based on Arch Linux."
-            return 0
-        fi
-    done
-    echo "$distro is not based on Arch Linux."
-    return 1
-}
+# List of AUR helpers to check
+aur_helpers=("yay" "trizen" "paru")
 
-# Main function
-main() {
-    local distro="$1"
-    check_arch_based "$distro"
-}
+# Flag to indicate if any AUR helper is found
+found=false
+aur_helper=""
 
-# Check if argument is provided
-if [ -n "$1" ]; then
-    if main "$1"; then
-        # List of AUR helpers to check
-        aur_helpers=("yay" "trizen" "paru")
-
-        # Flag to indicate if any AUR helper is found
-        found=false
-        aur_helper=""
-
-        # Check if any AUR helper is installed
-        for helper in "${aur_helpers[@]}"; do
-            if command -v "$helper" &> /dev/null; then
-                aur_helper="$helper"
-                found=true
-                break
-            fi
-        done
-
-        # Print yellow echo line if a default AUR helper is found
-        if $found; then
-            echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
-        else
-            echo "No default AUR helper found."
-        fi
-
-        # Ask user to select an AUR helper
-        echo "Select an AUR helper:"
-        select aur_helper_option in "${aur_helpers[@]}"; do
-            case $REPLY in
-                1)
-                    aur_helper="yay"
-                    echo -e "${RED}Installing yay...${NC}"
-                    ;;
-                2)
-                    aur_helper="trizen"
-                    echo -e "${RED}Installing trizen...${NC}"
-                    ;;
-                3)
-                    aur_helper="paru"
-                    echo -e "${RED}Installing paru...${NC}"
-                    ;;
-                *)
-                    echo "Invalid option. Please try again."
-                    ;;
-            esac
-            break
-        done
-
-        # Print orange echo line with the new installed AUR helper
-        echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
+# Check if any AUR helper is installed
+for helper in "${aur_helpers[@]}"; do
+    if command -v "$helper" &> /dev/null; then
+        aur_helper="$helper"
+        found=true
+        break
     fi
+done
+
+# Print yellow echo line if a default AUR helper is found
+if $found; then
+    echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
 else
-    echo -e "${RED}Please provide the name of the distribution as an argument.${NC}"
+    echo "No default AUR helper found."
 fi
 
-# List of Arch-based distributions
-arch_based=("Arch Linux" "Manjaro Linux" "EndeavourOS" "ArcoLinux" "Artix Linux" "ArchBang" "Garuda Linux" "RebornOS")
+# Ask user to select an AUR helper
+echo "Select an AUR helper:"
+select aur_helper_option in "${aur_helpers[@]}"; do
+    case $REPLY in
+        1)
+            aur_helper="yay"
+            echo -e "${RED}Installing yay...${NC}"
+            ;;
+        2)
+            aur_helper="trizen"
+            echo -e "${RED}Installing trizen...${NC}"
+            ;;
+        3)
+            aur_helper="paru"
+            echo -e "${RED}Installing paru...${NC}"
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
+    break
+done
 
-# Check if packages-repository.txt is present
-if [ -f "packages-repository.txt" ]; then
-    # Read package names from packages-repository.txt
-    while IFS= read -r package; do
-        # Skip empty lines and lines starting with #
-        if [[ -n $package && $package != \#* ]]; then
-            # Check if the package is available in the Arch repositories
-            if pacman -Qi "$package" &> /dev/null; then
-                echo -e "${BLUE}Packages are already installed.${NC}"
-            else
-                echo -e "${GREEN}Installing Arch repo packages...${NC}"
-                sudo pacman -S --noconfirm "$package"
-            fi
-            # Check if the package is available in AUR
-            if $aur_helper -Qi "$package" &> /dev/null; then
-                echo -e "${BLUE}Packages are already installed.${NC}"
-            else
-                echo -e "${ORANGE}Installing AUR packages...${NC}"
-                $aur_helper -S --noconfirm "$package"
+# Print orange echo line with the new installed AUR helper
+echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
 
-            fi
-        fi
-    done < "packages-repository.txt"
-    echo "Packages from packages-repository.txt installed."
-else
-    echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
-    exit 1
-fi
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
