@@ -595,61 +595,91 @@ else
     echo -e "${ARCH_BLUE}Please provide the name of the distribution as an argument.${NC}"
 fi
 
-# List of Arch-based distributions
-arch_based=("Arch Linux" "Manjaro Linux" "EndeavourOS" "ArcoLinux" "Artix Linux" "ArchBang" "Garuda Linux" "RebornOS")
+#!/bin/bash
 
-# Check if the distribution is Arch-based
-if main "$1"; then
-    # List of AUR helpers to check
-    aur_helpers=("yay" "trizen" "paru")
+# Define colors
+YELLOW='\033[1;33m'
+RED='\033[1;31m'
+ORANGE='\033[1;33m'
+NC='\033[0m' # No Color
 
-    # Flag to indicate if any AUR helper is found
-    found=false
-    aur_helper=""
-
-    # Check if any AUR helper is installed
-    for helper in "${aur_helpers[@]}"; do
-        if command -v "$helper" &> /dev/null; then
-            aur_helper="$helper"
-            found=true
-            break
+# Function to check if the given distribution is Arch-based
+check_arch_based() {
+    local distro="$1"
+    for arch_distro in "${arch_based[@]}"; do
+        if [ "$distro" == "$arch_distro" ]; then
+            echo "$distro is based on Arch Linux."
+            return 0
         fi
     done
+    echo "$distro is not based on Arch Linux."
+    return 1
+}
 
-    # Print yellow echo line if a default AUR helper is found
-    if $found; then
-        echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
-    else
-        echo "No default AUR helper found."
+# Main function
+main() {
+    local distro="$1"
+    check_arch_based "$distro"
+}
+
+# Check if argument is provided
+if [ -n "$1" ]; then
+    if main "$1"; then
+        # List of AUR helpers to check
+        aur_helpers=("yay" "trizen" "paru")
+
+        # Flag to indicate if any AUR helper is found
+        found=false
+        aur_helper=""
+
+        # Check if any AUR helper is installed
+        for helper in "${aur_helpers[@]}"; do
+            if command -v "$helper" &> /dev/null; then
+                aur_helper="$helper"
+                found=true
+                break
+            fi
+        done
+
+        # Print yellow echo line if a default AUR helper is found
+        if $found; then
+            echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
+        else
+            echo "No default AUR helper found."
+        fi
+
+        # Ask user to select an AUR helper
+        echo "Select an AUR helper:"
+        select aur_helper_option in "${aur_helpers[@]}"; do
+            case $REPLY in
+                1)
+                    aur_helper="yay"
+                    echo -e "${RED}Installing yay...${NC}"
+                    ;;
+                2)
+                    aur_helper="trizen"
+                    echo -e "${RED}Installing trizen...${NC}"
+                    ;;
+                3)
+                    aur_helper="paru"
+                    echo -e "${RED}Installing paru...${NC}"
+                    ;;
+                *)
+                    echo "Invalid option. Please try again."
+                    ;;
+            esac
+            break
+        done
+
+        # Print orange echo line with the new installed AUR helper
+        echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
     fi
-
-    # Ask user to select an AUR helper
-    echo "Select an AUR helper:"
-    select aur_helper_option in "${aur_helpers[@]}"; do
-        case $REPLY in
-            1)
-                aur_helper="yay"
-                echo -e "${RED}Installing yay...${NC}"
-                ;;
-            2)
-                aur_helper="trizen"
-                echo -e "${RED}Installing trizen...${NC}"
-                ;;
-            3)
-                aur_helper="paru"
-                echo -e "${RED}Installing paru...${NC}"
-                ;;
-            *)
-                echo "Invalid option. Please try again."
-                ;;
-        esac
-        break
-    done
-
-    # Print orange echo line with the new installed AUR helper
-    echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
+else
+    echo -e "${RED}Please provide the name of the distribution as an argument.${NC}"
 fi
 
+# List of Arch-based distributions
+arch_based=("Arch Linux" "Manjaro Linux" "EndeavourOS" "ArcoLinux" "Artix Linux" "ArchBang" "Garuda Linux" "RebornOS")
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
