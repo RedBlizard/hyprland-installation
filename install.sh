@@ -644,6 +644,12 @@ if [ -f "packages-repository.txt" ]; then
         fi
     done < "packages-repository.txt"
 
+YELLOW='\033[1;33m'
+RED='\033[1;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
     # Check if all packages are installed
     if [ $installed_packages -eq $total_packages ]; then
         echo -e "${BLUE}All packages are already installed.${NC}"
@@ -655,12 +661,12 @@ if [ -f "packages-repository.txt" ]; then
             if [[ -n $package && $package != \#* ]]; then
                 # Check if the package is available in the Arch repositories
                 if ! pacman -Qi "$package" &> /dev/null; then
-                    echo -e "${GREEN}Installing Arch repo package: $package${NC}"
+                    echo -e "${RED}Installing Arch repo package: $package${NC}"
                     sudo pacman -S --noconfirm "$package"
                 else
                     # Check if the package is available in AUR
                     if ! $aur_helper -Qi "$package" &> /dev/null; then
-                        echo -e "${GREEN}Installing AUR package: $package${NC}"
+                        echo -e "${YELLOW}Installing AUR package: $package${NC}"
                         $aur_helper -S --noconfirm "$package" 
                     fi
                 fi
