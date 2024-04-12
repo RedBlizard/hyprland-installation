@@ -561,59 +561,66 @@ cd "$HOME/hyprland-installation/"
 cd "$HOME/hyprland-installation/"
 
 # Define colors
-ORANGE='\033[0;33m'
-PINK='\033[1;35m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
+BLUE='\033[1;34m'
+ORANGE='\033[1;33m'
+RED='\033[1;31m'
+PINK='\033[1;35m'
 NC='\033[0m' # No Color
-
-# Function to install AUR helper and remove the previously installed one
-install_aur_helper() {
-    local new_helper="$1"
-    
-    # Remove previously installed AUR helper, if any
-    if [ -n "$aur_helper" ]; then
-        echo "Removing $aur_helper..."
-        sudo pacman -Rs --noconfirm "$aur_helper"
-    fi
-    
-    # Install the new AUR helper
-    echo "Installing $new_helper..."
-    if [ "$new_helper" == "paru" ]; then
-        yay -S --noconfirm aur/paru
-    else
-        yay -S --noconfirm "$new_helper"
-    fi
-}
 
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
 
-# Get the currently installed AUR helper, if any
+# Check if any AUR helper is installed
+installed_helper=""
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
-        aur_helper="$helper"
+        installed_helper="$helper"
         break
     fi
 done
 
+# Highlight the installed AUR helper, if any
+if [ -n "$installed_helper" ]; then
+    echo -e "${YELLOW}Installed AUR helper: $installed_helper${NC}"
+fi
+
 # Ask user to select an AUR helper
-echo -e "${ORANGE}Current AUR helper: $aur_helper${NC}"
-echo -e "${YELLOW}Please select a new AUR helper:${NC}"
+echo -e "${BLUE}Please select an AUR helper:${NC}"
 select aur_helper_option in "${aur_helpers[@]}"; do
     case $REPLY in
         1) aur_helper="yay" ;;
         2) aur_helper="trizen" ;;
         3) aur_helper="paru" ;;
-        *) echo "Invalid option. Please try again." ;;
+        *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
     esac
 
     if [ -n "$aur_helper" ]; then
-        install_aur_helper "$aur_helper"
-        echo "Using AUR helper: $aur_helper"
+        if [ "$aur_helper" == "$installed_helper" ]; then
+            echo -e "${ORANGE}Selected AUR helper: $aur_helper${NC}"
+        else
+            echo -e "${YELLOW}Selected AUR helper: $aur_helper${NC}"
+            if [ -n "$installed_helper" ]; then
+                echo -e "${RED}Do you want to remove the installed AUR helper ($installed_helper)? Yy/Nn${NC}"
+                read -r -n 1 -p "" remove_response
+                if [[ "$remove_response" =~ ^[Yy]$ ]]; then
+                    echo -e "${RED}Removing $installed_helper...${NC}"
+                    echo -n "Enter your password: "
+                    sudo pacman -Rs --noconfirm "$installed_helper"
+                else
+                    echo -e "${YELLOW}Skipping removal of $installed_helper.${NC}"
+                fi
+            fi
+        fi
         break
     fi
 done
+
+# Check if the selected AUR helper becomes the default
+if command -v "$aur_helper" &> /dev/null; then
+    echo -e "${PINK}$aur_helper is now the default AUR helper.${NC}"
+fi
+
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
