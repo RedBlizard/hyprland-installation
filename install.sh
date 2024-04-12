@@ -869,6 +869,13 @@ sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/imag
 echo "Contents of /usr/share/sddm/themes/simplicity/images:"
 ls -la /usr/share/sddm/themes/simplicity/images
 
+# Define colors
+ORANGE='\033[0;33m'
+PINK='\033[1;35m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 # Path to the environment file
 ENV_FILE="/etc/environment"
 
@@ -888,16 +895,11 @@ update_env_file() {
     sudo sed -i '/QT_STYLE_OVERRIDE/d' "$env_file"
     
     # Add new lines without the # characters
-    echo -e "${PINK}QT_QPA_PLATFORMTHEME=qt6ct${NC}" | sudo tee -a "$env_file" >/dev/null
+    echo -e "${ORANGE}QT_QPA_PLATFORMTHEME=qt6ct${NC}" | sudo tee -a "$env_file" >/dev/null
     echo -e "${YELLOW}QT_STYLE_OVERRIDE=kvantum${NC}" | sudo tee -a "$env_file" >/dev/null
 
     echo "Environment file updated for user $user."
 }
-
-# Define colors
-PINK='\033[1;35m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
 
 # Check if the environment file exists
 if [ -f "$ENV_FILE" ]; then
@@ -907,9 +909,9 @@ if [ -f "$ENV_FILE" ]; then
     # Update environment file for the root user
     update_env_file "root"
 
-    echo "Environment files updated for both the current user and root."
+    echo -e "${PINK}Environment files updated for both the current user and root.${NC}"
 else
-    echo "Environment file not found."
+    echo -e "${PINK}Environment file not found.${NC}"
 fi
 
 
