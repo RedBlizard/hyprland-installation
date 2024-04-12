@@ -563,8 +563,6 @@ cd "$HOME/hyprland-installation/"
 # Check if an AUR helper is present
 echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
 
-#!/bin/bash
-
 # Define colors
 PINK='\033[1;35m'
 NC='\033[0m' # No Color
@@ -618,7 +616,6 @@ if [ "$aur_helper" != "yay" ]; then
 fi
 
 echo "Using AUR helper: $aur_helper"
-
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
