@@ -7,34 +7,20 @@ reboot_system() {
     reboot
 }
 
-# Check if /home exists and is mounted
-if grep -qs '/home' /proc/mounts; then
-    # Get the device path of /home
-    home_device=$(df -P /home | awk 'NR==2 {print $1}')
-    
-    # Check if it's a Btrfs filesystem
-    if blkid -o value -s TYPE "$home_device" | grep -q '^btrfs$'; then
-        # Check if there's no subvolume specified
-        if ! mount | grep -qs 'subvol='; then
-            # Remove existing /home entry from fstab
-            sed -i "\%$home_device%Id" /etc/fstab
-            
-            # Generate UUID-based line
-            uuid=$(blkid -o value -s UUID "$home_device")
-            new_entry="UUID=$uuid /home btrfs subvol=/@home,noatime,space_cache=v2,discard=async,ssd,compress=zstd:3 0 2"
-            
-            # Add new entry to fstab
-            echo "$new_entry" >> /etc/fstab
-            echo "Updated /etc/fstab with the new entry for /home."
-            
-            # Reboot the system
-            reboot_system
-        else
-            echo "The /home partition already has a subvolume specified."
-        fi
-    else
-        echo "The /home partition is not on a Btrfs filesystem."
-    fi
-else
-    echo "The /home partition is not currently mounted."
+# Check if /home entry exists in fstab
+if grep -qs '/home' /etc/fstab; then
+    # Remove existing /home entry from fstab
+    sed -i '/\/home/d' /etc/fstab
+    echo "Removed existing /home entry from /etc/fstab."
 fi
+
+# Generate UUID-based line for the new entry
+new_entry=UUID=22bf653b-1b13-4468-90b2-1f40bb14aa6e /home btrfs subvol=/@home,noatime,space_cache=v2,discard=async,ssd,compress=zstd:3 0 2
+
+# Add new entry to fstab
+echo "$new_entry" >> /etc/fstab
+echo "Added new entry for /home to /etc/fstab."
+
+# Optionally, reboot the system
+# Uncomment the line below to enable auto-reboot
+# reboot_system
