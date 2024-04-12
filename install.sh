@@ -565,7 +565,7 @@ PINK='\033[1;35m'
 NC='\033[0m' # No Color
 
 # List of AUR helpers to check
-aur_helpers=("yay" "trizen" "paru" "aura")
+aur_helpers=("yay" "trizen" "paru")
 
 # Flag to indicate if any AUR helper is found
 found=false
@@ -578,7 +578,6 @@ select aur_helper_option in "${aur_helpers[@]}"; do
         1) aur_helper="yay" ;;
         2) aur_helper="trizen" ;;
         3) aur_helper="paru" ;;
-        4) aur_helper="aura" ;;
         *) echo "Invalid option. Please try again." ;;
     esac
 
@@ -891,12 +890,14 @@ update_env_file() {
     local env_file="/home/$user/.bashrc"
     
     # Remove existing lines containing QT_QPA_PLATFORMTHEME and QT_STYLE_OVERRIDE
-    sudo sed -i '/QT_QPA_PLATFORMTHEME/d' "$env_file"
-    sudo sed -i '/QT_STYLE_OVERRIDE/d' "$env_file"
+    sudo sed -i '/^#*QT_QPA_PLATFORMTHEME=/d' /etc/environment
+    sudo sed -i '/^#*QT_STYLE_OVERRIDE=/d' /etc/environment
+
     
     # Add new lines without the # characters
-    echo -e "${ORANGE}QT_QPA_PLATFORMTHEME=qt6ct${NC}" | sudo tee -a "$env_file" >/dev/null
-    echo -e "${YELLOW}QT_STYLE_OVERRIDE=kvantum${NC}" | sudo tee -a "$env_file" >/dev/null
+    echo "QT_QPA_PLATFORMTHEME=qt6ct" | sudo tee -a /etc/environment >/dev/null
+    echo "QT_STYLE_OVERRIDE=kvantum" | sudo tee -a /etc/environment >/dev/null
+
 
     echo "Environment file updated for user $user."
 }
