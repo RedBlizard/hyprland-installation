@@ -560,9 +560,6 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
-# Check if an AUR helper is present
-echo -e "${PINK}Now we are checking if an AUR helper is present${NC}"
-
 # Define colors
 PINK='\033[1;35m'
 NC='\033[0m' # No Color
@@ -574,48 +571,21 @@ aur_helpers=("yay" "trizen" "paru" "aura")
 found=false
 aur_helper=""
 
-# Iterate through each AUR helper and check if it's present
-for helper in "${aur_helpers[@]}"; do
-    if command -v "$helper" &> /dev/null; then
-        echo "AUR helper ($helper) is present."
-        found=true
-        aur_helper="$helper"
+# Ask user if they want to switch to another AUR helper
+echo -e "${PINK}Please select an AUR helper:${NC}"
+select aur_helper in "${aur_helpers[@]}"; do
+    if [ -n "$aur_helper" ]; then
+        if ! command -v "$aur_helper" &> /dev/null; then
+            echo "$aur_helper is not installed. Installing $aur_helper..."
+            # Add installation command for the selected AUR helper
+            yay -Sy --noconfirm "$aur_helper"
+        fi
+        echo "Using AUR helper: $aur_helper"
         break
+    else
+        echo "Invalid option. Please try again."
     fi
 done
-
-# If no AUR helper is found, install yay
-if ! $found; then
-    echo "No AUR helper is present. Installing yay..."
-    sudo pacman -Sy --noconfirm yay
-    aur_helper="yay"
-fi
-
-# Ask user if they want to switch to another AUR helper
-if [ "$aur_helper" != "yay" ]; then
-    read -p "Do you want to switch to another AUR helper? (y/n): " choice
-    if [ "$choice" == "y" ]; then
-        echo -e "${PINK}Please select an AUR helper to switch to:${NC}"
-        select new_helper in "${aur_helpers[@]}"; do
-            if [ -n "$new_helper" ]; then
-                if ! command -v "$new_helper" &> /dev/null; then
-                    echo "$new_helper is not installed. Installing $new_helper..."
-                    # Add installation command for the selected AUR helper
-                    yay -Sy --noconfirm "$new_helper"
-                fi
-                aur_helper="$new_helper"
-                echo "Switching to $aur_helper..."
-                break
-            else
-                echo "Invalid option. Please try again."
-            fi
-        done
-    else
-        echo "Keeping current AUR helper ($aur_helper)."
-    fi
-fi
-
-echo "Using AUR helper: $aur_helper"
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
