@@ -670,6 +670,7 @@ if [ -f "packages-repository.txt" ]; then
             else
                 echo -e "${ORANGE}Installing AUR packages...${NC}"
                 $aur_helper -S --noconfirm "$package"
+
             fi
         fi
     done < "packages-repository.txt"
