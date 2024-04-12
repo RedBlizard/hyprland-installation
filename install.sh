@@ -560,20 +560,16 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
-
 # Define colors
+ORANGE='\033[0;33m'
 PINK='\033[1;35m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Function to install AUR helper and remove the previously installed one
 install_aur_helper() {
     local new_helper="$1"
-    
-    # Check if the new AUR helper is already installed
-    if command -v "$new_helper" &> /dev/null; then
-        echo "$new_helper is already installed."
-        return
-    fi
     
     # Remove previously installed AUR helper, if any
     if [ -n "$aur_helper" ]; then
@@ -602,8 +598,8 @@ for helper in "${aur_helpers[@]}"; do
 done
 
 # Ask user to select an AUR helper
-echo -e "${PINK}Current AUR helper: $aur_helper${NC}"
-echo -e "${PINK}Please select a new AUR helper:${NC}"
+echo -e "${ORANGE}Current AUR helper: $aur_helper${NC}"
+echo -e "${YELLOW}Please select a new AUR helper:${NC}"
 select aur_helper_option in "${aur_helpers[@]}"; do
     case $REPLY in
         1) aur_helper="yay" ;;
@@ -618,7 +614,6 @@ select aur_helper_option in "${aur_helpers[@]}"; do
         break
     fi
 done
-
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
