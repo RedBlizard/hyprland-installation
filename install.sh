@@ -560,19 +560,50 @@ cd "$HOME/hyprland-installation/"
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
+
 # Define colors
 PINK='\033[1;35m'
 NC='\033[0m' # No Color
 
+# Function to install AUR helper and remove the previously installed one
+install_aur_helper() {
+    local new_helper="$1"
+    
+    # Check if the new AUR helper is already installed
+    if command -v "$new_helper" &> /dev/null; then
+        echo "$new_helper is already installed."
+        return
+    fi
+    
+    # Remove previously installed AUR helper, if any
+    if [ -n "$aur_helper" ]; then
+        echo "Removing $aur_helper..."
+        sudo pacman -Rs --noconfirm "$aur_helper"
+    fi
+    
+    # Install the new AUR helper
+    echo "Installing $new_helper..."
+    if [ "$new_helper" == "paru" ]; then
+        yay -S --noconfirm aur/paru
+    else
+        yay -S --noconfirm "$new_helper"
+    fi
+}
+
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
 
-# Flag to indicate if any AUR helper is found
-found=false
-aur_helper=""
+# Get the currently installed AUR helper, if any
+for helper in "${aur_helpers[@]}"; do
+    if command -v "$helper" &> /dev/null; then
+        aur_helper="$helper"
+        break
+    fi
+done
 
 # Ask user to select an AUR helper
-echo -e "${PINK}Please select an AUR helper:${NC}"
+echo -e "${PINK}Current AUR helper: $aur_helper${NC}"
+echo -e "${PINK}Please select a new AUR helper:${NC}"
 select aur_helper_option in "${aur_helpers[@]}"; do
     case $REPLY in
         1) aur_helper="yay" ;;
@@ -582,19 +613,7 @@ select aur_helper_option in "${aur_helpers[@]}"; do
     esac
 
     if [ -n "$aur_helper" ]; then
-        if ! command -v "$aur_helper" &> /dev/null; then
-            echo "$aur_helper is not installed. Installing $aur_helper..."
-            # Add installation command for the selected AUR helper
-            if [ "$aur_helper" == "paru" ]; then
-                yay -S --noconfirm aur/paru
-                # Remove Yay after installing Paru
-                sudo pacman -Rs --noconfirm yay
-            else
-                yay -S --noconfirm "$aur_helper"
-                # Remove Yay after installing the selected AUR helper
-                sudo pacman -Rs --noconfirm yay
-            fi
-        fi
+        install_aur_helper "$aur_helper"
         echo "Using AUR helper: $aur_helper"
         break
     fi
@@ -892,7 +911,6 @@ update_env_file() {
     # Remove existing lines containing QT_QPA_PLATFORMTHEME and QT_STYLE_OVERRIDE
     sudo sed -i '/^#*QT_QPA_PLATFORMTHEME=/d' /etc/environment
     sudo sed -i '/^#*QT_STYLE_OVERRIDE=/d' /etc/environment
-
     
     # Add new lines without the # characters
     echo "QT_QPA_PLATFORMTHEME=qt6ct" | sudo tee -a /etc/environment >/dev/null
