@@ -612,36 +612,67 @@ select aur_helper_option in "${aur_helpers[@]}"; do
     break
 done
 
+YELLOW='\033[1;33m'
+RED='\033[1;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 # Print orange echo line with the new installed AUR helper
 echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
+    # Initialize variables to count installed packages
+    installed_packages=0
+    total_packages=0
+
     # Read package names from packages-repository.txt
     while IFS= read -r package; do
         # Skip empty lines and lines starting with #
         if [[ -n $package && $package != \#* ]]; then
+            ((total_packages++))
             # Check if the package is available in the Arch repositories
             if pacman -Qi "$package" &> /dev/null; then
-                echo -e "${BLUE}Packages are already installed.${NC}"
+                ((installed_packages++))
             else
-                echo -e "${GREEN}Installing Arch repo packages...${NC}"
-                sudo pacman -S --noconfirm "$package"
-            fi
-            # Check if the package is available in AUR
-            if $aur_helper -Qi "$package" &> /dev/null; then
-                echo -e "${BLUE}Packages are already installed.${NC}"
-            else
-                echo -e "${ORANGE}Installing AUR packages...${NC}"
-                $aur_helper -S --noconfirm "$package" 
+                # Check if the package is available in AUR
+                if $aur_helper -Qi "$package" &> /dev/null; then
+                    ((installed_packages++))
+                fi
             fi
         fi
     done < "packages-repository.txt"
-    echo "Packages from packages-repository.txt installed."
+
+    # Check if all packages are installed
+    if [ $installed_packages -eq $total_packages ]; then
+        echo -e "${BLUE}All packages are already installed.${NC}"
+    else
+        echo -e "${ORANGE}Some packages need to be installed.${NC}"
+        # Install missing packages
+        while IFS= read -r package; do
+            # Skip empty lines and lines starting with #
+            if [[ -n $package && $package != \#* ]]; then
+                # Check if the package is available in the Arch repositories
+                if ! pacman -Qi "$package" &> /dev/null; then
+                    echo -e "${GREEN}Installing Arch repo package: $package${NC}"
+                    sudo pacman -S --noconfirm "$package"
+                else
+                    # Check if the package is available in AUR
+                    if ! $aur_helper -Qi "$package" &> /dev/null; then
+                        echo -e "${GREEN}Installing AUR package: $package${NC}"
+                        $aur_helper -S --noconfirm "$package" 
+                    fi
+                fi
+            fi
+        done < "packages-repository.txt"
+        echo "Installation of missing packages complete."
+    fi
 else
     echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
     exit 1
 fi
+
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
