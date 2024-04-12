@@ -587,15 +587,20 @@ select aur_helper_option in "${aur_helpers[@]}"; do
             echo "$aur_helper is not installed. Installing $aur_helper..."
             # Add installation command for the selected AUR helper
             if [ "$aur_helper" == "paru" ]; then
-                yay -Sy --noconfirm aur/paru
+                yay -S --noconfirm aur/paru
+                # Remove Yay after installing Paru
+                sudo pacman -Rs --noconfirm yay
             else
-                yay -Sy --noconfirm "$aur_helper"
+                yay -S --noconfirm "$aur_helper"
+                # Remove Yay after installing the selected AUR helper
+                sudo pacman -Rs --noconfirm yay
             fi
         fi
         echo "Using AUR helper: $aur_helper"
         break
     fi
 done
+
 
 # Check if packages-repository.txt is present
 if [ -f "packages-repository.txt" ]; then
@@ -864,34 +869,66 @@ sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/imag
 echo "Contents of /usr/share/sddm/themes/simplicity/images:"
 ls -la /usr/share/sddm/themes/simplicity/images
 
+# Path to the environment file
+ENV_FILE="/etc/environment"
+
+#-----------------------------------------------------
+# Function to update environment file for a given user
+#-----------------------------------------------------
+# Path to the environment file
+ENV_FILE="/etc/environment"
+
+# Function to update environment file for a given user
+update_env_file() {
+    local user="$1"
+    local env_file="/home/$user/.bashrc"
+    
+    # Remove existing lines containing QT_QPA_PLATFORMTHEME and QT_STYLE_OVERRIDE
+    sudo sed -i '/QT_QPA_PLATFORMTHEME/d' "$env_file"
+    sudo sed -i '/QT_STYLE_OVERRIDE/d' "$env_file"
+    
+    # Add new lines without the # characters
+    echo -e "${PINK}QT_QPA_PLATFORMTHEME=qt6ct${NC}" | sudo tee -a "$env_file" >/dev/null
+    echo -e "${YELLOW}QT_STYLE_OVERRIDE=kvantum${NC}" | sudo tee -a "$env_file" >/dev/null
+
+    echo "Environment file updated for user $user."
+}
+
+# Define colors
+PINK='\033[1;35m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Check if the environment file exists
+if [ -f "$ENV_FILE" ]; then
+    # Update environment file for the current user
+    update_env_file "$USER"
+    
+    # Update environment file for the root user
+    update_env_file "root"
+
+    echo "Environment files updated for both the current user and root."
+else
+    echo "Environment file not found."
+fi
 
 
 # ------------------------------------------------------
-# Change qt6ct settings to use Kvantum theme for the user
+# Use kvantummanager to set the theme for the user
 # ------------------------------------------------------
-
-echo "export QT_QPA_PLATFORMTHEME=qt6ct" >> ~/.bashrc || { echo 'Setting QT_QPA_PLATFORMTHEME for the user failed.'; exit 1; }
-echo "export QT_STYLE_OVERRIDE=kvantum-dark" >> ~/.bashrc || { echo 'Setting QT_STYLE_OVERRIDE for the user failed.'; exit 1; }
 
 echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
 
-# ------------------------------------------------------
-# Use kvantummanager to set the theme
-# ------------------------------------------------------
 kvantummanager --set Catppuccin-Frappe-Blue
 
 # ------------------------------------------------------
 # Change qt6ct settings to use Kvantum theme for root
 # ------------------------------------------------------
 
-echo "export QT_QPA_PLATFORMTHEME=qt6ct" | sudo tee -a /etc/environment || { echo 'Setting QT_QPA_PLATFORMTHEME for root failed.'; exit 1; }
-echo "export QT_STYLE_OVERRIDE=kvantum-dark" | sudo tee -a /etc/environment || { echo 'Setting QT_STYLE_OVERRIDE for root failed.'; exit 1; }
-
-  
 echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root to!!"
 
 # ------------------------------------------------------
-# Use kvantummanager to set the theme
+# Use kvantummanager to set the theme for root
 # ------------------------------------------------------
 
 sudo kvantummanager --set Catppuccin-Frappe-Blue
