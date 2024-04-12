@@ -518,6 +518,29 @@ echo -e "${PINK}Copying individual files to /root/.config/...${NC}"
 sudo cp ~/.config/starship.toml /root/.config/
 sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 
+BLUE='\033[0;34m'
+PINK='\033[1;35m'
+NC='\033[0m' # No Color
+
+# Clone the fonts repository
+echo -e "${BLUE}Cloning fonts repository...${NC}"
+git clone https://github.com/RedBlizard/hypr-blizz-fonts.git /tmp/hypr_blizz_fonts
+
+# Copy fonts to /usr/share/fonts
+echo -e "${BLUE}Copying fonts to /usr/share/fonts directory...${NC}"
+sudo cp -r /tmp/hypr_blizz_fonts/* /usr/share/fonts
+
+# Update font cache
+echo -e "${BLUE}Updating font cache...${NC}"
+sudo fc-cache -f -v
+
+# Clean up
+echo -e "${BLUE}Cleaning up...${NC}"
+rm -rf /tmp/hypr_blizz_fonts
+
+echo -e "${PINK}Fonts installed successfully!${NC}"
+
+
 # Copy sddm.conf to /etc/
 echo -e "${YELLOW}Copying sddm.conf to /etc/...${NC}"
 sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
