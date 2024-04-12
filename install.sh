@@ -734,37 +734,32 @@ else
     echo "Firewalld is already installed."
 fi
 
-# ------------------------------------------------------
+#!/bin/bash
+
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 # Check if Geany is installed
-# ------------------------------------------------------
-
 if command -v geany &> /dev/null; then
-    # Set Geany as the default editor for the current session
-    export VISUAL=geany
-    export EDITOR=geany
-    echo "Geany set as the default editor for the current session."
-
-    # Optionally, you can set Geany as the default editor permanently
-    #echo "export VISUAL=geany" | sudo tee -a /etc/environment
-    #echo "export EDITOR=geany" | sudo tee -a /etc/environment
-    #echo "Geany set as the default editor."
+    echo -e "${ORANGE}Geany is already installed.${NC}"
+    # Optionally, set Geany as the default editor for the current session
+    #export VISUAL=geany
+    #export EDITOR=geany
 else
-    echo "Geany is not installed. Installing Geany..."
-    # Add installation command for Geany
+    echo -e "${ORANGE}Geany is not installed. Installing Geany...${NC}"
+    # Add installation command for Geany (for Arch Linux)
     sudo pacman -Sy --noconfirm geany
+
     # Check if the installation was successful
     if command -v geany &> /dev/null; then
-        echo "Geany installed successfully. Setting it as the default editor for the current session."
-        export VISUAL=geany
-        export EDITOR=geany
-        echo "Geany set as the default editor for the current session."
-
-        # Optionally, you can set Geany as the default editor permanently
-        #echo "export VISUAL=geany" | sudo tee -a /etc/environment
-        #echo "export EDITOR=geany" | sudo tee -a /etc/environment
-        #echo "Geany set as the default editor."
+        echo -e "${BLUE}Geany installed successfully.${NC}"
+        # Optionally, set Geany as the default editor for the current session
+        #export VISUAL=geany
+        #export EDITOR=geany
     else
-        echo "Failed to install Geany. Please install it manually and set it as the default editor."
+        echo -e "${YELLOW}Failed to install Geany. Please install it manually and set it as the default editor.${NC}"
         # You may choose to exit the script here or continue with other tasks
     fi
 fi
