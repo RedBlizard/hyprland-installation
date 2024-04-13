@@ -563,7 +563,8 @@ cd "$HOME/hyprland-installation/"
 # Define colors
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
-ORANGE='\033[1;33m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # List of AUR helpers to check
@@ -589,60 +590,72 @@ else
     echo "No default AUR helper found."
 fi
 
-# Ask user to select an AUR helper
-echo "Select an AUR helper:"
-select aur_helper_option in "${aur_helpers[@]}"; do
-    case $REPLY in
-        1)
-            aur_helper="yay"
-            echo -e "${RED}Installing yay...${NC}"
-            ;;
-        2)
-            aur_helper="trizen"
-            echo -e "${RED}Installing trizen...${NC}"
-            ;;
-        3)
-            aur_helper="paru"
-            echo -e "${RED}Installing paru...${NC}"
-            ;;
-        *)
-            echo "Invalid option. Please try again."
-            ;;
-    esac
-    break
-done
+# Ask user to select an AUR helper if none found
+if ! $found; then
+    echo "Select an AUR helper:"
+    select aur_helper_option in "${aur_helpers[@]}"; do
+        case $REPLY in
+            1)
+                aur_helper="yay"
+                echo -e "${RED}Installing yay...${NC}"
+                yay_installation
+                ;;
+            2)
+                aur_helper="trizen"
+                echo -e "${RED}Installing trizen...${NC}"
+                trizen_installation
+                ;;
+            3)
+                aur_helper="paru"
+                echo -e "${RED}Installing paru...${NC}"
+                paru_installation
+                ;;
+            *)
+                echo "Invalid option. Please try again."
+                ;;
+        esac
+        break
+    done
+fi
 
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Function to install yay
+yay_installation() {
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf yay
+}
+
+# Function to install trizen
+trizen_installation() {
+    git clone https://aur.archlinux.org/trizen.git
+    cd trizen
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf trizen
+}
+
+# Function to install paru
+paru_installation() {
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf paru
+}
 
 # Print orange echo line with the new installed AUR helper
 echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
 
-# Check if packages-repository.txt is present
+# Install AUR packages listed in packages-repository.txt using the chosen AUR helper
 if [ -f "packages-repository.txt" ]; then
-    # Initialize variables to count installed packages
-    installed_packages=0
-    total_packages=0
+    echo "Installing AUR packages listed in packages-repository.txt using $aur_helper..."
+    $aur_helper -S --noconfirm $(<packages-repository.txt)
+else
+    echo "packages-repository.txt not found. No AUR packages will be installed."
+fi
 
-    # Read package names from packages-repository.txt
-    while IFS= read -r package; do
-        # Skip empty lines and lines starting with #
-        if [[ -n $package && $package != \#* ]]; then
-            ((total_packages++))
-            # Check if the package is available in the Arch repositories
-            if pacman -Qi "$package" &> /dev/null; then
-                ((installed_packages++))
-            else
-                # Check if the package is available in AUR
-                if $aur_helper -Qi "$package" &> /dev/null; then
-                    ((installed_packages++))
-                fi
-            fi
-        fi
-    done < "packages-repository.txt"
 
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
