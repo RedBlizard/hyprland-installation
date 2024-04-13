@@ -648,14 +648,29 @@ paru_installation() {
 # Print orange echo line with the new installed AUR helper
 echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
 
-# Install AUR packages listed in packages-repository.txt using the chosen AUR helper
-if [ -f "packages-repository.txt" ]; then
-    echo "Installing AUR packages listed in packages-repository.txt using $aur_helper..."
-    $aur_helper -S --noconfirm $(<packages-repository.txt)
+# Function to install packages from a list using the chosen AUR helper
+install_packages() {
+    local helper="$1"
+    local package_list="$2"
+    echo "Installing packages using $helper..."
+    $helper -S --noconfirm $package_list
+}
+
+# Install Arch packages listed in packages-repository.txt
+arch_packages=$(awk '/^# AUR/ {exit} /^# Arch/ {next} NF {print $0}' packages-repository.txt)
+if [ -n "$arch_packages" ]; then
+    install_packages "pacman" "$arch_packages"
 else
-    echo "packages-repository.txt not found. No AUR packages will be installed."
+    echo "No Arch packages found."
 fi
 
+# Install AUR packages listed in packages-repository.txt
+aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
+if [ -n "$aur_packages" ]; then
+    install_packages "$aur_helper" "$aur_packages"
+else
+    echo "No AUR packages found."
+fi
 
 
 YELLOW='\033[1;33m'
