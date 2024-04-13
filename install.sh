@@ -49,17 +49,24 @@ backup() {
     cp -r "$source_dir" "$dest_dir"
 }
 
-# Backup and copy .config folder
+# List of folders to backup
 folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "Kvantum" "neofetch" "networkmanager-dmenu" "nwg-look" "pacseek" "pipewire" "qt6ct" "ranger" "sddm-config-editor" "swaylock" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-2.0" "gtk-3.0" "gtk-4.0" "swaylock" "starship")
 
+# Backup and copy each folder
 for folder in "${folders[@]}"; do
     folder_path="/home/$username/.config/$folder"
     backup_path="$backup_dir/$folder"
     
-    # Backup the folder
-    backup "$folder_path" "$backup_path"
+    # Check if the folder exists
+    if [ -d "$folder_path" ]; then
+        # Backup the folder
+        backup "$folder_path" "$backup_path"
+    else
+        # Create the folder and then backup
+        mkdir -p "$folder_path"
+        backup "$folder_path" "$backup_path"
+    fi
 done
-
 
 # Ensure the script is in the correct directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
