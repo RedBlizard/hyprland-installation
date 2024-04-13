@@ -67,6 +67,7 @@ ttf-opensans
 ttf-font-awesome
 update-grub
 vscode-json-languageserver
+waybar
 wofi
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
