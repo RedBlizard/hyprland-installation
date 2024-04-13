@@ -187,7 +187,6 @@ else
 fi
 
 
-# Function to switch shell for the current user
 switch_shell() {
     read -p "Choose your new shell:
     1. Bash
@@ -203,6 +202,11 @@ switch_shell() {
     esac
 
     if [[ -n "$new_shell" ]]; then
+        if ! command -v "${new_shell##*/}" &> /dev/null; then
+            # Install the selected shell if not already installed
+            sudo pacman -S --noconfirm "${new_shell##*/}"
+        fi
+
         if chsh -s "$new_shell"; then
             echo "Shell changed successfully."
         else
