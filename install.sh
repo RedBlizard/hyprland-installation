@@ -668,7 +668,7 @@ install_packages() {
 }
 
 # Extract Arch package list from packages-repository.txt
-arch_packages=$(awk '/^# AUR/ {exit} /^# Arch/ {next} NF {print $0}' packages-repository.txt)
+arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 
 # Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
@@ -676,7 +676,6 @@ if [ -n "$arch_packages" ]; then
 else
     echo "No Arch packages found."
 fi
-
 
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
