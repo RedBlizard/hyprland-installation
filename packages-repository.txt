@@ -26,6 +26,7 @@ htop
 hyprland
 inotify-tools
 kio-admin
+kservice5
 kf6-servicemenus-rootactions
 kitty
 konsole
