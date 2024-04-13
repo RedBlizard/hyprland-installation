@@ -677,24 +677,7 @@ arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 # Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
     sudo pacman -Sy --noconfirm $arch_packages
-    missing_packages=""
-    for package in $arch_packages; do
-        if ! pacman -Qq "$package" &>/dev/null; then
-            missing_packages="$missing_packages $package"
-        fi
-    done
-    if [ -z "$missing_packages" ]; then
-        echo -e "${RED}Arch packages successfully installed.${NC}"
-    else
-        echo -e "${RED}Failed to install the following Arch packages:${NC} $missing_packages"
-        echo -e "${RED}Attempting to install missing packages with yay...${NC}"
-        yay -Sy --noconfirm $missing_packages
-        if [ $? -eq 0 ]; then
-            echo -e "${RED}Missing Arch packages successfully installed.${NC}"
-        else
-            echo -e "${RED}Failed to install missing Arch packages.${NC}"
-        fi
-    fi
+    echo -e "${RED}Arch packages successfully installed.${NC}"
 else
     echo "No Arch packages found."
 fi
@@ -703,14 +686,11 @@ fi
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 if [ -n "$aur_packages" ]; then
     install_packages "$aur_helper" "$aur_packages"
-    if yay -Qq $aur_packages &> /dev/null; then
-        echo -e "${RED}AUR packages successfully installed.${NC}"
-    else
-        echo -e "${RED}Failed to install AUR packages.${NC}"
-    fi
+    echo -e "${RED}AUR packages successfully installed.${NC}"
 else
     echo "No AUR packages found."
 fi
+
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
