@@ -657,41 +657,6 @@ else
 fi
 
 
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-    # Check if all packages are installed
-    if [ $installed_packages -eq $total_packages ]; then
-        echo -e "${BLUE}All packages are already installed.${NC}"
-    else
-        echo -e "${ORANGE}Some packages need to be installed.${NC}"
-        # Install missing packages
-        while IFS= read -r package; do
-            # Skip empty lines and lines starting with #
-            if [[ -n $package && $package != \#* ]]; then
-                # Check if the package is available in the Arch repositories
-                if ! pacman -Qi "$package" &> /dev/null; then
-                    echo -e "${RED}Installing Arch repo package: $package${NC}"
-                    sudo pacman -S --noconfirm "$package"
-                else
-                    # Check if the package is available in AUR
-                    if ! $aur_helper -Qi "$package" &> /dev/null; then
-                        echo -e "${YELLOW}Installing AUR package: $package${NC}"
-                        $aur_helper -S --noconfirm "$package" 
-                    fi
-                fi
-            fi
-        done < "packages-repository.txt"
-        echo "Installation of missing packages complete."
-    fi
-else
-    echo "Error: packages-repository.txt not found. Make sure the file exists and contains a list of package names."
-    exit 1
-fi
-
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
