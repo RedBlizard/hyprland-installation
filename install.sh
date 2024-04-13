@@ -967,27 +967,30 @@ else
     echo -e "${PINK}Environment file not found.${NC}"
 fi
 
+# Define colors
+ORANGE='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
 # ------------------------------------------------------
 # Use kvantummanager to set the theme for the user
 # ------------------------------------------------------
 
-echo "Just a friendly reminder, the Kvantum-themes directory is hidden!!"
+echo -e "${ORANGE}Checking if kvantummanager is accessible...${NC}"
+which kvantummanager
+
+echo -e "${ORANGE}Just a friendly reminder, the Kvantum-themes directory is hidden!!!${NC}"
 
 kvantummanager --set Catppuccin-Frappe-Blue
 
-# ------------------------------------------------------
-# Change qt6ct settings to use Kvantum theme for root
-# ------------------------------------------------------
+echo -e "${RED}Kvantum theme for the user has been set.${NC}"
 
-echo "Just a friendly reminder, the Kvantum-themes directory is hidden on root to!!"
-
-# ------------------------------------------------------
-# Use kvantummanager to set the theme for root
-# ------------------------------------------------------
-
+#------------------------------------------------------
+# Use kvantummanager to set the theme for the root user
+echo -e "${ORANGE}Just a friendly reminder, the Kvantum-themes directory is hidden on root !!!${NC}"
 sudo kvantummanager --set Catppuccin-Frappe-Blue
 
+echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
 
 # ----------------------------
 # Change GTK-Theme for the user
