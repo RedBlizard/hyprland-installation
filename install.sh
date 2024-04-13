@@ -660,13 +660,16 @@ install_packages() {
     $helper -S --noconfirm $package_list
 }
 
-# Install Arch packages listed in packages-repository.txt
+# Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} /^# Arch/ {next} NF {print $0}' packages-repository.txt)
+
+# Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
-    install_packages "pacman" "$arch_packages"
+    sudo pacman -Sy --noconfirm $arch_packages
 else
     echo "No Arch packages found."
 fi
+
 
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
