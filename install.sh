@@ -889,13 +889,18 @@ case $set_theme_confirmation in
         ;;
 esac
 
-
-
 # ------------------------------------------------------
 # Remove unwanted folders from /usr/share/sddm/themes
 # ------------------------------------------------------
 
 sudo rm -rf /usr/share/sddm/themes/{elarun, maldives, maya} || { echo 'Removal of unwanted folders failed.'; exit 1; }
+
+# ------------------------------------------------------
+# Check if the directory exists, if not, create it
+# ------------------------------------------------------
+if [ ! -d "/usr/share/sddm/themes/simplicity/images" ]; then
+    sudo mkdir -p /usr/share/sddm/themes/simplicity/images
+fi
 
 # ------------------------------------------------------
 # Print debug information
@@ -914,6 +919,7 @@ sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/imag
 # -------------------------------------
 echo "Contents of /usr/share/sddm/themes/simplicity/images:"
 ls -la /usr/share/sddm/themes/simplicity/images
+
 
 # Define colors
 ORANGE='\033[0;33m'
