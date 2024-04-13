@@ -1,4 +1,3 @@
-# Arch packages
 alacritty
 ark
 bash-completion
