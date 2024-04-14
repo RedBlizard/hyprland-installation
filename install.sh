@@ -998,7 +998,20 @@ echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
 # ----------------------------
 
 echo "Setting GTK theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+#!/bin/bash
+
+# Set default theme
+default_theme='Catppuccin-Frappe-Standard-Blue-Dark'
+
+# Check if the theme is already set
+current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
+if [ "$current_theme" != "'$default_theme'" ]; then
+    echo "Setting GTK theme to default: $default_theme"
+    gsettings set org.gnome.desktop.interface gtk-theme "$default_theme"
+fi
+
+echo "Selected GTK theme: $current_theme"
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
