@@ -667,33 +667,13 @@ install_packages() {
     $helper -S --noconfirm $package_list
 }
 
-# Function to check if packages are installed
-check_installed_packages() {
-    local packages="$1"
-    local installed_packages=""
-    for package in $packages; do
-        if yay -Qq "$package" &>/dev/null; then
-            echo -e "${YELLOW}Package $package is already installed.${NC}"
-        else
-            installed_packages="$installed_packages $package"
-        fi
-    done
-    echo "$installed_packages"
-}
-
 # Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 
 # Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
-    # Check if packages are already installed
-    arch_packages=$(check_installed_packages "$arch_packages")
-    if [ -n "$arch_packages" ]; then
-        sudo yay -Sy --noconfirm $arch_packages
-        echo -e "${RED}Arch packages successfully installed.${NC}"
-    else
-        echo -e "${YELLOW}All Arch packages are already installed.${NC}"
-    fi
+    sudo yay -Sy --noconfirm $arch_packages
+    echo -e "${RED}Arch packages successfully installed.${NC}"
 else
     echo "No Arch packages found."
 fi
@@ -701,22 +681,15 @@ fi
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 if [ -n "$aur_packages" ]; then
-    # Check if packages are already installed
-    aur_packages=$(check_installed_packages "$aur_packages")
-    if [ -n "$aur_packages" ]; then
-        install_packages "$aur_helper" "$aur_packages"
-        if yay -Qq $aur_packages &> /dev/null; then
-            echo -e "${RED}AUR packages successfully installed.${NC}"
-        else
-            echo -e "${RED}Failed to install AUR packages.${NC}"
-        fi
+    install_packages "$aur_helper" "$aur_packages"
+    if yay -Qq $aur_packages &> /dev/null; then
+        echo -e "${RED}AUR packages successfully installed.${NC}"
     else
-        echo -e "${YELLOW}All AUR packages are already installed.${NC}"
+        echo -e "${RED}Failed to install AUR packages.${NC}"
     fi
 else
     echo "No AUR packages found."
 fi
-
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
