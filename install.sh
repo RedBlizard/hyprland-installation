@@ -1075,13 +1075,36 @@ else
     echo "No NVIDIA GPU detected. No changes needed for GRUB configuration."
 fi
 
-# Clean up
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${ORANGE}Now we are cleaning things long${NC}"
+
+# Function to remove debug packages
+remove_debug_packages() {
+    # Get a list of debug packages
+    debug_packages=$(pacman -Qq | grep '\-debug$')
+
+    # Check if there are any debug packages installed
+    if [ -n "$debug_packages" ]; then
+        echo "Removing debug packages:"
+        echo "$debug_packages"
+        
+        # Remove each debug package
+        sudo pacman -Rs --noconfirm $debug_packages
+        
+        echo -e "${ORANGE}Debug packages removed successfully.${NC}"
+    else
+        echo "No debug packages found."
+    fi
+}
+
+# Call the function to remove debug packages
+remove_debug_packages
 # -------------------------------------
-echo "Cleaning up installation files."
+echo -e "${ORANGE}Cleaning up installation files.${NC}"
 # -------------------------------------
-# Forcefully remove the directory
-rm -rf "$HOME/hyprland-blizz"
-echo "hyprland-blizz directory removed."
 
 rm -rf $HOME/hyprland-installation
 rm -rf $HOME/README.md
@@ -1091,6 +1114,8 @@ rm -rf $HOME/install.sh
 rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
 rm -rf $HOME/environment
+
+echo -e "${ORANGE}Cleaning up is done.${NC}"
 
 echo -e "${green}"
 cat <<"EOF"
