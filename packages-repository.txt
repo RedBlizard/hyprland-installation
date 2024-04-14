@@ -6,7 +6,6 @@ btrfs-assistant
 btrfsmaintenance
 breeze-icons
 btop
-cantarell-fonts
 cava
 cliphist
 dolphin
@@ -36,7 +35,6 @@ mpv
 neofetch
 neovim
 network-manager-applet
-noto-fonts-extra
 pacseek
 papirus-icon-theme
 partitionmanager
@@ -59,11 +57,15 @@ thunar-volman
 tldr
 tty-clock
 ttf-bitstream-vera
+cantarell-fonts
+freetype2
 ttf-dejavu
 ttf-liberation
+noto-fonts-extra
 ttf-nerd-fonts-symbols-mono
 ttf-noto-nerd
 ttf-opensans
+awesome-terminal-fonts
 ttf-font-awesome
 update-grub
 vscode-json-languageserver
