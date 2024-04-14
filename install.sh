@@ -672,12 +672,11 @@ arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 
 # Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
-    sudo yay -Sy --noconfirm $arch_packages
+    yay -Sy --noconfirm $arch_packages
     echo -e "${RED}Arch packages successfully installed.${NC}"
 else
     echo "No Arch packages found."
 fi
-
 
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
