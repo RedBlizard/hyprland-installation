@@ -656,57 +656,26 @@ paru_installation() {
     rm -rf paru
 }
 
-# Print orange echo line with the new installed AUR helper
-echo -e "${ORANGE}New AUR helper installed: $aur_helper${NC}"
+# Define colors
+YELLOW='\033[1;33m'
+orange='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-# Function to install packages from a list using the chosen AUR helper
-install_packages() {
-    local helper="$1"
-    local package_list="$2"
-    echo "Installing packages using $helper..."
-    $helper -S --noconfirm $package_list
-}
+# Extract package list from packages-repository.txt
+package_list=$(awk '/^[^#]/ {print $0}' packages-repository.txt)
 
-# Extract Arch package list from packages-repository.txt
-arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
+# Install packages using yay
+echo -e "${YELLOW}Installing packages...${NC}"
+yay -S --noconfirm $package_list
 
-
-# Install Arch packages listed in packages-repository.txt
-if [ -n "$arch_packages" ]; then
-    sudo pacman -Syu --noconfirm $arch_packages
-     missing_packages=""
-     for package in $arch_packages; do
-         if ! pacman -Qq "$package" &>/dev/null; then
-             missing_packages="$missing_packages $package"
-         fi
-     done
-     if [ -z "$missing_packages" ]; then
-        echo -e "${RED}Arch packages successfully installed.${NC}"
-     else
-         echo -e "${RED}Failed to install the following Arch packages:${NC} $missing_packages"
-         echo -e "${RED}Attempting to install missing packages with yay...${NC}"
-         yay -Sy --noconfirm $missing_packages
-         if [ $? -eq 0 ]; then
-             echo -e "${RED}Missing Arch packages successfully installed.${NC}"
-         else
-             echo -e "${RED}Failed to install missing Arch packages.${NC}"
-         fi
-     fi
+# Check installation status
+if [ $? -eq 0 ]; then
+    echo "Packages successfully installed."
+    echo -e "${orange}Packages successfully installed.${NC}"
 else
-    echo "No Arch packages found."
-fi
-
-# Install AUR packages listed in packages-repository.txt
-aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
-if [ -n "$aur_packages" ]; then
-    install_packages "$aur_helper" "$aur_packages"
-    if yay -Qq $aur_packages &> /dev/null; then
-        echo -e "${RED}AUR packages successfully installed.${NC}"
-    else
-        echo -e "${RED}Failed to install AUR packages.${NC}"
-    fi
-else
-    echo "No AUR packages found."
+    echo "Failed to install packages."
+    echo -e "${RED}Failed to install packages.${NC}"
 fi
 
 YELLOW='\033[1;33m'
