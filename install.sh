@@ -1081,25 +1081,6 @@ NC='\033[0m' # No Color
 
 echo -e "${ORANGE}Now we are cleaning things up.${NC}"
 
-# Function to remove debug packages
-remove_debug_packages() {
-    # Get a list of debug packages
-    debug_packages=$(pacman -Qq | grep '\-debug$')
-
-    # Check if there are any debug packages installed
-    if [ -n "$debug_packages" ]; then
-        echo "Removing debug packages:"
-        echo "$debug_packages"
-        
-        # Remove each debug package
-        sudo pacman -Rs --noconfirm $debug_packages
-        
-        echo -e "${ORANGE}Debug packages removed successfully.${NC}"
-    else
-        echo "No debug packages found."
-    fi
-}
-
 # Call the function to remove debug packages
 remove_debug_packages
 # -------------------------------------
