@@ -17,6 +17,7 @@ geany
 geany-plugins
 git
 glances
+gparted
 grsync
 grub-btrfs
 grub-hook
@@ -37,7 +38,6 @@ neovim
 network-manager-applet
 pacseek
 papirus-icon-theme
-partitionmanager
 pavucontrol-qt
 pipes.sh
 polkit-gnome
