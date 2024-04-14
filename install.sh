@@ -668,16 +668,16 @@ install_packages() {
 }
 
 
-To remove the package check in a fast and easy way, you can comment out the following lines:
+#To remove the package check in a fast and easy way, you can comment out the following lines:
 
-bash
-Copy code
-        if ! pacman -Qq "$package" &>/dev/null; then
-            missing_packages="$missing_packages $package"
-So your modified script would look like this:
+#bash
+#Copy code
+#        if ! pacman -Qq "$package" &>/dev/null; then
+#            missing_packages="$missing_packages $package"
+#So your modified script would look like this:
 
-bash
-Copy code
+#bash
+#Copy code
 # Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 
