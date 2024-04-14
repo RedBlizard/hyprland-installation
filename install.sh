@@ -678,6 +678,7 @@ else
     echo "No Arch packages found."
 fi
 
+
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 if [ -n "$aur_packages" ]; then
