@@ -667,41 +667,32 @@ install_packages() {
     $helper -S --noconfirm $package_list
 }
 
+# Function to check if packages are installed
+check_installed_packages() {
+    local packages="$1"
+    for package in $packages; do
+        if yay -Qq "$package" &>/dev/null; then
+            echo -e "${YELLOW}Package $package is already installed.${NC}"
+            # Remove package from list to prevent reinstalling
+            packages=$(echo "$packages" | sed "s/\b$package\b//")
+        fi
+    done
+    echo "$packages"
+}
 
-#To remove the package check in a fast and easy way, you can comment out the following lines:
-
-#bash
-#Copy code
-#        if ! pacman -Qq "$package" &>/dev/null; then
-#            missing_packages="$missing_packages $package"
-#So your modified script would look like this:
-
-#bash
-#Copy code
 # Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
 
 # Install Arch packages listed in packages-repository.txt
 if [ -n "$arch_packages" ]; then
-    sudo yay -Sy --noconfirm $arch_packages
-    # missing_packages=""
-    # for package in $arch_packages; do
-    #     if ! pacman -Qq "$package" &>/dev/null; then
-    #         missing_packages="$missing_packages $package"
-    #     fi
-    # done
-    # if [ -z "$missing_packages" ]; then
+    # Check if packages are already installed
+    arch_packages=$(check_installed_packages "$arch_packages")
+    if [ -n "$arch_packages" ]; then
+        sudo yay -Sy --noconfirm $arch_packages
         echo -e "${RED}Arch packages successfully installed.${NC}"
-    # else
-    #     echo -e "${RED}Failed to install the following Arch packages:${NC} $missing_packages"
-    #     echo -e "${RED}Attempting to install missing packages with yay...${NC}"
-    #     yay -Sy --noconfirm $missing_packages
-    #     if [ $? -eq 0 ]; then
-    #         echo -e "${RED}Missing Arch packages successfully installed.${NC}"
-    #     else
-    #         echo -e "${RED}Failed to install missing Arch packages.${NC}"
-    #     fi
-    # fi
+    else
+        echo -e "${YELLOW}All Arch packages are already installed.${NC}"
+    fi
 else
     echo "No Arch packages found."
 fi
@@ -709,15 +700,22 @@ fi
 # Install AUR packages listed in packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 if [ -n "$aur_packages" ]; then
-    install_packages "$aur_helper" "$aur_packages"
-    if yay -Qq $aur_packages &> /dev/null; then
-        echo -e "${RED}AUR packages successfully installed.${NC}"
+    # Check if packages are already installed
+    aur_packages=$(check_installed_packages "$aur_packages")
+    if [ -n "$aur_packages" ]; then
+        install_packages "$aur_helper" "$aur_packages"
+        if yay -Qq $aur_packages &> /dev/null; then
+            echo -e "${RED}AUR packages successfully installed.${NC}"
+        else
+            echo -e "${RED}Failed to install AUR packages.${NC}"
+        fi
     else
-        echo -e "${RED}Failed to install AUR packages.${NC}"
+        echo -e "${YELLOW}All AUR packages are already installed.${NC}"
     fi
 else
     echo "No AUR packages found."
 fi
+
 
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
