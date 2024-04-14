@@ -670,14 +670,15 @@ install_packages() {
 # Function to check if packages are installed
 check_installed_packages() {
     local packages="$1"
+    local installed_packages=""
     for package in $packages; do
         if yay -Qq "$package" &>/dev/null; then
             echo -e "${YELLOW}Package $package is already installed.${NC}"
-            # Remove package from list to prevent reinstalling
-            packages=$(echo "$packages" | sed "s/\b$package\b//")
+        else
+            installed_packages="$installed_packages $package"
         fi
     done
-    echo "$packages"
+    echo "$installed_packages"
 }
 
 # Extract Arch package list from packages-repository.txt
@@ -715,7 +716,6 @@ if [ -n "$aur_packages" ]; then
 else
     echo "No AUR packages found."
 fi
-
 
 
 YELLOW='\033[1;33m'
