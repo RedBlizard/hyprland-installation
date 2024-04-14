@@ -1079,7 +1079,7 @@ ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${ORANGE}Now we are cleaning things long${NC}"
+echo -e "${ORANGE}Now we are cleaning things up.${NC}"
 
 # Function to remove debug packages
 remove_debug_packages() {
