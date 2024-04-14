@@ -80,8 +80,6 @@ xorg-xhost
 xorg-xsetroot
 yay
 xed
-
-# AUR
 adobe-base-14-fonts
 azote
 catppuccin-gtk-theme-frappe
