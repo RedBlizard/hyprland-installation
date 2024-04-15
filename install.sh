@@ -392,7 +392,7 @@ else
     # Install Btrfs-specific packages
     # -------------------------------
     
-    btrfs_packages=("snapper" "snap-pac" "snapper-rollback" "btrfs-assistant" "btrfsmaintenance grub-btrfs")
+    btrfs_packages=("snapper" "snap-pac" "snapper-rollback" "btrfs-assistant" "btrfsmaintenance")
 
     for package in "${btrfs_packages[@]}"; do
         if pacman -Qi "$package" &> /dev/null; then
@@ -568,24 +568,18 @@ echo -e "${YELLOW}Now we will continue with the installation. We are halfway the
 cd "$HOME/hyprland-installation/"
 
 
-# Change directory to the script's location
-cd "$HOME/hyprland-installation/"
-
 # Define colors
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
 
-# Flag to indicate if any AUR helper is found
+# Check if any AUR helper is installed
 found=false
 aur_helper=""
 
-# Check if any AUR helper is installed
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
         aur_helper="$helper"
@@ -656,26 +650,39 @@ paru_installation() {
     rm -rf paru
 }
 
+
 # Define colors
 YELLOW='\033[1;33m'
 orange='\033[0;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Extract package list from packages-repository.txt
-package_list=$(awk '/^[^#]/ {print $0}' packages-repository.txt)
+# Extract Arch package list from packages-repository.txt
+arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
+
+# Install Arch packages listed in packages-repository.txt
+if [ -n "$arch_packages" ]; then
+    yay -Sy --noconfirm $arch_packages
+    echo -e "${RED}Arch packages successfully installed.${NC}"
+else
+    echo "No Arch packages found."
+fi
 
 # Install packages using yay
 echo -e "${YELLOW}Installing packages...${NC}"
 yay -S --noconfirm $package_list
 
-# Check installation status
-if [ $? -eq 0 ]; then
-    echo "Packages successfully installed."
-    echo -e "${orange}Packages successfully installed.${NC}"
+# Install AUR packages listed in packages-repository.txt
+aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
+if [ -n "$aur_packages" ]; then
+    install_packages "$aur_helper" "$aur_packages"
+    if yay -Qq $aur_packages &> /dev/null; then
+        echo -e "${RED}AUR packages successfully installed.${NC}"
+    else
+        echo -e "${RED}Failed to install AUR packages.${NC}"
+    fi
 else
-    echo "Failed to install packages."
-    echo -e "${RED}Failed to install packages.${NC}"
+    echo "No AUR packages found."
 fi
 
 YELLOW='\033[1;33m'
