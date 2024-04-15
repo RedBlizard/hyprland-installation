@@ -623,32 +623,53 @@ if ! $found; then
     done
 fi
 
-# Function to install yay
+# Function to check if yay is installed
 yay_installation() {
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf yay
+    if ! command -v yay &>/dev/null; then
+        echo "yay is not installed."
+    else
+        echo "yay is already installed."
+    fi
 }
 
-# Function to install trizen
+
+# Function to install or remove trizen
 trizen_installation() {
-    git clone https://aur.archlinux.org/trizen.git
-    cd trizen
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf trizen
+    if command -v trizen &>/dev/null; then
+        echo "trizen is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm trizen
+            echo "trizen has been removed."
+        else
+            echo "trizen is already installed."
+        fi
+    else
+        echo "trizen is not installed."
+        echo "Installing trizen..."
+        yay -S --noconfirm trizen
+    fi
 }
 
-# Function to install paru
+
+# Function to install or remove paru
 paru_installation() {
-    git clone https://aur.archlinux.org/paru.git
-    cd paru
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf paru
+    if command -v paru &>/dev/null; then
+        echo "paru is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm paru
+            echo "paru has been removed."
+        else
+            echo "paru is already installed."
+        fi
+    else
+        echo "paru is not installed."
+        echo "Installing paru..."
+        yay -S --noconfirm paru
+    fi
 }
+
 
 # Function to install AUR packages
 install_packages() {
@@ -1194,7 +1215,13 @@ echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT
 EOF
 echo -e "${none}"
 
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}DONE!${NC}"
+
 echo ""
 # Now you are fully ready and can reboot your system / if you encounter any problems related to the configuration get in contact with RedBlizard
-echo "DONE!"
-echo "Then reboot your system!"
+
+echo -e "${BLUE}Then reboot your system!${NC}"
