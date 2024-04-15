@@ -583,7 +583,7 @@ aur_helper=""
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
         aur_helper="$helper"
-        found=false
+        found=true
         break
     fi
 done
