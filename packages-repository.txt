@@ -2,8 +2,6 @@ alacritty
 ark
 bash-completion
 bash-language-server
-btrfs-assistant
-btrfsmaintenance
 breeze-icons
 btop
 cava
@@ -15,11 +13,9 @@ dunst
 galculator
 geany
 geany-plugins
-git
 glances
 gparted
 grsync
-grub-btrfs
 grub-hook
 htop
 hyprland
@@ -42,11 +38,7 @@ pavucontrol-qt
 pipes.sh
 polkit-gnome
 qt6ct
-sddm
 sddm-conf-git
-snap-pac
-snapper
-snapper-rollback
 starship
 swaybg
 swayidle
@@ -78,7 +70,6 @@ xorg-font-util
 xorg-mkfontscale
 xorg-xhost
 xorg-xsetroot
-yay
 xed
 adobe-base-14-fonts
 azote
