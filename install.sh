@@ -650,12 +650,14 @@ paru_installation() {
     rm -rf paru
 }
 
+# Function to install AUR packages
+install_packages() {
+    local aur_helper="$1"
+    local packages="$2"
 
-# Define colors
-YELLOW='\033[1;33m'
-orange='\033[0;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+    # Install AUR packages using the specified AUR helper
+    "$aur_helper" -S --noconfirm $packages
+}
 
 # Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
@@ -667,6 +669,9 @@ if [ -n "$arch_packages" ]; then
 else
     echo "No Arch packages found."
 fi
+
+# Define package list
+package_list=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 
 # Install packages using yay
 echo -e "${YELLOW}Installing packages...${NC}"
