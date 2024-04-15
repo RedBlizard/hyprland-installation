@@ -16,6 +16,7 @@ geany-plugins
 glances
 gparted
 grsync
+grub-btrfs
 grub-hook
 htop
 hyprland
@@ -71,6 +72,8 @@ xorg-mkfontscale
 xorg-xhost
 xorg-xsetroot
 xed
+
+# AUR
 adobe-base-14-fonts
 azote
 catppuccin-gtk-theme-frappe
