@@ -392,7 +392,7 @@ else
     # Install Btrfs-specific packages
     # -------------------------------
     
-    btrfs_packages=("snapper" "snap-pac" "snapper-rollback" "btrfs-assistant" "btrfsmaintenance")
+    btrfs_packages=("snapper" "snap-pac" "snapper-rollback" "btrfs-assistant" "btrfsmaintenance grub-btrfs")
 
     for package in "${btrfs_packages[@]}"; do
         if pacman -Qi "$package" &> /dev/null; then
@@ -1081,8 +1081,6 @@ NC='\033[0m' # No Color
 
 echo -e "${ORANGE}Now we are cleaning things up.${NC}"
 
-# Call the function to remove debug packages
-remove_debug_packages
 # -------------------------------------
 echo -e "${ORANGE}Cleaning up installation files.${NC}"
 # -------------------------------------
