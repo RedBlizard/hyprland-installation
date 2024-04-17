@@ -60,6 +60,7 @@ ttf-nerd-fonts-symbols-mono
 ttf-noto-nerd
 ttf-opensans
 ttf-font-awesome
+awesome-terminal-fonts
 update-grub
 vscode-json-languageserver
 waybar
