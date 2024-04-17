@@ -10,6 +10,7 @@ dolphin
 dolphin-plugins
 duf
 dunst
+fastfetch
 galculator
 geany
 geany-plugins
@@ -18,6 +19,7 @@ gparted
 grsync
 grub-btrfs
 grub-hook
+gvfs
 htop
 hyprland
 inotify-tools
@@ -30,7 +32,6 @@ kvantum
 kvantum-qt5
 lua-language-server
 mpv
-neofetch
 neovim
 network-manager-applet
 pacseek
@@ -58,7 +59,6 @@ noto-fonts-extra
 ttf-nerd-fonts-symbols-mono
 ttf-noto-nerd
 ttf-opensans
-awesome-terminal-fonts
 ttf-font-awesome
 update-grub
 vscode-json-languageserver
