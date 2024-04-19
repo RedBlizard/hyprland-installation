@@ -4,6 +4,7 @@ bash-completion
 bash-language-server
 breeze-icons
 btop
+brightnessctl
 cava
 cliphist
 dolphin
