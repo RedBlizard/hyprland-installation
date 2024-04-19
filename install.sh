@@ -1058,50 +1058,48 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
 
-# ----------------------------
-# Change GTK-Theme for the user
-# ----------------------------
+# Resetting the portals and restarts them
+sleep 1
+killall -e xdg-desktop-portal-hyprland
+killall xdg-desktop-portal
+killall xdg-desktop-portal-wlr
+killall xdg-desktop-portal-kde
+killall xdg-desktop-portal-gnome
+sleep 1
+/usr/lib/xdg-desktop-portal-hyprland &
+sleep 2
+/usr/lib/xdg-desktop-portal &
 
-echo "Setting GTK theme..."
-#!/bin/bash
+# Set default themes
+default_gtk_theme='Catppuccino-Frappe-Standard-Blue-Dark'
+default_icon_theme='Papirus-Dark'
+default_window_theme='Catppuccino-Frappe-Standard-Blue-Dark'
 
-# Set default theme
-default_theme='Catppuccin-Frappe-Standard-Blue-Dark'
+# Function to set theme
+set_theme() {
+    key="$1"
+    value="$2"
+    current_value=$(gsettings get "$key")
+    if [ "$current_value" != "'$value'" ]; then
+        echo "Setting $key to: $value"
+        gsettings set "$key" "$value"
+    else
+        echo "$key already set to: $value"
+    fi
+}
 
-# Check if the theme is already set
-current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
-if [ "$current_theme" != "'$default_theme'" ]; then
-    echo "Setting GTK theme to default: $default_theme"
-    gsettings set org.gnome.desktop.interface gtk-theme "$default_theme"
-fi
+# Set GTK theme
+set_theme org.gnome.desktop.interface gtk-theme "$default_gtk_theme"
 
-echo "Selected GTK theme: $current_theme"
+# Set icon theme
+set_theme org.gnome.desktop.interface icon-theme "$default_icon_theme"
 
+# Set window theme
+set_theme org.gnome.desktop.wm.preferences theme "$default_window_theme"
 
-# -----------------------------------------
-# Change the default Icon-Theme for the user
-# -----------------------------------------
-
-echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-
-# -------------------------------
-# Change Window-Theme for the user
-# -------------------------------
-
-echo "Setting window theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
-
-# ------------------------------------------------------
-# Change Papirus folder colors for the user
-# ------------------------------------------------------
-papirus-folders -C cat-frappe-blue --theme Papirus-Dark 
-
-# ------------------------------------------------------
-# Change Papirus folder colors for root
-# ------------------------------------------------------
-sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
-
+# Set Papirus folder colors for the user
+echo "Setting Papirus folder colors..."
+papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 
 # -------------------------------            
 # Set the Qogir-dark cursor theme
