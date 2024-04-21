@@ -23,6 +23,8 @@ grub-hook
 gvfs
 htop
 hyprland
+hyprlock
+hypridle
 inotify-tools
 kio-admin
 kservice5
@@ -44,8 +46,6 @@ qt6ct
 sddm-conf-git
 starship
 swaybg
-swayidle
-swaylock
 thunar
 thunar-archive-plugin
 thunar-volman
