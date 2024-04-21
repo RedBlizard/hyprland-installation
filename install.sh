@@ -509,7 +509,6 @@ cp -r ~/Hyprland-blizz/.config ~/
 echo -e "${PINK}Copying folders to home root directory...${NC}"
 sudo cp -r ~/.icons /root/
 sudo cp -r ~/.Kvantum-themes /root/
-sudo cp -r ~/.themes /root/
 
 # Uncomment the following line if you need to copy the Noto fonts folder
 # echo "Copying Noto fonts folder to /usr/share/fonts..."
