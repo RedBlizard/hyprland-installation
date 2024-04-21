@@ -765,13 +765,13 @@ check_default_browser() {
 
     # If default browser is 'brave-browser', set it as 'brave-browser' in the environment file
     if [ "$default_browser" = "brave-browser" ]; then
-        echo -e "${GREEN}Brave Browser is already set as default browser.${NC}"
+        echo -e "${GREEN}Brave-browser is already set as default browser.${NC}"
     else
-        sudo sed -i "/^BROWSER=/s/.*/BROWSER=brave/" /etc/environment
+        sudo sed -i "/^BROWSER=/s/.*/BROWSER=brave-browser/" /etc/environment
         if [ $? -eq 0 ]; then
-            echo -e "${GREEN}Brave set as default browser.${NC}"
+            echo -e "${GREEN}Brave-browser set as default browser.${NC}"
         else
-            echo -e "${RED}Failed to set Brave as default.${NC}"
+            echo -e "${RED}Failed to set Brave-browser as default.${NC}"
         fi
     fi
 }
