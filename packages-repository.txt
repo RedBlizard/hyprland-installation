@@ -68,6 +68,7 @@ waybar
 wofi
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
+xdotool
 xorg-bdftopcf
 xorg-font-util
 xorg-mkfontscale
