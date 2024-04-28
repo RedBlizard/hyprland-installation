@@ -1135,10 +1135,10 @@ else
 fi
 
 # Path to your welcome script
-welcome_script="$HOME/.config/hypr/scripts/hypr-welcome"
+welcome_script="$HOME/.config/hypr/scripts/hypr-welcome2"
 
 # Path to the symlink in /usr/bin
-symlink="/usr/bin/hypr-welcome"
+symlink="/usr/bin/hypr-welcome2"
 
 # Check if the symlink exists
 if [ -L "$symlink" ]; then
