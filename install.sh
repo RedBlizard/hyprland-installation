@@ -1134,6 +1134,25 @@ else
     echo "No NVIDIA GPU detected. No changes needed for GRUB configuration."
 fi
 
+# Path to your welcome script
+welcome_script="$HOME/.config/hypr/scripts/hypr-welcome"
+
+# Path to the symlink in /usr/bin
+symlink="/usr/bin/hypr-welcome"
+
+# Check if the symlink exists
+if [ -L "$symlink" ]; then
+    echo "Old symlink found. Removing..."
+    sudo rm "$symlink"
+    echo "Old symlink removed."
+fi
+
+# Create new symlink
+sudo ln -sf "$welcome_script" "$symlink"
+echo "New symlink created."
+
+echo "Hypr Welcome script installation complete."
+
 ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
