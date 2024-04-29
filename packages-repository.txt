@@ -1,4 +1,5 @@
 alacritty
+archlinux-xdg-menu
 ark
 bash-completion
 bash-language-server
