@@ -79,7 +79,6 @@ xed
 
 # AUR
 adobe-base-14-fonts
-azote
 catppuccin-gtk-theme-frappe
 grim
 grimblast-git
@@ -91,6 +90,7 @@ papirus-folders-catppuccin-git
 simplicity-sddm-theme-git
 swww
 unimatrix-git
+waypaper
 wlogout
 wlr-randr
 
