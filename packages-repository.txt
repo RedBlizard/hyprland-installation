@@ -40,13 +40,15 @@ neovim
 network-manager-applet
 pacseek
 papirus-icon-theme
-pavucontrol
+pavucontrol-qt
 pipes.sh
 polkit-gnome
+python-pyqt6
 qt6ct
 sddm-conf-git
 starship
 swaybg
+swaync
 thunar
 thunar-archive-plugin
 thunar-volman
