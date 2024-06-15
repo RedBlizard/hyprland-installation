@@ -1176,6 +1176,8 @@ rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
 rm -rf $HOME/environment
 
+yay -Rns pavucontrol
+
 echo -e "${ORANGE}Cleaning up is done.${NC}"
 
 echo -e "${green}"
