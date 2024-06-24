@@ -1098,11 +1098,12 @@ papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # ------------------------------------------------------
 # sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 
-# -------------------------------            
-# Set the Qogir-dark cursor theme
-# -------------------------------
+# ---------------------------------------------            
+# Export to /etc/environment
+# ---------------------------------------------
 echo "export XCURSOR_THEME=Qogir-dark" | sudo tee -a /etc/environment
-echo "export XCURSOR_SIZE=24" | sudo tee -a /etc/environment
+echo "export XCURSOR_SIZE=24" | sudo tee -a /etc/environment 
+echo "export export GTK_THEME=catppuccin-frappe-blue-standard+default" | sudo tee -a /etc/environment
 xsetroot -cursor_name left_ptr
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------
