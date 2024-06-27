@@ -1057,65 +1057,36 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
 
-# Define the repository URL and the directory to copy
-repo_url="https://github.com/RedBlizard/gtk-hyprland-blizz.git"
-temp_dir="/tmp/gtk-themes"
-themes_dir="/usr/share/themes"
+# Change GTK-Theme for the user
+# ----------------------------
+
+echo "Setting GTK theme..."
+
+# Set default theme
 default_theme='Catppuccin-Frappe-Standard-Blue-Dark'
 
-# Clone the repository to a temporary directory
-echo "Cloning the repository..."
-git clone "$repo_url" "$temp_dir"
-
-# Check if the cloning was successful
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to clone repository."
-    exit 1
-fi
-
-# Copy only the themes directory to /usr/share/themes
-echo "Copying themes to $themes_dir..."
-sudo cp -r "$temp_dir/themes/." "$themes_dir"
-
-# Clean up the temporary directory
-echo "Cleaning up..."
-rm -rf "$temp_dir"
-
-# Set the GTK theme if it's not already set
-echo "Setting GTK theme..."
+# Check if the theme is already set
 current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
-echo "Current GTK theme: $current_theme"
-
 if [ "$current_theme" != "'$default_theme'" ]; then
     echo "Setting GTK theme to default: $default_theme"
     gsettings set org.gnome.desktop.interface gtk-theme "$default_theme"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to set GTK theme."
-        exit 1
-    fi
-else
-    echo "GTK theme is already set to $default_theme"
 fi
 
-# Verify the change
-new_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
-echo "New GTK theme: $new_theme"
+echo "Selected GTK theme: $current_theme"
 
-# Set the icon theme
-echo "Setting icon theme..."
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to set icon theme."
-    exit 1
-fi
+# -------------------------------
+# Change Window-Theme for the user
+# -------------------------------
 
-# Set the window theme
 echo "Setting window theme..."
-gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to set window theme."
-    exit 1
-fi
+/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+
+# -----------------------------------------
+# Change the default Icon-Theme for the user
+# -----------------------------------------
+
+echo "Setting icon theme..."
+/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
