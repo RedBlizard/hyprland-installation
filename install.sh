@@ -1084,20 +1084,38 @@ rm -rf "$temp_dir"
 # Set the GTK theme if it's not already set
 echo "Setting GTK theme..."
 current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
+echo "Current GTK theme: $current_theme"
+
 if [ "$current_theme" != "'$default_theme'" ]; then
     echo "Setting GTK theme to default: $default_theme"
     gsettings set org.gnome.desktop.interface gtk-theme "$default_theme"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to set GTK theme."
+        exit 1
+    fi
+else
+    echo "GTK theme is already set to $default_theme"
 fi
 
-echo "Selected GTK theme: $current_theme"
+# Verify the change
+new_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
+echo "New GTK theme: $new_theme"
 
 # Set the icon theme
 echo "Setting icon theme..."
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to set icon theme."
+    exit 1
+fi
 
 # Set the window theme
 echo "Setting window theme..."
 gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to set window theme."
+    exit 1
+fi
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
