@@ -81,7 +81,6 @@ xed
 
 # AUR
 adobe-base-14-fonts
-catppuccin-gtk-theme-frappe
 grim
 grimblast-git
 hyprpicker
