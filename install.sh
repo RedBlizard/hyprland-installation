@@ -1057,15 +1057,32 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
 
-# Change GTK-Theme for the user
-# ----------------------------
-
-echo "Setting GTK theme..."
-
-# Set default theme
+# Define the repository URL and the directory to copy
+repo_url="https://github.com/RedBlizard/gtk-hyprland-blizz.git"
+temp_dir="/tmp/gtk-themes"
+themes_dir="/usr/share/themes"
 default_theme='Catppuccin-Frappe-Standard-Blue-Dark'
 
-# Check if the theme is already set
+# Clone the repository to a temporary directory
+echo "Cloning the repository..."
+git clone "$repo_url" "$temp_dir"
+
+# Check if the cloning was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to clone repository."
+    exit 1
+fi
+
+# Copy only the themes directory to /usr/share/themes
+echo "Copying themes to $themes_dir..."
+sudo cp -r "$temp_dir/themes/." "$themes_dir"
+
+# Clean up the temporary directory
+echo "Cleaning up..."
+rm -rf "$temp_dir"
+
+# Set the GTK theme if it's not already set
+echo "Setting GTK theme..."
 current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
 if [ "$current_theme" != "'$default_theme'" ]; then
     echo "Setting GTK theme to default: $default_theme"
@@ -1074,19 +1091,13 @@ fi
 
 echo "Selected GTK theme: $current_theme"
 
-# -----------------------------------------
-# Change the default Icon-Theme for the user
-# -----------------------------------------
-
+# Set the icon theme
 echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 
-# -------------------------------
-# Change Window-Theme for the user
-# -------------------------------
-
+# Set the window theme
 echo "Setting window theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
@@ -1103,7 +1114,6 @@ papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # ---------------------------------------------
 echo "export XCURSOR_THEME=Qogir-dark" | sudo tee -a /etc/environment
 echo "export XCURSOR_SIZE=24" | sudo tee -a /etc/environment 
-# echo "export export GTK_THEME=catppuccin-frappe-blue-standard+default" | sudo tee -a /etc/environment
 xsetroot -cursor_name left_ptr
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------
