@@ -1061,7 +1061,7 @@ NC='\033[0m' # No Color
 # Use kvantummanager to set the theme for the user
 # ------------------------------------------------------
 
-echo -e "${ORANGE}Checking if kvantummanager is accessible...${NC}"
+echo -e "${BLUE}Checking if kvantummanager is accessible...${NC}"
 which kvantummanager
 
 echo -e "${RED}Just a friendly reminder, the Kvantum-themes directory is hidden!!!${NC}"
@@ -1077,29 +1077,47 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-# Change GTK-Theme for the user
-# ----------------------------
 
-echo "Setting GTK theme..."
+# Clone the repository
+echo "Cloning GTK theme repository..."
+git clone https://github.com/RedBlizard/gtk-hypr-blizz.git "$HOME/gtk-hypr-blizz"
 
-# Set default theme
-default_theme='Catppuccin-Frappe-Standard-Blue-Dark'
-
-# Check if the theme is already set
-current_theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
-if [ "$current_theme" != "'$default_theme'" ]; then
-    echo "Setting GTK theme to default: $default_theme"
-    gsettings set org.gnome.desktop.interface gtk-theme "$default_theme"
+# Check if clone was successful
+if [ $? -ne 0 ]; then
+    echo "Failed to clone GTK theme repository. Exiting."
+    exit 1
 fi
 
-echo "Selected GTK theme: $current_theme"
+# Define paths to theme directories in cloned repository
+frappe_pkg_path="$HOME/gtk-hypr-blizz/catppuccin-gtk-theme-frappe"
+latte_pkg_path="$HOME/gtk-hypr-blizz/catppuccin-gtk-theme-latte"
 
-# -----------------------------------------
-# Change the default Icon-Theme for the user
-# -----------------------------------------
+# Check if the theme directories exist
+if [ ! -d "$frappe_pkg_path" ] || [ ! -d "$latte_pkg_path" ]; then
+    echo "Error: Theme directories not found in cloned repository."
+    exit 1
+fi
 
-echo "Setting icon theme..."
-/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+# Build and install Frappe theme
+echo "Installing Frappe GTK theme..."
+(cd "$frappe_pkg_path" && makepkg -si --noconfirm)
+
+# Build and install Latte theme
+echo "Installing Latte GTK theme..."
+(cd "$latte_pkg_path" && makepkg -si --noconfirm)
+
+
+# Clean up cloned repository directory
+echo "Removing cloned GTK theme repository directory..."
+rm -rf "$HOME/gtk-hypr-blizz"
+
+
+echo "GTK themes installed successfully and repository directory removed."
+
+# Optionally, set the installed theme as default
+# Replace 'Your-Theme-Name' with the actual theme name if needed
+# gsettings set org.gnome.desktop.interface gtk-theme 'Your-Theme-Name'
+
 
 # -------------------------------
 # Change Window-Theme for the user
@@ -1107,6 +1125,13 @@ echo "Setting icon theme..."
 
 echo "Setting window theme..."
 /usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+
+# -----------------------------------------
+# Change the default Icon-Theme for the user
+# -----------------------------------------
+
+echo "Setting icon theme..."
+/usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
@@ -1241,7 +1266,7 @@ cat <<"EOF"
 ╚═════╝░╚══════╝░░░╚═╝░░░░░░╚═╝░░░╚═╝╚═╝░░╚══╝░╚═════╝░╚═════╝░  ╚═╝
 EOF
 echo -e "${NONE}"         
-
+echo -e "${BLUE}"
 echo ""
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
 echo ""
