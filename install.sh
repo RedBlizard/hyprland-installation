@@ -1118,13 +1118,20 @@ echo "GTK themes installed successfully and repository directory removed."
 # Replace 'Your-Theme-Name' with the actual theme name if needed
 # gsettings set org.gnome.desktop.interface gtk-theme 'Your-Theme-Name'
 
+# Ensure script runs as the user (not root)
 
-# -------------------------------
-# Change Window-Theme for the user
-# -------------------------------
+theme_name='Catppuccin-Frappe-Standard-Blue-Dark'
 
-echo "Setting window theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
+echo "Setting window theme to: $theme_name"
+gsettings set org.gnome.desktop.wm.preferences theme "$theme_name"
+
+# Check for errors
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to set window theme."
+    exit 1
+fi
+
+echo "Window theme set successfully."
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
@@ -1248,7 +1255,7 @@ echo -e "${NONE}"
 echo   "Your system is now configured with Hyprland."
 
 
-echo -e "${RED}"
+echo -e "${GREEN}"
 cat <<"EOF"
 
 ░██████╗███████╗████████╗  ██╗░░░██╗░█████╗░██╗░░░██╗██████╗░
