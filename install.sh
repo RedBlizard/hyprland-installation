@@ -1,13 +1,27 @@
 #!/bin/bash
 
-echo -e "${GREEN}"
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
+NC='\033[0m' # No Color
+
+echo -e "${RED}"
 cat <<"EOF"
-██████╗░██╗░░░██╗  ██████╗░███████╗██████╗░██████╗░██╗░░░░░██╗███████╗░█████╗░██████╗░██████╗░
-██╔══██╗╚██╗░██╔╝  ██╔══██╗██╔════╝██╔══██╗██╔══██╗██║░░░░░██║╚════██║██╔══██╗██╔══██╗██╔══██╗
-██████╦╝░╚████╔╝░  ██████╔╝█████╗░░██║░░██║██████╦╝██║░░░░░██║░░███╔═╝███████║██████╔╝██║░░██║
-██╔══██╗░░╚██╔╝░░  ██╔══██╗██╔══╝░░██║░░██║██╔══██╗██║░░░░░██║██╔══╝░░██╔══██║██╔══██╗██║░░██║
-██████╦╝░░░██║░░░  ██║░░██║███████╗██████╔╝██████╦╝███████╗██║███████╗██║░░██║██║░░██║██████╔╝
-╚═════╝░░░░╚═╝░░░  ╚═╝░░╚═╝╚══════╝╚═════╝░╚═════╝░╚══════╝╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░
+
+██╗░░██╗██╗░░░██╗██████╗░██████╗░██╗░░░░░░█████╗░███╗░░██╗██████╗░░░░░░░██████╗░██╗░░░░░██╗███████╗███████╗
+██║░░██║╚██╗░██╔╝██╔══██╗██╔══██╗██║░░░░░██╔══██╗████╗░██║██╔══██╗░░░░░░██╔══██╗██║░░░░░██║╚════██║╚════██║
+███████║░╚████╔╝░██████╔╝██████╔╝██║░░░░░███████║██╔██╗██║██║░░██║█████╗██████╦╝██║░░░░░██║░░███╔═╝░░███╔═╝
+██╔══██║░░╚██╔╝░░██╔═══╝░██╔══██╗██║░░░░░██╔══██║██║╚████║██║░░██║╚════╝██╔══██╗██║░░░░░██║██╔══╝░░██╔══╝░░
+██║░░██║░░░██║░░░██║░░░░░██║░░██║███████╗██║░░██║██║░╚███║██████╔╝░░░░░░██████╦╝███████╗██║███████╗███████╗
+╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░░░░░░░╚═════╝░╚══════╝╚═╝╚══════╝╚══════╝
+
+░░░░░░  ██████╗░███████╗██████╗░██████╗░██╗░░░░░██╗███████╗░█████╗░██████╗░██████╗░  ░░░░░░
+░░░░░░  ██╔══██╗██╔════╝██╔══██╗██╔══██╗██║░░░░░██║╚════██║██╔══██╗██╔══██╗██╔══██╗  ░░░░░░
+█████╗  ██████╔╝█████╗░░██║░░██║██████╦╝██║░░░░░██║░░███╔═╝███████║██████╔╝██║░░██║  █████╗
+╚════╝  ██╔══██╗██╔══╝░░██║░░██║██╔══██╗██║░░░░░██║██╔══╝░░██╔══██║██╔══██╗██║░░██║  ╚════╝
+░░░░░░  ██║░░██║███████╗██████╔╝██████╦╝███████╗██║███████╗██║░░██║██║░░██║██████╔╝  ░░░░░░
+░░░░░░  ╚═╝░░╚═╝╚══════╝╚═════╝░╚═════╝░╚══════╝╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░  ░░░░░░
 EOF
 echo -e "${NONE}"
 
@@ -74,17 +88,14 @@ cd "$SCRIPT_DIR" || { echo 'Failed to change directory to script directory.'; ex
 
 # Redirect CPU info checks to /dev/null to hide the output
 
-# ANSI color codes
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-BLUE='\033[0;94m'
-ORANGE='\033[0;33m'
-PINK='\033[0;95m'
-YELLOW='\033[0;93m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Display welcome message
-echo -e "${GREEN}Welcome to the Hyprland-Blizz installer!${NC}"
+echo -e "${BLUE}Welcome to the Hyprland-Blizz installer!${NC}"
 
 # Perform system checks
 echo -e "${BLUE}Performing system checks...${NC}"
@@ -247,7 +258,7 @@ switch_shell_as_root() {
 }
 
 # Prompt user to switch shell for the current user
-echo -e "${YELLOW}Now we are checking which shell is used on the system.${NC}"
+echo -e "${BLUE}Now we are checking which shell is used on the system.${NC}"
 current_shell=$(basename "$SHELL")
 echo "Current shell: $current_shell"
 
@@ -283,7 +294,7 @@ cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-bliz
 git clone "https://github.com/RedBlizard/Hyprland-blizz.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
 
 # Cloning of the dotfiles is donw now
-echo -e "${PINK}Cloning of the dotfiles is done${NC}"
+echo -e "${BLUE}Cloning of the dotfiles is done${NC}"
 
 
 # ------------------------------------------------------
@@ -299,7 +310,13 @@ cp -r .Kvantum-themes ~/
 cp -r .local ~/
 cp -r Pictures ~/
 
-echo -e "${GREEN}"
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
+NC='\033[0m' # No Color
+
+echo -e "${RED}"
 cat <<"EOF"
 
 ████████╗██╗░░██╗███████╗
@@ -506,7 +523,7 @@ echo -e "${BLUE}Copying .config folder to home directory...${NC}"
 cp -r ~/Hyprland-blizz/.config ~/
 
 # Copy the following folders to home root directory
-echo -e "${PINK}Copying folders to home root directory...${NC}"
+echo -e "${BLUE}Copying folders to home root directory...${NC}"
 sudo cp -r ~/.icons /root/
 sudo cp -r ~/.Kvantum-themes /root/
 
@@ -515,7 +532,7 @@ sudo cp -r ~/.Kvantum-themes /root/
 # sudo cp -r ~/.local/share/fonts/Noto /usr/share/fonts/
 
 # Copy the following folders to the .config folder in the root directory
-echo -e "${PINK}Copying folders to /root/.config/...${NC}"
+echo -e "${GREEN}Copying folders to /root/.config/...${NC}"
 sudo cp -r ~/.config/fish /root/.config/            
 sudo cp -r ~/.config/nwg-look /root/.config/            
 sudo cp -r ~/.config/xsettingsd /root/.config/
@@ -524,12 +541,14 @@ sudo cp -r ~/.config/starship /root/.config/
 sudo cp -r ~/.config/gtk-3.0 /root/.config/
 
 # Copy the individual files to the .config folder in the root directory
-echo -e "${PINK}Copying individual files to /root/.config/...${NC}"
+echo -e "${GREEN}Copying individual files to /root/.config/...${NC}"
 sudo cp ~/.config/starship.toml /root/.config/
 sudo cp ~/.config/starship-endeavouros.toml /root/.config/
 
-BLUE='\033[0;34m'
-PINK='\033[1;35m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Clone the fonts repository
@@ -548,7 +567,7 @@ sudo fc-cache -f -v
 echo -e "${BLUE}Cleaning up...${NC}"
 rm -rf /tmp/hypr_blizz_fonts
 
-echo -e "${PINK}Fonts installed successfully!${NC}"
+echo -e "${BLUE}Fonts installed successfully!${NC}"
 
 
 # Copy sddm.conf to /etc/
@@ -560,16 +579,16 @@ echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC
 # chmod all scripts needed         
 chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
-echo -e "${YELLOW}Now we will continue with the installation. We are halfway there.${RESET}"
+echo -e "${RED}Now we will continue with the installation. We are halfway there.${RESET}"
 
 
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
 
-
-# Define colors
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # List of AUR helpers to check
@@ -589,7 +608,7 @@ done
 
 # Print yellow echo line if a default AUR helper is found
 if $found; then
-    echo -e "${YELLOW}Default AUR helper found: $aur_helper${NC}"
+    echo -e "${GREEN}Default AUR helper found: $aur_helper${NC}"
 else
     echo "No default AUR helper found."
 fi
@@ -601,17 +620,17 @@ if ! $found; then
         case $REPLY in
             1)
                 aur_helper="yay"
-                echo -e "${RED}Installing yay...${NC}"
+                echo -e "${BLUE}Installing yay...${NC}"
                 yay_installation
                 ;;
             2)
                 aur_helper="trizen"
-                echo -e "${RED}Installing trizen...${NC}"
+                echo -e "${BLUE}Installing trizen...${NC}"
                 trizen_installation
                 ;;
             3)
                 aur_helper="paru"
-                echo -e "${RED}Installing paru...${NC}"
+                echo -e "${BLUE}Installing paru...${NC}"
                 paru_installation
                 ;;
             *)
@@ -735,9 +754,10 @@ else
     fi
 fi
 
-
-YELLOW='\033[1;33m'
-GREEN='\033[0;32m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Function to display the browser options
@@ -775,9 +795,10 @@ check_default_browser() {
     fi
 }
 
-
-YELLOW='\033[1;33m'
-GREEN='\033[0;32m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Function to prompt user for browser switch
@@ -809,14 +830,14 @@ prompt_browser_switch() {
         echo -e "${YELLOW}Setting $new_browser as default browser...${NC}"
         xdg-settings set default-web-browser $new_browser
         echo "$new_browser is now the default browser."
-        echo -e "${YELLOW}$new_browser is now the default browser.${NC}"
+        echo -e "${BLUE}$new_browser is now the default browser.${NC}"
     else
-        echo -e "${GREEN}Keeping the current default browser ($default_browser).${NC}"
+        echo -e "${RED}Keeping the current default browser ($default_browser).${NC}"
     fi
 }
 
 # Display welcome message
-echo -e "${GREEN}One moment please, now we are checking which browser is installed as default.${NC}"
+echo -e "${BLUE}One moment please, now we are checking which browser is installed as default.${NC}"
 
 # Check default browser
 check_default_browser
@@ -824,9 +845,10 @@ check_default_browser
 # Prompt user for browser switch
 prompt_browser_switch
 
-# Define colors
-orange='\033[0;33m'
-YELLOW='\033[1;33m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Check if firewalld is installed
@@ -850,24 +872,23 @@ if ! command -v firewalld &> /dev/null; then
             ;;
     esac
 else
-    echo -e "${ORANGE}Firewalld is already installed.${NC}"
+    echo -e "${RED}Firewalld is already installed.${NC}"
 fi
 
-
-
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Check if Geany is installed
 if command -v geany &> /dev/null; then
-    echo -e "${ORANGE}Geany is already installed.${NC}"
+    echo -e "${BLUE}Geany is already installed.${NC}"
     # Optionally, set Geany as the default editor for the current session
     #export VISUAL=geany
     #export EDITOR=geany
 else
-    echo -e "${ORANGE}Geany is not installed. Installing Geany...${NC}"
+    echo -e "${RED}Geany is not installed. Installing Geany...${NC}"
     # Add installation command for Geany (for Arch Linux)
     sudo pacman -Sy --noconfirm geany
 
@@ -878,7 +899,7 @@ else
         #export VISUAL=geany
         #export EDITOR=geany
     else
-        echo -e "${YELLOW}Failed to install Geany. Please install it manually and set it as the default editor.${NC}"
+        echo -e "${RED}Failed to install Geany. Please install it manually and set it as the default editor.${NC}"
         # You may choose to exit the script here or continue with other tasks
     fi
 fi
@@ -985,12 +1006,10 @@ sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/imag
 echo "Contents of /usr/share/sddm/themes/simplicity/images:"
 ls -la /usr/share/sddm/themes/simplicity/images
 
-
-# Define colors
-ORANGE='\033[0;33m'
-PINK='\033[1;35m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # Path to the environment file
@@ -1027,14 +1046,15 @@ if [ -f "$ENV_FILE" ]; then
     # Update environment file for the root user
     update_env_file "root"
 
-    echo -e "${PINK}Environment files updated for both the current user and root.${NC}"
+    echo -e "${BLUE}Environment files updated for both the current user and root.${NC}"
 else
-    echo -e "${PINK}Environment file not found.${NC}"
+    echo -e "${RED}Environment file not found.${NC}"
 fi
 
-# Define colors
-ORANGE='\033[0;33m'
+# Define color codes
 RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 # ------------------------------------------------------
@@ -1044,18 +1064,18 @@ NC='\033[0m' # No Color
 echo -e "${ORANGE}Checking if kvantummanager is accessible...${NC}"
 which kvantummanager
 
-echo -e "${ORANGE}Just a friendly reminder, the Kvantum-themes directory is hidden!!!${NC}"
+echo -e "${RED}Just a friendly reminder, the Kvantum-themes directory is hidden!!!${NC}"
 
 kvantummanager --set Catppuccin-Frappe-Blue
 
-echo -e "${RED}Kvantum theme for the user has been set.${NC}"
+echo -e "${BLUE}Kvantum theme for the user has been set.${NC}"
 
 #------------------------------------------------------
 # Use kvantummanager to set the theme for the root user
-echo -e "${ORANGE}Just a friendly reminder, the Kvantum-themes directory is hidden on root !!!${NC}"
+echo -e "${RED}Just a friendly reminder, the Kvantum-themes directory is hidden on root !!!${NC}"
 sudo kvantummanager --set Catppuccin-Frappe-Blue
 
-echo -e "${RED}Kvantum theme for the root user has been set.${NC}"
+echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
 # Change GTK-Theme for the user
 # ----------------------------
@@ -1074,19 +1094,19 @@ fi
 
 echo "Selected GTK theme: $current_theme"
 
-# -------------------------------
-# Change Window-Theme for the user
-# -------------------------------
-
-echo "Setting window theme..."
-/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
-
 # -----------------------------------------
 # Change the default Icon-Theme for the user
 # -----------------------------------------
 
 echo "Setting icon theme..."
 /usr/bin/gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+
+# -------------------------------
+# Change Window-Theme for the user
+# -------------------------------
+
+echo "Setting window theme..."
+/usr/bin/gsettings set org.gnome.desktop.wm.preferences theme 'Catppuccin-Frappe-Standard-Blue-Dark'
 
 # ------------------------------------------------------
 # Change Papirus folder colors for the user
@@ -1098,11 +1118,11 @@ papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 # ------------------------------------------------------
 # sudo papirus-folders -C cat-frappe-blue --theme Papirus-Dark
 
-# ---------------------------------------------            
-# Export to /etc/environment
-# ---------------------------------------------
+# -------------------------------            
+# Set the Qogir-dark cursor theme
+# -------------------------------
 echo "export XCURSOR_THEME=Qogir-dark" | sudo tee -a /etc/environment
-echo "export XCURSOR_SIZE=24" | sudo tee -a /etc/environment 
+echo "export XCURSOR_SIZE=24" | sudo tee -a /etc/environment
 xsetroot -cursor_name left_ptr
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1156,15 +1176,16 @@ echo "Hypr Welcome script installation complete."
 # Set up environment variables
 echo 'XDG_MENU_PREFIX=arch-' | sudo tee -a /etc/environment > /dev/null
 
-
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
+# Define color codes
+RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
-echo -e "${ORANGE}Now we are cleaning things up.${NC}"
+echo -e "${BLUE}Now we are cleaning things up.${NC}"
 
 # -------------------------------------
-echo -e "${ORANGE}Cleaning up installation files.${NC}"
+echo -e "${BLUE}Cleaning up installation files.${NC}"
 # -------------------------------------
 
 rm -rf $HOME/hyprland-installation
@@ -1178,9 +1199,9 @@ rm -rf $HOME/environment
 
 yay -Rns pavucontrol
 
-echo -e "${ORANGE}Cleaning up is done.${NC}"
+echo -e "${RED}Cleaning up is done.${NC}"
 
-echo -e "${green}"
+echo -e "${RED}"
 cat <<"EOF"
 
 ░██╗░░░░░░░██╗███████╗██╗░░░░░░█████╗░░█████╗░███╗░░░███╗███████╗  ████████╗░█████╗░
@@ -1202,7 +1223,7 @@ echo -e "${NONE}"
 echo   "Your system is now configured with Hyprland."
 
 
-echo -e "${green}"
+echo -e "${RED}"
 cat <<"EOF"
 
 ░██████╗███████╗████████╗  ██╗░░░██╗░█████╗░██╗░░░██╗██████╗░
@@ -1225,7 +1246,7 @@ echo ""
 echo "Open ~/.config/hypr/hyprland.conf to change your keyboard layout (default is us) and your screen resolution best to change the moinitors to (default is preferred) and change keybinds if needed."
 echo ""
 
-echo -e "${green}"
+echo -e "${BLUE}"
 cat <<"EOF"
 
 ███╗░░██╗██╗░░░██╗██╗██████╗░██╗░█████╗░  ░█████╗░███╗░░██╗██╗░░░░░██╗░░░██╗  ██╗
@@ -1240,8 +1261,10 @@ echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT
 EOF
 echo -e "${none}"
 
-BLUE='\033[0;34m'
+# Define color codes
 RED='\033[0;31m'
+BLUE='\033[1;34m'
+GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}DONE!${NC}"
@@ -1249,4 +1272,4 @@ echo -e "${BLUE}DONE!${NC}"
 echo ""
 # Now you are fully ready and can reboot your system / if you encounter any problems related to the configuration get in contact with RedBlizard
 
-echo -e "${BLUE}Then reboot your system!${NC}"
+echo -e "${RED}Then reboot your system!${NC}"
