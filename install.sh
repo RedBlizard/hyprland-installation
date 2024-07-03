@@ -274,42 +274,7 @@ if [ "$switch_root_shell" == "y" ]; then
     switch_shell_as_root
 fi
 
-
-# -----------------------
-# Getting in the dotfiles
-# -----------------------
-
-echo -e "${BLUE}Now we are getting in the dotfiles. Please be patient, this might take a while.${NC}"
-
-# Getting in the dotfiles
-echo "Cloning dotfiles repository..."
-
-# Create the Hyprland-blizz directory if not present
-mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
-
-# Change into the Hyprland-blizz directory
-cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
-
-# Clone the dotfiles repository
-git clone "https://github.com/RedBlizard/Hyprland-blizz.git" . || { echo 'Failed to clone dotfiles repository.'; exit 1; }
-
-# Cloning of the dotfiles is donw now
-echo -e "${BLUE}Cloning of the dotfiles is done${NC}"
-
-
-# ------------------------------------------------------
-# Copy dotfiles and directories to home directory
-# ------------------------------------------------------
-
-echo -e "${BLUE}Don't worry, we're now copying the dotfile directories to the correct location.${NC}"
-
-cp -r "$SCRIPT_DIR"/* ~/
-cp -r .config ~/
-cp -r .icons ~/
-cp -r .Kvantum-themes ~/
-cp -r .local ~/
-cp -r Pictures ~/
-
+#
 # Define color codes
 RED='\033[0;31m'
 BLUE='\033[1;34m'
@@ -347,55 +312,98 @@ echo ""
 echo "   Please Backup existing configurations if needed !!"
 echo ""
 
-# ------------------------------------------------------
-# Change to the Hyprland-blizz directory
-# ------------------------------------------------------
-cd "$HOME/Hyprland-blizz/" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+# -----------------------
+# Getting in the dotfiles
+# -----------------------
 
+# Define colors for messages
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m'
 
-# ----------------------------------
-# Start of the Hyprland installation
-# ----------------------------------
+# Function to show messages
+show_message() {
+    message=$1
+    color=$2
+    echo -e "${color}${message}${NC}"
+}
 
-while true; do
-    read -p "$(tput setaf 4)DO YOU WANT TO START THE HYPRLAND INSTALLATION NOW? (Yy/Nn): $(tput sgr0)" yn
-    case $yn in
-        [Yy]* )
-            echo "Installation started."
-            
-            # --------------------------------------------------
-            # Create the Hyprland-blizz directory if not present
-            # --------------------------------------------------
-            
-            mkdir -p "$HOME/Hyprland-blizz" || { echo 'Failed to create Hyprland-blizz directory.'; exit 1; }
-            
-            # ----------------------------------------
-            # Change into the Hyprland-blizz directory
-            # ----------------------------------------
-            
-            cd "$HOME/Hyprland-blizz" || { echo 'Failed to change directory to Hyprland-blizz.'; exit 1; }
+echo -e "${BLUE}Now we are getting in the dotfiles. Please be patient, this might take a while.${NC}"
 
-            # -----------------------------------------------
-            # Copy dotfiles and directories to home directory
-            # -----------------------------------------------
-            cp -r * ~/
-            cp -r .icons ~/
-            cp -r .Kvantum-themes ~/           
-            cp -r .local ~/
-            cp -r Pictures ~/
+# Ensure the hyprland-dots directory exists
+DOTFILES_DIR="$HOME/hyprland-dots"
+mkdir -p "$DOTFILES_DIR"
 
-            # -------------------------------------
-            # Copy .config folder to home directory
-            # -------------------------------------
-            cp -r .config ~/
+# Repositories to clone
+REPOS=(
+    "https://github.com/RedBlizard/Hyprland-blizz.git"
+    "https://github.com/RedBlizard/hypr-welcome.git"
+    "https://github.com/RedBlizard/hypr-waybar.git"
+)
 
-            break;;
-        [Nn]* )
-            exit;
-            break;;
-        * ) echo "Please answer yes or no.";;
-    esac
+# Set GIT_DISCOVERY_ACROSS_FILESYSTEM if needed
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+
+# Clone or update the repositories
+for repo in "${REPOS[@]}"; do
+    repo_name=$(basename "$repo" .git)
+    repo_dir="$DOTFILES_DIR/$repo_name"
+
+    if [ ! -d "$repo_dir" ]; then
+        show_message "Cloning $repo_name repository..." "$BLUE"
+        git clone "$repo" "$repo_dir" || { show_message "Failed to clone $repo_name repository." "$RED"; exit 1; }
+    else
+        cd "$repo_dir" || { show_message "Failed to change to directory $repo_dir." "$RED"; exit 1; }
+        show_message "Pulling the latest changes from the $repo_name repository..." "$BLUE"
+        if ! git pull origin main; then
+            show_message "Failed to pull $repo_name repository." "$RED"
+            exit 1
+        fi
+    fi
 done
+
+# Check for updates in each repository
+updates_available=false
+for repo in "${REPOS[@]}"; do
+    repo_name=$(basename "$repo" .git)
+    repo_dir="$DOTFILES_DIR/$repo_name"
+
+    if cd "$repo_dir" && git fetch origin main && [ "$(git rev-list --count HEAD..origin/main)" -gt 0 ]; then
+        updates_available=true
+        show_message "Updates are available for $repo_name repository." "$BLUE"
+    fi
+done
+
+if [ "$updates_available" = true ]; then
+    show_message "Updates are available for one or more repositories." "$BLUE"
+else
+    show_message "No updates available for the repositories." "$BLUE"
+fi
+
+read -rp "${BLUE}Do you want to start the installation? (Enter 'Yy' for yes or 'Nn' for no): ${NC}" update_choice
+
+if [[ "$update_choice" =~ ^[Yy]$ ]]; then
+    # Copy dotfiles and directories from Hyprland-blizz to home directory
+    show_message "Updating dotfiles from Hyprland-blizz..." "$BLUE"
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/* ~/ || { show_message "Failed to update dotfiles from Hyprland-blizz." "$RED"; exit 1; }
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/.icons ~/ || { show_message "Failed to update .icons from Hyprland-blizz." "$RED"; exit 1; }
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/.Kvantum-themes ~/ || { show_message "Failed to update .Kvantum-themes from Hyprland-blizz." "$RED"; exit 1; }
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/.local ~/ || { show_message "Failed to update .local from Hyprland-blizz." "$RED"; exit 1; }
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/Pictures ~/ || { show_message "Failed to update Pictures from Hyprland-blizz." "$RED"; exit 1; }
+    cp -r "$HOME/hyprland-dots/Hyprland-blizz"/.config ~/ || { show_message "Failed to update .config from Hyprland-blizz." "$RED"; exit 1; }
+
+    # Copy dotfiles and directories from hypr-welcome to home directory
+    show_message "Updating dotfiles from hypr-welcome..." "$BLUE"
+    cp -r "$HOME/hyprland-dots/hypr-welcome"/.config ~/ || { show_message "Failed to update .config from hypr-welcome." "$RED"; exit 1; }
+
+    # Copy dotfiles and directories from hypr-waybar to home directory
+    show_message "Updating dotfiles from hypr-waybar..." "$BLUE"
+    cp -r "$HOME/hyprland-dots/hypr-waybar"/.config ~/ || { show_message "Failed to update .config from hypr-waybar." "$RED"; exit 1; }
+else
+    show_message "No dotfiles update performed." "$BLUE"
+    exit 0
+fi
+
 
 # ------------------------------------------------------
 # Check filesystem type
@@ -514,15 +522,10 @@ if [ ! -f "$sddm_conf" ]; then
     fi
 fi
 
-# Copy dotfiles and directories to home directory
-echo -e "${BLUE}Copying dotfiles and directories to home directory...${NC}"
-cp -r ~/Hyprland-blizz/* ~/
-
-# Copy .config folder to home directory            
-echo -e "${BLUE}Copying .config folder to home directory...${NC}"
-cp -r ~/Hyprland-blizz/.config ~/
-
+#--------------------------------------------------
 # Copy the following folders to home root directory
+#--------------------------------------------------
+
 echo -e "${BLUE}Copying folders to home root directory...${NC}"
 sudo cp -r ~/.icons /root/
 sudo cp -r ~/.Kvantum-themes /root/
@@ -571,8 +574,8 @@ echo -e "${BLUE}Fonts installed successfully!${NC}"
 
 
 # Copy sddm.conf to /etc/
-echo -e "${YELLOW}Copying sddm.conf to /etc/...${NC}"
-sudo cp -r ~/Hyprland-blizz/sddm.conf /etc/
+echo -e "${GREEN}Copying sddm.conf to /etc/...${NC}"
+sudo cp -r ~/$HOME/hyprland-dots/Hyprland-blizz/sddm.conf /etc/
 
 echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
 
