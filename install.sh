@@ -575,7 +575,7 @@ echo -e "${BLUE}Fonts installed successfully!${NC}"
 
 # Copy sddm.conf to /etc/
 echo -e "${GREEN}Copying sddm.conf to /etc/...${NC}"
-sudo cp -r ~/$HOME/hyprland-dots/Hyprland-blizz/sddm.conf /etc/
+sudo cp -r ~/hyprland-dots/Hyprland-blizz/sddm.conf /etc/
 
 echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC}"
 
