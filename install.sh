@@ -380,7 +380,7 @@ else
     show_message "No updates available for the repositories." "$BLUE"
 fi
 
-read -rp "${BLUE}Do you want to start the installation? (Enter 'Yy' for yes or 'Nn' for no): ${NC}" update_choice
+read -rp "$(tput setaf 4)Do you want to start the installation? (Enter 'Yy' for yes or 'Nn' for no): $(tput sgr0)" update_choice
 
 if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     # Copy dotfiles and directories from Hyprland-blizz to home directory
@@ -948,7 +948,7 @@ sudo systemctl enable sddm
 echo "SDDM enabled. Continuing with the rest of the script."
 
 # Copy custom sddm.conf
-sudo cp -rf "$HOME/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
+sudo cp -rf "$HOME/hyprland-dots/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Error copying sddm.conf.'; exit 1; }
 
 
 # ------------------------------------------------------
@@ -995,13 +995,13 @@ fi
 # Print debug information
 # ------------------------------------------------------
 echo "Contents of sddm-images directory:"
-ls -la ~/Hyprland-blizz/sddm-images
+ls -la ~/hyprland-dots/Hyprland-blizz/sddm-images
 
 # ------------------------------------------------------------
 # Copy sddm-images to /usr/share/sddm/themes/simplicity/images
 # ------------------------------------------------------------
 echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
-sudo cp -r ~/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
+sudo cp -r ~/hyprland-dots/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
 
 # -------------------------------------
 # Print debug information after copying
@@ -1291,8 +1291,8 @@ cat <<"EOF"
 ██║░╚███║░░╚██╔╝░░██║██████╔╝██║██║░░██║  ╚█████╔╝██║░╚███║███████╗░░░██║░░░  ██╗
 ╚═╝░░╚══╝░░░╚═╝░░░╚═╝╚═════╝░╚═╝╚═╝░░╚═╝  ░╚════╝░╚═╝░░╚══╝╚══════╝░░░╚═╝░░░  ╚═╝
 
-echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS PAY ATTENTION BY DEFAULT THE NVIDIA ENV RULES HAVE A COMMENT IN FRONT OF EACH LINE YOU NEED TO REMOVE THE COMMENT (#)"
-echo "Open ~/.config/hypr/hyprland.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT (#) IN FRONT OF THE FOLLOWING LINE env=WLR_NO_HARDWARE_CURSORS=1 !!!"
+echo "Open ~/.config/hypr/conf/monitor.conf NVIDIA USERS PAY ATTENTION BY DEFAULT THE NVIDIA ENV RULES HAVE A COMMENT IN FRONT OF EACH LINE YOU NEED TO REMOVE THE COMMENT (#)"
+echo "Open ~/.config/hypr/conf/env_var.conf NVIDIA USERS YOU NEED TO PLACE A COMMENT (#) IN FRONT OF THE FOLLOWING LINE env=WLR_NO_HARDWARE_CURSORS=1 !!!"
 EOF
 echo -e "${none}"
 
