@@ -403,7 +403,7 @@ if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     
     # Copy dotfiles and directories from hypr-settings to home directory
     show_message "Updating dotfiles from hypr-settings..." "$BLUE"
-    cp -r "$HOME/hyprland-dots/hypr-settings"/.config/hypr/apps ~/ || { show_message "Failed to update .config from hypr-settings." "$RED"; exit 1; }  
+    cp -r "$HOME/hyprland-dots/hypr-settings"/.config ~/ || { show_message "Failed to update .config from hypr-settings." "$RED"; exit 1; }  
     
 else
     show_message "No dotfiles update performed." "$BLUE"
