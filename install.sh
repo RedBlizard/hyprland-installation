@@ -339,6 +339,7 @@ REPOS=(
     "https://github.com/RedBlizard/Hyprland-blizz.git"
     "https://github.com/RedBlizard/hypr-welcome.git"
     "https://github.com/RedBlizard/hypr-waybar.git"
+    "https://github.com/RedBlizard/hypr-settings.git"
 )
 
 # Set GIT_DISCOVERY_ACROSS_FILESYSTEM if needed
@@ -399,6 +400,11 @@ if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     # Copy dotfiles and directories from hypr-waybar to home directory
     show_message "Updating dotfiles from hypr-waybar..." "$BLUE"
     cp -r "$HOME/hyprland-dots/hypr-waybar"/.config ~/ || { show_message "Failed to update .config from hypr-waybar." "$RED"; exit 1; }
+    
+    # Copy dotfiles and directories from hypr-settings to home directory
+    show_message "Updating dotfiles from hypr-settings..." "$BLUE"
+    cp -r "$HOME/hyprland-dots/hypr-settings"/.config/hypr/apps ~/ || { show_message "Failed to update .config from hypr-settings." "$RED"; exit 1; }  
+    
 else
     show_message "No dotfiles update performed." "$BLUE"
     exit 0
