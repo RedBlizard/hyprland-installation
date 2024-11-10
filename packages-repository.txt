@@ -3,6 +3,7 @@ archlinux-xdg-menu
 ark
 bash-completion
 bash-language-server
+breeze
 breeze-icons
 btop
 brightnessctl
