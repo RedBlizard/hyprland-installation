@@ -86,7 +86,6 @@ grim
 grimblast-git
 hyprpicker
 hyprshot
-kvantum-theme-catppuccin-git
 networkmanager-dmenu-bluetoothfix-git
 nwg-look
 papirus-folders-catppuccin-git
