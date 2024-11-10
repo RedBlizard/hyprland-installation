@@ -64,7 +64,7 @@ backup() {
 }
 
 # List of folders to backup
-folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "Kvantum" "networkmanager-dmenu" "nwg-look" "nvim" "pacseek" "pipewire" "qt6ct" "ranger" "sddm-config-editor" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-2.0" "gtk-3.0" "gtk-4.0" "starship")
+folders=("alacritty" "btop" "cava" "dunst" "hypr" "kitty" "Kvantum" "networkmanager-dmenu" "nwg-look" "pacseek" "pipewire" "qt6ct" "ranger" "sddm-config-editor" "Thunar" "waybar" "wlogout" "wofi" "xsettingsd" "gtk-2.0" "gtk-3.0" "gtk-4.0" "starship")
 
 # Backup and copy each folder
 for folder in "${folders[@]}"; do
@@ -339,7 +339,6 @@ REPOS=(
     "https://github.com/RedBlizard/Hyprland-blizz.git"
     "https://github.com/RedBlizard/hypr-welcome.git"
     "https://github.com/RedBlizard/hypr-waybar.git"
-    "https://github.com/RedBlizard/hypr-settings.git"
 )
 
 # Set GIT_DISCOVERY_ACROSS_FILESYSTEM if needed
@@ -400,11 +399,6 @@ if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     # Copy dotfiles and directories from hypr-waybar to home directory
     show_message "Updating dotfiles from hypr-waybar..." "$BLUE"
     cp -r "$HOME/hyprland-dots/hypr-waybar"/.config ~/ || { show_message "Failed to update .config from hypr-waybar." "$RED"; exit 1; }
-    
-    # Copy dotfiles and directories from hypr-settings to home directory
-    show_message "Updating dotfiles from hypr-settings..." "$BLUE"
-    cp -r "$HOME/hyprland-dots/hypr-settings"/.config ~/ || { show_message "Failed to update .config from hypr-settings." "$RED"; exit 1; }  
-    
 else
     show_message "No dotfiles update performed." "$BLUE"
     exit 0
@@ -600,24 +594,13 @@ BLUE='\033[1;34m'
 GREEN='\033[38;2;149;209;137m'
 NC='\033[0m' # No Color
 
-#!/bin/bash
-
-# ------------------------------------------------------
-# AUR Helper and Package Installation Script
-# ------------------------------------------------------
-
-# Color codes
-GREEN="\033[32m"
-BLUE="\033[34m"
-RED="\033[31m"
-NC="\033[0m"
-
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
+
+# Check if any AUR helper is installed
 found=false
 aur_helper=""
 
-# Check if any AUR helper is installed
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
         aur_helper="$helper"
@@ -626,105 +609,153 @@ for helper in "${aur_helpers[@]}"; do
     fi
 done
 
-# Print message if a default AUR helper is found
+# Print yellow echo line if a default AUR helper is found
 if $found; then
     echo -e "${GREEN}Default AUR helper found: $aur_helper${NC}"
 else
-    echo "No default AUR helper found. Please select one:"
-    select aur_helper in "${aur_helpers[@]}"; do
+    echo "No default AUR helper found."
+fi
+
+# Ask user to select an AUR helper if none found
+if ! $found; then
+    echo "Select an AUR helper:"
+    select aur_helper_option in "${aur_helpers[@]}"; do
         case $REPLY in
-            1|2|3) install_aur_helper "$aur_helper" ;;
-            *) echo "Invalid option. Exiting."; exit 1 ;;
+            1)
+                aur_helper="yay"
+                echo -e "${BLUE}Installing yay...${NC}"
+                yay_installation
+                ;;
+            2)
+                aur_helper="trizen"
+                echo -e "${BLUE}Installing trizen...${NC}"
+                trizen_installation
+                ;;
+            3)
+                aur_helper="paru"
+                echo -e "${BLUE}Installing paru...${NC}"
+                paru_installation
+                ;;
+            *)
+                echo "Invalid option. Please try again."
+                ;;
         esac
         break
     done
 fi
 
-# Function to install the selected AUR helper if necessary
-install_aur_helper() {
-    local helper="$1"
-    if ! command -v "$helper" &>/dev/null; then
-        echo -e "${BLUE}Installing $helper...${NC}"
-        if [ "$helper" == "yay" ]; then
-            yay_installation
-        elif [ "$helper" == "trizen" ]; then
-            trizen_installation
-        elif [ "$helper" == "paru" ]; then
-            paru_installation
+# Function to check if yay is installed
+yay_installation() {
+    if ! command -v yay &>/dev/null; then
+        echo "yay is not installed."
+    else
+        echo "yay is already installed."
+    fi
+}
+
+
+# Function to install or remove trizen
+trizen_installation() {
+    if command -v trizen &>/dev/null; then
+        echo "trizen is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm trizen
+            echo "trizen has been removed."
+        else
+            echo "trizen is already installed."
         fi
     else
-        echo "$helper is already installed."
+        echo "trizen is not installed."
+        echo "Installing trizen..."
+        yay -S --noconfirm trizen
     fi
 }
 
-# Installation functions for each AUR helper
-yay_installation() {
-    echo "Installing yay..."
-    git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
-}
 
-trizen_installation() {
-    echo "Installing trizen..."
-    git clone https://aur.archlinux.org/trizen.git && cd trizen && makepkg -si && cd ..
-}
-
+# Function to install or remove paru
 paru_installation() {
-    echo "Installing paru..."
-    git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd ..
-}
-
-# Function to install packages using the AUR helper
-install_packages() {
-    local packages="$1"
-    if [ -n "$packages" ]; then
-        echo -e "${BLUE}Installing packages...${NC}"
-        "$aur_helper" -S --noconfirm $packages
+    if command -v paru &>/dev/null; then
+        echo "paru is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm paru
+            echo "paru has been removed."
+        else
+            echo "paru is already installed."
+        fi
     else
-        echo "No packages to install."
+        echo "paru is not installed."
+        echo "Installing paru..."
+        yay -S --noconfirm paru
     fi
 }
 
-# Extract package lists from packages-repository.txt
+
+# Function to install AUR packages
+install_packages() {
+    local aur_helper="$1"
+    local packages="$2"
+
+    # Install AUR packages using the specified AUR helper
+    "$aur_helper" -S --noconfirm $packages
+}
+
+# Extract Arch package list from packages-repository.txt
 arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
+
+# Check if all Arch packages are installed
+all_packages_installed=true
+for package in $arch_packages; do
+    if ! pacman -Qq "$package" &>/dev/null; then
+        all_packages_installed=false
+        break
+    fi
+done
+
+# Print feedback based on results
+if $all_packages_installed; then
+    echo -e "${RED}All Arch packages are already installed. No further installation needed.${NC}"
+else
+    # Install Arch packages if needed
+    if [ -n "$arch_packages" ]; then
+        yay -Sy --noconfirm $arch_packages
+        echo -e "${RED}Arch packages successfully installed.${NC}"
+    else
+        echo "No Arch packages found."
+    fi
+fi
+
+
+# Extract AUR package list from packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 
-# Function to check if all packages are installed
-check_packages_installed() {
-    local packages="$1"
-    local is_arch="$2"
-    local not_installed=()
-    local cmd="pacman -Qq"
-    
-    if [ "$is_arch" == "aur" ]; then
-        cmd="$aur_helper -Qq"
+# Check if all AUR packages are installed
+all_aur_packages_installed=true
+for package in $aur_packages; do
+    if ! yay -Qq "$package" &>/dev/null; then
+        all_aur_packages_installed=false
+        echo "$package is not installed"
+        break
     fi
+done
 
-    for package in $packages; do
-        if ! $cmd "$package" &>/dev/null; then
-            not_installed+=("$package")
+# Print feedback based on results
+if $all_aur_packages_installed; then
+    echo -e "${RED}All AUR packages are already installed. No further installation needed.${NC}"
+else
+    # Install AUR packages if needed
+    if [ -n "$aur_packages" ]; then
+        install_packages "$aur_helper" "$aur_packages"
+        if yay -Qq $aur_packages &> /dev/null; then
+            echo -e "${RED}AUR packages successfully installed.${NC}"
+        else
+            echo -e "${RED}Failed to install AUR packages.${NC}"
         fi
-    done
-    echo "${not_installed[@]}"
-}
-
-# Check and install Arch packages
-not_installed_arch=$(check_packages_installed "$arch_packages" "arch")
-if [ -z "$not_installed_arch" ]; then
-    echo -e "${GREEN}All Arch packages are already installed.${NC}"
-else
-    echo -e "${BLUE}Installing missing Arch packages: ${not_installed_arch[*]}${NC}"
-    sudo pacman -S --noconfirm "${not_installed_arch[@]}"
+    else
+        echo "No AUR packages found."
+    fi
 fi
-
-# Check and install AUR packages
-not_installed_aur=$(check_packages_installed "$aur_packages" "aur")
-if [ -z "$not_installed_aur" ]; then
-    echo -e "${GREEN}All AUR packages are already installed.${NC}"
-else
-    echo -e "${BLUE}Installing missing AUR packages: ${not_installed_aur[*]}${NC}"
-    install_packages "${not_installed_aur[@]}"
-fi
-
 
 # Define color codes
 RED='\033[0;31m'
@@ -921,89 +952,62 @@ sudo cp -rf "$HOME/hyprland-dots/Hyprland-blizz/sddm.conf" /etc/ || { echo 'Erro
 
 
 # ------------------------------------------------------
-# Set SDDM Theme Script
+# Set SDDM theme
 # ------------------------------------------------------
-
-# Define the SDDM theme you want to set
 sddm_theme="simplicity"
 
-# Function to display a message with color
-show_message() {
-    local message="$1"
-    local color_code="$2"
-    echo -e "${color_code}${message}\033[0m"
-}
-
 # Prompt user for confirmation before setting the theme
-read -p "Do you want to set the SDDM theme to '$sddm_theme'? (Yy/Nn): " set_theme_confirmation
-case "$set_theme_confirmation" in
+read -p "Do you want to set the SDDM theme to $sddm_theme? (Yy/Nn): " set_theme_confirmation
+case $set_theme_confirmation in
     [Yy]* )
-        # Check if SDDM is installed
         if ! command -v sddm &> /dev/null; then
-            show_message "SDDM is not installed. The SDDM theme cannot be set." "\033[31m"
+            echo "SDDM is not installed. The SDDM theme cannot be set."
             exit 1
         fi
 
-        # Check and modify SDDM configuration file
-        if [ -f /etc/sddm.conf ]; then
-            sudo sed -i "s/^Current=.*/Current=$sddm_theme/" /etc/sddm.conf && \
-            show_message "SDDM theme set to '$sddm_theme'." "\033[32m"
-        else
-            show_message "SDDM configuration file not found at /etc/sddm.conf." "\033[31m"
-            exit 1
-        fi
+        # Modify the SDDM configuration file to set the theme
+        sudo sed -i "s/^Current=.*/Current=$sddm_theme/" /etc/sddm.conf
+        echo "SDDM theme set to $sddm_theme."
         ;;
     [Nn]* )
-        show_message "SDDM theme not changed." "\033[33m"
+        echo "SDDM theme not changed."
         ;;
     * )
-        show_message "Invalid choice. Please answer yes or no." "\033[31m"
+        echo "Invalid choice. Please answer yes or no."
         exit 1
         ;;
 esac
 
 # ------------------------------------------------------
-# Ensure SDDM Theme Directory Exists
+# Remove unwanted folders from /usr/share/sddm/themes
 # ------------------------------------------------------
 
-sddm_theme_dir="/usr/share/sddm/themes/$sddm_theme/images"
-if [ ! -d "$sddm_theme_dir" ]; then
-    sudo mkdir -p "$sddm_theme_dir"
-    show_message "Created directory: $sddm_theme_dir" "\033[32m"
-else
-    show_message "Directory already exists: $sddm_theme_dir" "\033[33m"
+sudo rm -rf /usr/share/sddm/themes/{elarun, maldives, maya} || { echo 'Removal of unwanted folders failed.'; exit 1; }
+
+# ------------------------------------------------------
+# Check if the directory exists, if not, create it
+# ------------------------------------------------------
+if [ ! -d "/usr/share/sddm/themes/simplicity/images" ]; then
+    sudo mkdir -p /usr/share/sddm/themes/simplicity/images
 fi
 
 # ------------------------------------------------------
-# Debug Info - Source Images
+# Print debug information
 # ------------------------------------------------------
-
-echo "Contents of sddm-images directory (source):"
+echo "Contents of sddm-images directory:"
 ls -la ~/hyprland-dots/Hyprland-blizz/sddm-images
 
-# ------------------------------------------------------
-# Copy SDDM Images to Theme Directory
-# ------------------------------------------------------
+# ------------------------------------------------------------
+# Copy sddm-images to /usr/share/sddm/themes/simplicity/images
+# ------------------------------------------------------------
+echo "Copying sddm-images to /usr/share/sddm/themes/simplicity/images..."
+sudo cp -r ~/hyprland-dots/Hyprland-blizz/sddm-images/* /usr/share/sddm/themes/simplicity/images || { echo 'Copy of images failed.'; exit 1; }
 
-# Verify source directory exists
-src_dir=~/hyprland-dots/Hyprland-blizz/sddm-images
-if [ -d "$src_dir" ]; then
-    echo "Copying SDDM images to $sddm_theme_dir..."
-    sudo cp -r "$src_dir"/* "$sddm_theme_dir" && \
-    show_message "Images copied successfully to $sddm_theme_dir." "\033[32m" || \
-    { show_message "Failed to copy images." "\033[31m"; exit 1; }
-else
-    show_message "Source directory $src_dir does not exist." "\033[31m"
-    exit 1
-fi
-
-# ------------------------------------------------------
-# Debug Info - Destination Images
-# ------------------------------------------------------
-
-echo "Contents of $sddm_theme_dir (destination):"
-ls -la "$sddm_theme_dir"
-
+# -------------------------------------
+# Print debug information after copying
+# -------------------------------------
+echo "Contents of /usr/share/sddm/themes/simplicity/images:"
+ls -la /usr/share/sddm/themes/simplicity/images
 
 # Define color codes
 RED='\033[0;31m'
