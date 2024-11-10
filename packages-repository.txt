@@ -45,7 +45,7 @@ pavucontrol-qt
 pipes.sh
 polkit-gnome
 python-pyqt6
-qt6ct
+qt6ct-kde
 sddm-conf-git
 starship
 swaybg
