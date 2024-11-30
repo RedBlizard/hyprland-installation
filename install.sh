@@ -572,7 +572,6 @@ rm -rf /tmp/hypr_blizz_fonts
 
 echo -e "${BLUE}Fonts installed successfully!${NC}"
 
-
 # Copy sddm.conf to /etc/
 echo -e "${GREEN}Copying sddm.conf to /etc/...${NC}"
 sudo cp -r ~/hyprland-dots/Hyprland-blizz/sddm.conf /etc/
@@ -583,7 +582,6 @@ echo -e "${BLUE}Configuration files successfully copied to ~/ and ~/.config/${NC
 chmod +x ~/.config/hypr/scripts/chmod_scripts.sh || { echo 'Making script executable failed.'; exit 1; }
 
 echo -e "${RED}Now we will continue with the installation. We are halfway there.${RESET}"
-
 
 # Change directory to the script's location
 cd "$HOME/hyprland-installation/"
@@ -596,10 +594,11 @@ NC='\033[0m' # No Color
 
 # List of AUR helpers to check
 aur_helpers=("yay" "trizen" "paru")
+
+# Check if any AUR helper is installed
 found=false
 aur_helper=""
 
-# Check if any AUR helper is installed
 for helper in "${aur_helpers[@]}"; do
     if command -v "$helper" &> /dev/null; then
         aur_helper="$helper"
@@ -608,103 +607,152 @@ for helper in "${aur_helpers[@]}"; do
     fi
 done
 
-# Print message if a default AUR helper is found
+# Print yellow echo line if a default AUR helper is found
 if $found; then
     echo -e "${GREEN}Default AUR helper found: $aur_helper${NC}"
 else
-    echo "No default AUR helper found. Please select one:"
-    select aur_helper in "${aur_helpers[@]}"; do
+    echo "No default AUR helper found."
+fi
+
+# Ask user to select an AUR helper if none found
+if ! $found; then
+    echo "Select an AUR helper:"
+    select aur_helper_option in "${aur_helpers[@]}"; do
         case $REPLY in
-            1|2|3) install_aur_helper "$aur_helper" ;;
-            *) echo "Invalid option. Exiting."; exit 1 ;;
+            1)
+                aur_helper="yay"
+                echo -e "${BLUE}Installing yay...${NC}"
+                yay_installation
+                ;;
+            2)
+                aur_helper="trizen"
+                echo -e "${BLUE}Installing trizen...${NC}"
+                trizen_installation
+                ;;
+            3)
+                aur_helper="paru"
+                echo -e "${BLUE}Installing paru...${NC}"
+                paru_installation
+                ;;
+            *)
+                echo "Invalid option. Please try again."
+                ;;
         esac
         break
     done
 fi
 
-# Function to install the selected AUR helper if necessary
-install_aur_helper() {
-    local helper="$1"
-    if ! command -v "$helper" &>/dev/null; then
-        echo -e "${BLUE}Installing $helper...${NC}"
-        if [ "$helper" == "yay" ]; then
-            yay_installation
-        elif [ "$helper" == "trizen" ]; then
-            trizen_installation
-        elif [ "$helper" == "paru" ]; then
-            paru_installation
-        fi
-    else
-        echo "$helper is already installed."
-    fi
-}
-
-# Installation functions for each AUR helper
+# Function to check if yay is installed
 yay_installation() {
-    echo "Installing yay..."
-    git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ..
-}
-
-trizen_installation() {
-    echo "Installing trizen..."
-    git clone https://aur.archlinux.org/trizen.git && cd trizen && makepkg -si && cd ..
-}
-
-paru_installation() {
-    echo "Installing paru..."
-    git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd ..
-}
-
-# Function to install packages using the AUR helper
-install_packages() {
-    local packages="$1"
-    if [ -n "$packages" ]; then
-        echo -e "${BLUE}Installing packages...${NC}"
-        "$aur_helper" -S --noconfirm $packages
+    if ! command -v yay &>/dev/null; then
+        echo "yay is not installed."
     else
-        echo "No packages to install."
+        echo "yay is already installed."
     fi
 }
 
-# Extract package lists from packages-repository.txt
-arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
-aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
 
-# Function to check if all packages are installed
-check_packages_installed() {
-    local packages="$1"
-    local is_arch="$2"
-    local not_installed=()
-    local cmd="pacman -Qq"
-    
-    if [ "$is_arch" == "aur" ]; then
-        cmd="$aur_helper -Qq"
-    fi
-
-    for package in $packages; do
-        if ! $cmd "$package" &>/dev/null; then
-            not_installed+=("$package")
+# Function to install or remove trizen
+trizen_installation() {
+    if command -v trizen &>/dev/null; then
+        echo "trizen is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm trizen
+            echo "trizen has been removed."
+        else
+            echo "trizen is already installed."
         fi
-    done
-    echo "${not_installed[@]}"
+    else
+        echo "trizen is not installed."
+        echo "Installing trizen..."
+        yay -S --noconfirm trizen
+    fi
 }
 
-# Check and install Arch packages
-not_installed_arch=$(check_packages_installed "$arch_packages" "arch")
-if [ -z "$not_installed_arch" ]; then
-    echo -e "${GREEN}All Arch packages are already installed.${NC}"
+
+# Function to install or remove paru
+paru_installation() {
+    if command -v paru &>/dev/null; then
+        echo "paru is already installed. Do you want to remove it? (Yy/Nn)"
+        read -r response
+        if [[ $response =~ ^[Yy]$ ]]; then
+            sudo pacman -Rs --noconfirm paru
+            echo "paru has been removed."
+        else
+            echo "paru is already installed."
+        fi
+    else
+        echo "paru is not installed."
+        echo "Installing paru..."
+        yay -S --noconfirm paru
+    fi
+}
+
+
+# Function to install AUR packages
+install_packages() {
+    local aur_helper="$1"
+    local packages="$2"
+
+    # Install AUR packages using the specified AUR helper
+    "$aur_helper" -S --noconfirm $packages
+}
+
+# Extract Arch package list from packages-repository.txt
+arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
+
+# Check if all Arch packages are installed
+all_packages_installed=true
+for package in $arch_packages; do
+    if ! pacman -Qq "$package" &>/dev/null; then
+        all_packages_installed=false
+        break
+    fi
+done
+
+# Print feedback based on results
+if $all_packages_installed; then
+    echo -e "${RED}All Arch packages are already installed. No further installation needed.${NC}"
 else
-    echo -e "${BLUE}Installing missing Arch packages: ${not_installed_arch[*]}${NC}"
-    sudo pacman -S --noconfirm "${not_installed_arch[@]}"
+    # Install Arch packages if needed
+    if [ -n "$arch_packages" ]; then
+        yay -Sy --noconfirm $arch_packages
+        echo -e "${RED}Arch packages successfully installed.${NC}"
+    else
+        echo "No Arch packages found."
+    fi
 fi
 
-# Check and install AUR packages
-not_installed_aur=$(check_packages_installed "$aur_packages" "aur")
-if [ -z "$not_installed_aur" ]; then
-    echo -e "${GREEN}All AUR packages are already installed.${NC}"
+
+# Extract AUR package list from packages-repository.txt
+aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
+
+# Check if all AUR packages are installed
+all_aur_packages_installed=true
+for package in $aur_packages; do
+    if ! yay -Qq "$package" &>/dev/null; then
+        all_aur_packages_installed=false
+        echo "$package is not installed"
+        break
+    fi
+done
+
+# Print feedback based on results
+if $all_aur_packages_installed; then
+    echo -e "${RED}All AUR packages are already installed. No further installation needed.${NC}"
 else
-    echo -e "${BLUE}Installing missing AUR packages: ${not_installed_aur[*]}${NC}"
-    install_packages "${not_installed_aur[@]}"
+    # Install AUR packages if needed
+    if [ -n "$aur_packages" ]; then
+        install_packages "$aur_helper" "$aur_packages"
+        if yay -Qq $aur_packages &> /dev/null; then
+            echo -e "${RED}AUR packages successfully installed.${NC}"
+        else
+            echo -e "${RED}Failed to install AUR packages.${NC}"
+        fi
+    else
+        echo "No AUR packages found."
+    fi
 fi
 
 
