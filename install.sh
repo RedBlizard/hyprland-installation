@@ -609,7 +609,7 @@ for helper in "${aur_helpers[@]}"; do
     fi
 done
 
-# Print yellow echo line if a default AUR helper is found
+# Print feedback based on AUR helper status
 if $found; then
     echo -e "${GREEN}Default AUR helper found: $aur_helper${NC}"
 else
@@ -625,22 +625,24 @@ if ! $found; then
                 aur_helper="yay"
                 echo -e "${BLUE}Installing yay...${NC}"
                 yay_installation
+                break
                 ;;
             2)
                 aur_helper="trizen"
                 echo -e "${BLUE}Installing trizen...${NC}"
                 trizen_installation
+                break
                 ;;
             3)
                 aur_helper="paru"
                 echo -e "${BLUE}Installing paru...${NC}"
                 paru_installation
+                break
                 ;;
             *)
                 echo "Invalid option. Please try again."
                 ;;
         esac
-        break
     done
 fi
 
@@ -648,11 +650,12 @@ fi
 yay_installation() {
     if ! command -v yay &>/dev/null; then
         echo "yay is not installed."
+        echo "Installing yay..."
+        sudo pacman -S --noconfirm yay
     else
         echo "yay is already installed."
     fi
 }
-
 
 # Function to install or remove trizen
 trizen_installation() {
@@ -672,7 +675,6 @@ trizen_installation() {
     fi
 }
 
-
 # Function to install or remove paru
 paru_installation() {
     if command -v paru &>/dev/null; then
@@ -691,51 +693,24 @@ paru_installation() {
     fi
 }
 
-
 # Function to install AUR packages
-install_packages() {
+install_aur_packages() {
     local aur_helper="$1"
-    local packages="$2"
-
-    # Install AUR packages using the specified AUR helper
-    "$aur_helper" -S --noconfirm $packages
+    shift  # Shift to get the remaining arguments (package list)
+    local packages=("$@")  # Convert the remaining arguments into an array
+    "$aur_helper" -S --noconfirm "${packages[@]}"  # Pass the array to the AUR helper
 }
-
-# Extract Arch package list from packages-repository.txt
-arch_packages=$(awk '/^# AUR/ {exit} NF {print $0}' packages-repository.txt)
-
-# Check if all Arch packages are installed
-all_packages_installed=true
-for package in $arch_packages; do
-    if ! pacman -Qq "$package" &>/dev/null; then
-        all_packages_installed=false
-        break
-    fi
-done
-
-# Print feedback based on results
-if $all_packages_installed; then
-    echo -e "${RED}All Arch packages are already installed. No further installation needed.${NC}"
-else
-    # Install Arch packages if needed
-    if [ -n "$arch_packages" ]; then
-        yay -Sy --noconfirm $arch_packages
-        echo -e "${RED}Arch packages successfully installed.${NC}"
-    else
-        echo "No Arch packages found."
-    fi
-fi
-
 
 # Extract AUR package list from packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
+aur_packages=($aur_packages)  # Convert to array for space-separated package names
 
 # Check if all AUR packages are installed
 all_aur_packages_installed=true
-for package in $aur_packages; do
+for package in "${aur_packages[@]}"; do
     if ! yay -Qq "$package" &>/dev/null; then
         all_aur_packages_installed=false
-        echo "$package is not installed"
+        echo "$package is not installed."
         break
     fi
 done
@@ -746,8 +721,9 @@ if $all_aur_packages_installed; then
 else
     # Install AUR packages if needed
     if [ -n "$aur_packages" ]; then
-        install_packages "$aur_helper" "$aur_packages"
-        if yay -Qq $aur_packages &> /dev/null; then
+        install_aur_packages "$aur_helper" "${aur_packages[@]}"
+        # Verify if packages were installed successfully
+        if yay -Qq "${aur_packages[@]}" &>/dev/null; then
             echo -e "${RED}AUR packages successfully installed.${NC}"
         else
             echo -e "${RED}Failed to install AUR packages.${NC}"
@@ -756,6 +732,7 @@ else
         echo "No AUR packages found."
     fi
 fi
+
 
 # Define color codes
 RED='\033[0;31m'
