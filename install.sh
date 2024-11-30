@@ -698,8 +698,16 @@ install_aur_packages() {
     local aur_helper="$1"
     shift  # Shift to get the remaining arguments (package list)
     local packages=("$@")  # Convert the remaining arguments into an array
-    "$aur_helper" -S --noconfirm "${packages[@]}"  # Pass the array to the AUR helper
+    
+    # Install AUR packages using the specified AUR helper and capture output
+    "$aur_helper" -S --noconfirm "${packages[@]}" &> install_log.txt
+    if [[ $? -ne 0 ]]; then
+        echo -e "${RED}Failed to install AUR packages. Check install_log.txt for details.${NC}"
+    else
+        echo -e "${GREEN}AUR packages successfully installed.${NC}"
+    fi
 }
+
 
 # Extract AUR package list from packages-repository.txt
 aur_packages=$(awk '/^# AUR/ {p=1; next} /^#/ {p=0} p' packages-repository.txt)
