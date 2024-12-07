@@ -86,7 +86,7 @@ grim
 grimblast-git
 hyprgui
 hyprpicker
-hyprshot
+hyprshot-git
 networkmanager-dmenu-bluetoothfix-git
 nwg-look
 papirus-folders-catppuccin-git
