@@ -11,6 +11,7 @@ cava
 cliphist
 dolphin
 dolphin-plugins
+downgrade
 duf
 dunst
 fastfetch
