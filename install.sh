@@ -1079,6 +1079,9 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
+# clone the gtk theme repo
+git clone https://github.com/RedBlizard/Colloid-gtk-theme.git $HOME/Colloid-gtk-theme
+
 # Define paths for your local Colloid-gtk-theme repository
 repo_path="$HOME/Colloid-gtk-theme"
 
