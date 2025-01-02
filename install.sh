@@ -1079,30 +1079,27 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-# Define paths for your local Colloid-gtk-theme repository
-repo_path="$HOME/Colloid-gtk-theme"
+# Clone the Colloid-gtk-theme repository
+echo "Cloning Colloid-gtk-theme repository..."
+git clone https://github.com/RedBlizard/Colloid-gtk-theme.git "$HOME/Colloid-gtk-theme"
 
-# Check if the repository directory exists
-if [ ! -d "$repo_path" ]; then
-    echo "Cloning Colloid-gtk-theme repository..."
-    git clone https://github.com/RedBlizard/Colloid-gtk-theme.git "$repo_path"
-    
-    # Check if cloning was successful 
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to clone Colloid-gtk-theme repository."
-        exit 1
-    fi
+# Check if cloning was successful
+if [ $? -ne 0 ]; then
+    echo "Failed to clone Colloid-gtk-theme repository."
+    exit 1
 fi
+
+# Ensure the 'Colloid-gtk-theme' folder exists
+mkdir -p "$HOME/Colloid-gtk-theme/Colloid-gtk-theme"
 
 # Define the path for installed themes in the system
 theme_install_path="/usr/share/themes"
 
 # Copy the themes from /usr/share/themes to the new repository
-echo "Copying themes from $theme_install_path to $repo_path..."
+echo "Copying themes from $theme_install_path to $HOME/Colloid-gtk-theme/Colloid-gtk-theme..."
 
-# Ensure themes exist in the system path
 if [ -d "$theme_install_path" ]; then
-    cp -r "$theme_install_path"/* "$repo_path/Colloid-gtk-theme/"
+    cp -r "$theme_install_path"/* "$HOME/Colloid-gtk-theme/Colloid-gtk-theme/"
     
     # Check if themes were copied successfully
     if [ $? -ne 0 ]; then
@@ -1111,23 +1108,6 @@ if [ -d "$theme_install_path" ]; then
     fi
 else
     echo "Error: No themes found in $theme_install_path."
-    exit 1
-fi
-
-# Define the paths to the theme package
-theme_pkg_path="$repo_path/Colloid-gtk-theme/colloid-catppuccin-gtk-theme-1.0.tar.gz"
-
-# Install the themes from the tarball
-echo "Installing themes from tarball..."
-tar -xzf "$theme_pkg_path" -C "$repo_path"
-
-# Build and install the theme package
-echo "Building and installing the theme package..."
-(cd "$repo_path" && makepkg -si --noconfirm)
-
-# Check if the theme was installed successfully
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to install GTK theme."
     exit 1
 fi
 
@@ -1144,7 +1124,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
-
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
