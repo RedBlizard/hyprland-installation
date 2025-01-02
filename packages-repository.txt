@@ -86,7 +86,6 @@ xed
 adobe-base-14-fonts
 grim
 grimblast-git
-hyprgui
 hyprpicker
 hyprshot-git
 networkmanager-dmenu-bluetoothfix-git
