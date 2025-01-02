@@ -1084,18 +1084,16 @@ repo_path="$HOME/Colloid-gtk-theme"
 
 # Check if the repository directory exists; if not, clone it
 if [ ! -d "$repo_path" ]; then
-    echo "Colloid-gtk-theme repository not found. Cloning..."
+    echo "Cloning Colloid-gtk-theme repository..."
     git clone https://github.com/RedBlizard/Colloid-gtk-theme.git "$repo_path"
     
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
         echo "Error: Failed to clone the Colloid-gtk-theme repository."
         exit 1
-    else
-        echo "Repository cloned successfully."
     fi
 else
-    echo "Colloid-gtk-theme repository already exists. Skipping clone."
+    echo "Repository already exists. Skipping clone."
 fi
 
 # Define the path for installed themes in the system
@@ -1104,20 +1102,8 @@ theme_install_path="/usr/share/themes"
 # Install the themes
 echo "Installing themes from Colloid-gtk-theme repository..."
 
-# Ensure all relevant theme files are copied, skipping unwanted or conflicting themes
-for theme_dir in "$repo_path"/*; do
-    theme_name=$(basename "$theme_dir")
-    
-    if [ -d "$theme_dir" ] && \
-       [ "$theme_name" != "Default" ] && \
-       [ "$theme_name" != "Emacs" ] && \
-       [ "$theme_name" != "Raleigh" ] && \
-       [ "$theme_name" != "gtk-2.0" ] && \
-       [ "$theme_name" != "gtk-3.0" ]; then
-        echo "Copying theme: $theme_name"
-        sudo cp -r "$theme_dir" "$theme_install_path/"
-    fi
-done
+# Copy the themes directly
+sudo cp -r "$repo_path"/* "$theme_install_path/"
 
 # Check if themes were copied successfully
 if [ $? -ne 0 ]; then
@@ -1125,15 +1111,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Clean up any unnecessary files (if any)
-echo "Cleaning up repository files..."
-sudo rm -rf "$repo_path"
-
-echo "Themes installed successfully."
-
 # Optionally, set the installed theme as default
 theme_name="Colloid-Dark-Catppuccin"  # Replace with your preferred theme
-
 echo "Setting GTK theme to: $theme_name"
 gsettings set org.gnome.desktop.interface gtk-theme "$theme_name"
 
@@ -1144,6 +1123,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
