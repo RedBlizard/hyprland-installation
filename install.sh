@@ -1103,6 +1103,13 @@ if [ ! -f "$pkg_dir/PKGBUILD" ]; then
     exit 1
 fi
 
+# Ensure gtk2 is removed if conflicts exist (as per the PKGBUILD)
+echo "Checking for conflicts with gtk2 package..."
+if pacman -Qi gtk2 > /dev/null; then
+    echo "gtk2 found, removing gtk2..."
+    sudo pacman -Rns --noconfirm gtk2
+fi
+
 # Build and install the GTK themes
 echo "Building and installing the GTK themes from $pkg_dir..."
 (cd "$pkg_dir" && makepkg -si --noconfirm)
@@ -1126,8 +1133,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme installed and set successfully."
-
-
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
