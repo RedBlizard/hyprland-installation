@@ -1084,14 +1084,18 @@ repo_path="$HOME/Colloid-gtk-theme"
 
 # Check if the repository directory exists; if not, clone it
 if [ ! -d "$repo_path" ]; then
-    echo "Cloning Colloid-gtk-theme repository..."
+    echo "Colloid-gtk-theme repository not found. Cloning..."
     git clone https://github.com/RedBlizard/Colloid-gtk-theme.git "$repo_path"
     
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
         echo "Error: Failed to clone the Colloid-gtk-theme repository."
         exit 1
+    else
+        echo "Repository cloned successfully."
     fi
+else
+    echo "Colloid-gtk-theme repository already exists. Skipping clone."
 fi
 
 # Define the path for installed themes in the system
@@ -1134,6 +1138,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
