@@ -1079,46 +1079,41 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-# Clone the Colloid-gtk-theme repository
-echo "Cloning Colloid-gtk-theme repository..."
-git clone https://github.com/RedBlizard/Colloid-gtk-theme.git "$HOME/Colloid-gtk-theme"
+# Define paths for your local Colloid-gtk-theme repository
+repo_path="$HOME/Colloid-gtk-theme"
 
-# Check if cloning was successful
+# Check if the repository directory exists
+if [ ! -d "$repo_path" ]; then
+    echo "Error: Colloid-gtk-theme directory not found. Please ensure the repository is cloned."
+    exit 1
+fi
+
+# Define the path for installed themes in the system
+theme_install_path="/usr/share/themes"
+
+# Install the themes
+echo "Installing themes from Colloid-gtk-theme repository..."
+
+# Copy only relevant theme files, skipping gtk2 and conflicting themes
+for theme_dir in "$repo_path"/colloid-gtk-theme/*; do
+    theme_name=$(basename "$theme_dir")
+    
+    if [ -d "$theme_dir" ] && [ "$theme_name" != "Default" ] && [ "$theme_name" != "Emacs" ] && [ "$theme_name" != "Raleigh" ] && [ "$theme_name" != "gtk-2.0" ] && [ "$theme_name" != "gtk-3.0" ]; then
+        sudo cp -r "$theme_dir" "$theme_install_path/"
+    fi
+done
+
+# Check if themes were copied successfully
 if [ $? -ne 0 ]; then
-    echo "Failed to clone Colloid-gtk-theme repository."
+    echo "Error: Failed to copy themes to $theme_install_path."
     exit 1
 fi
 
-# Define the path to the directory containing the PKGBUILD
-pkg_dir="$HOME/Colloid-gtk-theme/colloid-gtk-theme"
+# Clean up any unnecessary files (if any)
+echo "Cleaning up repository files..."
+sudo rm -rf "$repo_path"
 
-# Ensure the directory exists and contains the required files
-if [ ! -d "$pkg_dir" ]; then
-    echo "Error: Package directory $pkg_dir not found in the repository."
-    exit 1
-fi
-
-if [ ! -f "$pkg_dir/PKGBUILD" ]; then
-    echo "Error: PKGBUILD file not found in $pkg_dir."
-    exit 1
-fi
-
-# Ensure gtk2 is removed if conflicts exist (as per the PKGBUILD)
-echo "Checking for conflicts with gtk2 package..."
-if pacman -Qi gtk2 > /dev/null; then
-    echo "gtk2 found, removing gtk2..."
-    sudo pacman -Rns --noconfirm gtk2
-fi
-
-# Build and install the GTK themes
-echo "Building and installing the GTK themes from $pkg_dir..."
-(cd "$pkg_dir" && makepkg -si --noconfirm)
-
-# Check if installation was successful
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to build and install the GTK themes."
-    exit 1
-fi
+echo "Themes installed successfully."
 
 # Optionally, set the installed theme as default
 theme_name="Colloid-Dark-Catppuccin"  # Replace with your preferred theme
@@ -1132,7 +1127,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "GTK theme installed and set successfully."
+echo "GTK theme set successfully."
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
