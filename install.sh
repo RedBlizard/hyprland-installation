@@ -1089,33 +1089,27 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Ensure the package exists in the repository
-package_name="colloid-catppuccin-gtk-theme-1.0.tar.gz"
-package_path="$HOME/Colloid-gtk-theme/$package_name"
+# Define the path to the directory containing the PKGBUILD
+pkg_dir="$HOME/Colloid-gtk-theme/colloid-gtk-theme"
 
-if [ ! -f "$package_path" ]; then
-    echo "Error: Package $package_name not found in the repository."
+# Ensure the directory exists and contains the required files
+if [ ! -d "$pkg_dir" ]; then
+    echo "Error: Package directory $pkg_dir not found in the repository."
     exit 1
 fi
 
-# Extract the package
-echo "Extracting the GTK theme package..."
-tar -xvf "$package_path" -C "$HOME/Colloid-gtk-theme"
+if [ ! -f "$pkg_dir/PKGBUILD" ]; then
+    echo "Error: PKGBUILD file not found in $pkg_dir."
+    exit 1
+fi
 
 # Build and install the GTK themes
-extracted_folder="$HOME/Colloid-gtk-theme/colloid-catppuccin-gtk-theme"
-if [ -d "$extracted_folder" ]; then
-    echo "Building and installing the GTK themes from $extracted_folder..."
-    cd "$extracted_folder" || exit 1
-    makepkg -si --noconfirm
-    
-    # Check if installation was successful
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to build and install the GTK themes."
-        exit 1
-    fi
-else
-    echo "Error: Extracted folder $extracted_folder not found."
+echo "Building and installing the GTK themes from $pkg_dir..."
+(cd "$pkg_dir" && makepkg -si --noconfirm)
+
+# Check if installation was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to build and install the GTK themes."
     exit 1
 fi
 
@@ -1132,6 +1126,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme installed and set successfully."
+
 
 
 # -----------------------------------------
