@@ -1079,20 +1079,13 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-
 # Define paths for your local Colloid-gtk-theme repository
 repo_path="$HOME/Colloid-gtk-theme"
 
 # Check if the repository directory exists
 if [ ! -d "$repo_path" ]; then
-    echo "Cloning Colloid-gtk-theme repository..."
-    https://github.com/RedBlizard/colloid-gtk-theme.git "$repo_path"
-    
-    # Check if cloning was successful
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to clone Colloid-gtk-theme repository."
-        exit 1
-    fi
+    echo "Error: Colloid-gtk-theme directory not found. Please ensure the repository is cloned."
+    exit 1
 fi
 
 # Define the path for installed themes in the system
@@ -1115,12 +1108,6 @@ else
     exit 1
 fi
 
-# Clean up any unnecessary files (if any)
-echo "Cleaning up repository files..."
-rm -rf "$repo_path"
-
-echo "Themes copied and repository cleaned up."
-
 # Optionally, set the installed theme as default
 theme_name="Colloid-Dark-Catppuccin"  # Replace with your preferred theme
 
@@ -1134,7 +1121,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
-
 
 
 # -----------------------------------------
