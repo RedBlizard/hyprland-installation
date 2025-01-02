@@ -1086,7 +1086,7 @@ repo_path="$HOME/Colloid-gtk-theme"
 # Check if the repository directory exists
 if [ ! -d "$repo_path" ]; then
     echo "Cloning Colloid-gtk-theme repository..."
-    https://github.com/RedBlizard/colloid-gtk-theme-git "$repo_path"
+    https://github.com/RedBlizard/colloid-gtk-theme.git "$repo_path"
     
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
