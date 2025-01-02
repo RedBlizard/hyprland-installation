@@ -1089,25 +1089,33 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Ensure the 'Colloid-gtk-theme' folder exists
-mkdir -p "$HOME/Colloid-gtk-theme/Colloid-gtk-theme"
+# Ensure the package exists in the repository
+package_name="colloid-catppuccin-gtk-theme-1.0.tar.gz"
+package_path="$HOME/Colloid-gtk-theme/$package_name"
 
-# Define the path for installed themes in the system
-theme_install_path="/usr/share/themes"
+if [ ! -f "$package_path" ]; then
+    echo "Error: Package $package_name not found in the repository."
+    exit 1
+fi
 
-# Copy the themes from /usr/share/themes to the new repository
-echo "Copying themes from $theme_install_path to $HOME/Colloid-gtk-theme/Colloid-gtk-theme..."
+# Extract the package
+echo "Extracting the GTK theme package..."
+tar -xvf "$package_path" -C "$HOME/Colloid-gtk-theme"
 
-if [ -d "$theme_install_path" ]; then
-    cp -r "$theme_install_path"/* "$HOME/Colloid-gtk-theme/Colloid-gtk-theme/"
+# Build and install the GTK themes
+extracted_folder="$HOME/Colloid-gtk-theme/colloid-catppuccin-gtk-theme"
+if [ -d "$extracted_folder" ]; then
+    echo "Building and installing the GTK themes from $extracted_folder..."
+    cd "$extracted_folder" || exit 1
+    makepkg -si --noconfirm
     
-    # Check if themes were copied successfully
+    # Check if installation was successful
     if [ $? -ne 0 ]; then
-        echo "Error: Failed to copy themes to the new repository."
+        echo "Error: Failed to build and install the GTK themes."
         exit 1
     fi
 else
-    echo "Error: No themes found in $theme_install_path."
+    echo "Error: Extracted folder $extracted_folder not found."
     exit 1
 fi
 
@@ -1123,7 +1131,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "GTK theme set successfully."
+echo "GTK theme installed and set successfully."
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
