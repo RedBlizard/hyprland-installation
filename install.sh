@@ -1104,11 +1104,17 @@ theme_install_path="/usr/share/themes"
 # Install the themes
 echo "Installing themes from Colloid-gtk-theme repository..."
 
-# Copy only relevant theme files, skipping gtk2 and conflicting themes
-for theme_dir in "$repo_path"/colloid-gtk-theme/*; do
+# Ensure all relevant theme files are copied, skipping unwanted or conflicting themes
+for theme_dir in "$repo_path"/*; do
     theme_name=$(basename "$theme_dir")
     
-    if [ -d "$theme_dir" ] && [ "$theme_name" != "Default" ] && [ "$theme_name" != "Emacs" ] && [ "$theme_name" != "Raleigh" ] && [ "$theme_name" != "gtk-2.0" ] && [ "$theme_name" != "gtk-3.0" ]; then
+    if [ -d "$theme_dir" ] && \
+       [ "$theme_name" != "Default" ] && \
+       [ "$theme_name" != "Emacs" ] && \
+       [ "$theme_name" != "Raleigh" ] && \
+       [ "$theme_name" != "gtk-2.0" ] && \
+       [ "$theme_name" != "gtk-3.0" ]; then
+        echo "Copying theme: $theme_name"
         sudo cp -r "$theme_dir" "$theme_install_path/"
     fi
 done
@@ -1138,7 +1144,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
-
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
