@@ -1079,38 +1079,47 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-# clone the gtk theme repo
-git clone https://github.com/RedBlizard/Colloid-gtk-theme.git $HOME/Colloid-gtk-theme
 
 # Define paths for your local Colloid-gtk-theme repository
 repo_path="$HOME/Colloid-gtk-theme"
 
 # Check if the repository directory exists
 if [ ! -d "$repo_path" ]; then
-    echo "Error: Colloid-gtk-theme directory not found. Please ensure the repository is cloned."
-    exit 1
+    echo "Cloning Colloid-gtk-theme repository..."
+    https://github.com/RedBlizard/colloid-gtk-theme-git.git "$repo_path"
+    
+    # Check if cloning was successful
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to clone Colloid-gtk-theme repository."
+        exit 1
+    fi
 fi
 
 # Define the path for installed themes in the system
 theme_install_path="/usr/share/themes"
 
-# Install the themes
-echo "Installing themes from Colloid-gtk-theme repository..."
+# Copy the themes from /usr/share/themes to the new repository
+echo "Copying themes from $theme_install_path to $repo_path..."
 
-# Copy the themes from the repo to the system directory
-sudo cp -r "$repo_path/Colloid-gtk-theme"/* "$theme_install_path/"
-
-# Check if themes were copied successfully
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to copy themes to $theme_install_path."
+# Ensure themes exist in the system path
+if [ -d "$theme_install_path" ]; then
+    cp -r "$theme_install_path"/* "$repo_path/Colloid-gtk-theme/"
+    
+    # Check if themes were copied successfully
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to copy themes to the new repository."
+        exit 1
+    fi
+else
+    echo "Error: No themes found in $theme_install_path."
     exit 1
 fi
 
 # Clean up any unnecessary files (if any)
 echo "Cleaning up repository files..."
-sudo rm -rf "$repo_path"
+rm -rf "$repo_path"
 
-echo "Themes installed successfully."
+echo "Themes copied and repository cleaned up."
 
 # Optionally, set the installed theme as default
 theme_name="Colloid-Dark-Catppuccin"  # Replace with your preferred theme
@@ -1125,6 +1134,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "GTK theme set successfully."
+
 
 
 # -----------------------------------------
