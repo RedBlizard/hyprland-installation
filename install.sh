@@ -1228,6 +1228,7 @@ rm -rf $HOME/install.sh
 rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
 rm -rf $HOME/environment
+rm -rf $HOME/Colloid-gtk-theme
 
 yay -Rns pavucontrol
 
