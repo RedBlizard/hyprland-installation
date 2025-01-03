@@ -1079,18 +1079,17 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-
-# Define paths for your local Catppuccin-gtk-theme-latte repository
-repo_path="$HOME/catppuccin-gtk-theme-latte"
+# Define paths for your local Catppuccin-gtk-theme-frappe repository
+repo_path="$HOME/catppuccin-gtk-theme-frappe"
 
 # Check if the repository directory exists; if not, clone it
 if [ ! -d "$repo_path" ]; then
-    echo "Cloning Catppuccin-gtk-theme-latte repository..."
-    git clone https://github.com/catppuccin/gtk.git "$repo_path"
+    echo "Cloning Catppuccin-gtk-theme-frappe repository..."
+    git clone https://github.com/RedBlizard/gtk-hypr-blizz-catppuccin.git "$repo_path"
     
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
-        echo "Error: Failed to clone the Catppuccin-gtk-theme-latte repository."
+        echo "Error: Failed to clone the Catppuccin-gtk-theme-frappe repository."
         exit 1
     fi
 else
@@ -1101,7 +1100,7 @@ fi
 theme_install_path="/usr/share/themes"
 
 # Install the themes
-echo "Installing themes from Catppuccin-gtk-theme-latte repository..."
+echo "Installing themes from Catppuccin-gtk-theme-frappe repository..."
 
 # Copy the themes directly
 sudo cp -r "$repo_path"/* "$theme_install_path/"
@@ -1113,7 +1112,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Optionally, set the installed theme as default
-theme_name="catppuccin-latte"  # Replace with your preferred theme name from the theme list
+theme_name="catppuccin-frappe"  # Replace with your preferred theme name from the theme list
 echo "Setting GTK theme to: $theme_name"
 gsettings set org.gnome.desktop.interface gtk-theme "$theme_name"
 
