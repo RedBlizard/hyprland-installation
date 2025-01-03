@@ -1079,60 +1079,59 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
-# Clone the repository
-echo "Cloning GTK theme repository..."
-git clone https://github.com/RedBlizard/gtk-hypr-blizz-catppuccin.git "$HOME/gtk-hypr-blizz"
 
-# Check if clone was successful
+# Define repository and destination
+THEME_REPO="https://github.com/RedBlizard/Colloid-gtk-theme.git"
+INSTALL_SCRIPT="install.sh"
+DEST_DIR="/usr/share/themes"
+DEFAULT_THEME="Colloid-Dark-Catppuccin"
+
+# Define a temporary directory for cloning
+TEMP_DIR="$HOME/Colloid-gtk-theme"
+
+# Clone the repository (or update if already cloned)
+if [ ! -d "$TEMP_DIR" ]; then
+    echo "Cloning Colloid GTK theme repository..."
+    git clone "$THEME_REPO" "$TEMP_DIR"
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to clone GTK theme repository. Exiting."
+        exit 1
+    fi
+else
+    echo "Repository already exists. Pulling latest changes..."
+    cd "$TEMP_DIR" && git pull
+    if [ $? -ne 0 ]; then
+        echo "Failed to update GTK theme repository. Exiting."
+        exit 1
+    fi
+fi
+
+# Run the install script with specified options
+echo "Installing themes to $DEST_DIR..."
+cd "$TEMP_DIR" || exit 1
+sudo ./"$INSTALL_SCRIPT" --theme all --tweaks catppuccin --dest "$DEST_DIR"
+
 if [ $? -ne 0 ]; then
-    echo "Failed to clone GTK theme repository. Exiting."
+    echo "Error: Failed to install themes. Exiting."
     exit 1
 fi
 
-# Define paths to theme directories in cloned repository
-frappe_pkg_path="$HOME/gtk-hypr-blizz/catppuccin-gtk-theme-frappe"
-latte_pkg_path="$HOME/gtk-hypr-blizz/catppuccin-gtk-theme-latte"
+# Set the default theme
+echo "Setting window theme to: $DEFAULT_THEME"
+gsettings set org.gnome.desktop.wm.preferences theme "$DEFAULT_THEME"
 
-# Check if the theme directories exist
-if [ ! -d "$frappe_pkg_path" ] || [ ! -d "$latte_pkg_path" ]; then
-    echo "Error: Theme directories not found in cloned repository."
-    exit 1
-fi
-
-# Build and install Frappe theme
-echo "Installing Frappe GTK theme..."
-(cd "$frappe_pkg_path" && makepkg -si --noconfirm)
-
-# Build and install Latte theme
-echo "Installing Latte GTK theme..."
-(cd "$latte_pkg_path" && makepkg -si --noconfirm)
-
-
-# Clean up cloned repository directory
-echo "Removing cloned GTK theme repository directory..."
-rm -rf "$HOME/gtk-hypr-blizz"
-
-
-echo "GTK themes installed successfully and repository directory removed."
-
-# Optionally, set the installed theme as default
-# Replace 'Your-Theme-Name' with the actual theme name if needed
-# gsettings set org.gnome.desktop.interface gtk-theme 'Your-Theme-Name'
-
-# Ensure script runs as the user (not root)
-
-theme_name='Catppuccin-Frappe-Standard-Blue-Dark'
-
-echo "Setting window theme to: $theme_name"
-gsettings set org.gnome.desktop.wm.preferences theme "$theme_name"
-
-# Check for errors
 if [ $? -ne 0 ]; then
     echo "Error: Failed to set window theme."
     exit 1
 fi
 
-echo "Window theme set successfully."
+# Optionally, clean up (commented out if you want to keep the repository)
+# echo "Cleaning up temporary files..."
+# rm -rf "$TEMP_DIR"
+
+echo "Themes installed successfully and default theme set to $DEFAULT_THEME."
+
 
 # -----------------------------------------
 # Change the default Icon-Theme for the user
