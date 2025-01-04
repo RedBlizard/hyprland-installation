@@ -1127,9 +1127,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Configuring NWG-Look preferences for Colloid themes..."
-gsettings set org.gtk.Settings.ColorScheme 'prefer-light'
-echo "NWG-Look configured to prefer light themes."
+# Update .gtkrc-2.0 to prefer light themes
+GTKRC_FILE="$HOME/.gtkrc-2.0"
+
+echo "Updating $GTKRC_FILE for NWG-Look preferences..."
+echo "gtk-application-prefer-dark-theme=0" > "$GTKRC_FILE"
+echo "GTK preferences updated in $GTKRC_FILE."
 
 echo "Themes installed successfully and default theme set to $DEFAULT_THEME."
 
