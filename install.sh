@@ -1127,12 +1127,32 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Update .gtkrc-2.0 to prefer light themes
-GTKRC_FILE="$HOME/.gtkrc-2.0"
+# Update .gtkrc-2.0.mine to prefer light themes
+GTKRC_FILE="$HOME/.gtkrc-2.0.mine"
 
+echo "Checking if $GTKRC_FILE exists..."
+if [ ! -f "$GTKRC_FILE" ]; then
+    echo "$GTKRC_FILE does not exist. Creating it..."
+    touch "$GTKRC_FILE"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to create $GTKRC_FILE. Exiting."
+        exit 1
+    fi
+else
+    echo "$GTKRC_FILE already exists. Updating it..."
+fi
+
+# Write the preference to the file
 echo "Updating $GTKRC_FILE for NWG-Look preferences..."
 echo "gtk-application-prefer-dark-theme=0" > "$GTKRC_FILE"
-echo "GTK preferences updated in $GTKRC_FILE."
+
+if [ $? -eq 0 ]; then
+    echo "GTK preferences updated successfully in $GTKRC_FILE."
+else
+    echo "Error: Failed to update $GTKRC_FILE."
+    exit 1
+fi
+
 
 echo "Themes installed successfully and default theme set to $DEFAULT_THEME."
 
