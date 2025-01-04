@@ -1079,6 +1079,7 @@ sudo kvantummanager --set Catppuccin-Frappe-Blue
 
 echo -e "${BLUE}Kvantum theme for the root user has been set.${NC}"
 
+echo -e "${RED}Now we are going to install the themes and setting up nwg-look we are almost done now !!!${NC}"
 
 # Define repository and destination
 THEME_REPO="https://github.com/RedBlizard/Colloid-gtk-theme.git"
@@ -1126,9 +1127,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Optionally, clean up (commented out if you want to keep the repository)
-# echo "Cleaning up temporary files..."
-# rm -rf "$TEMP_DIR"
+echo "Configuring NWG-Look preferences for Colloid themes..."
+gsettings set org.gtk.Settings.ColorScheme 'prefer-light'
+echo "NWG-Look configured to prefer light themes."
 
 echo "Themes installed successfully and default theme set to $DEFAULT_THEME."
 
@@ -1228,7 +1229,6 @@ rm -rf $HOME/install.sh
 rm -rf $HOME/sddm.conf
 rm -rf $HOME/LICENSE
 rm -rf $HOME/environment
-rm -rf $HOME/Colloid-gtk-theme
 
 yay -Rns pavucontrol
 
