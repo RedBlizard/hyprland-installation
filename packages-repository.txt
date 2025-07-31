@@ -66,7 +66,8 @@ noto-fonts-extra
 ttf-nerd-fonts-symbols-mono
 ttf-noto-nerd
 ttf-opensans
-ttf-font-awesome
+otf-font-awesome
+woff2-font-awesome
 awesome-terminal-fonts
 update-grub
 vscode-json-languageserver
